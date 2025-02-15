@@ -10,14 +10,28 @@ typedef struct InputWord
 {
     char *original;
     char *reduced; /* The lowercase word without any punctuation */
+    bool ends_sentence;
     struct InputWord *next;
     struct InputWord *prev;
 } InputWord;
 
 bool
+is_ending_punctuation(char c)
+{
+    if (c == '.' || c == '?' || c == '!')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
 is_punctuation(char c)
 {
-    if (c == '.' || c == '?' || c == '!' ||
+    if (is_ending_punctuation(c) ||
         c == ',' || c == ':' || c == ';' ||
         c == '-' || c == '(' || c == ')')
     {
@@ -63,6 +77,7 @@ append_word(InputWord **list, char *data)
     }
     current->original = data;
     current->reduced = reduce_word(data);
+    current->ends_sentence = is_ending_punctuation(data[strlen(data)-1]);
     current->next = NULL;
     current->prev = *list;
     if ((*list) != NULL)
@@ -82,6 +97,12 @@ char *
 reduced_word(InputWord *word)
 {
     return word->reduced;
+}
+
+bool
+sentence_ending_word(InputWord *word)
+{
+    return word->ends_sentence;
 }
 
 InputWord *
