@@ -112,7 +112,7 @@ read_input(InputWord **list)
             data[len-1] = (char) c;
             c = getchar();
         }
-        if (len > 1)
+        if (len > 0)
         {
             len++;
             data = (char *) realloc(data, len);
