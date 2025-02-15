@@ -1,15 +1,57 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct InputWord
 {
-    char *data;
+    char *original;
+    char *reduced; /* The lowercase word without any punctuation */
     struct InputWord *next;
     struct InputWord *prev;
 } InputWord;
+
+bool
+is_punctuation(char c)
+{
+    if (c == '.' || c == '?' || c == '!' ||
+        c == ',' || c == ':' || c == ';' ||
+        c == '-' || c == '(' || c == ')')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+char *
+reduce_word(char *original)
+{
+    size_t len = 0, j = 0;
+    for (size_t i = 0; i < strlen(original); i++)
+    {
+        if (is_punctuation(original[i]) == false )
+        {
+            len++;
+        }
+    }
+    len++;
+    char *reduced = (char *) malloc(len * sizeof(char));
+    for (size_t i = 0; i < strlen(original); i++)
+    {
+        if (is_punctuation(original[i]) == false )
+        {
+            reduced[j] = tolower(original[i]);
+            j++;
+        }
+    }
+    return reduced;
+}
 
 void
 append_word(InputWord **list, char *data)
@@ -19,7 +61,8 @@ append_word(InputWord **list, char *data)
     {
         exit(EXIT_FAILURE);
     }
-    current->data = data;
+    current->original = data;
+    current->reduced = reduce_word(data);
     current->next = NULL;
     current->prev = *list;
     if ((*list) != NULL)
@@ -30,9 +73,15 @@ append_word(InputWord **list, char *data)
 }
 
 char *
-data_word(InputWord *word)
+original_word(InputWord *word)
 {
-    return word->data;
+    return word->original;
+}
+
+char *
+reduced_word(InputWord *word)
+{
+    return word->reduced;
 }
 
 InputWord *
@@ -68,6 +117,8 @@ free_word(InputWord *list)
     {
         InputWord *prev = prev_word(list);
         free_word(prev);
+        free(list->original);
+        free(list->reduced);
         free(list);
     }
 }
