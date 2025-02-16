@@ -6,14 +6,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct InputWord
+bool
+is_line_break(char c)
 {
-    char *original;
-    char *reduced; /* The lowercase word without any punctuation */
-    bool ends_sentence;
-    struct InputWord *next;
-    struct InputWord *prev;
-} InputWord;
+    if (c == '\n' || c == '\r')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
+is_whitespace(char c)
+{
+    if (is_line_break(c) || c == ' ' || c == '\t' || c == EOF)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 bool
 is_ending_punctuation(char c)
@@ -43,6 +60,17 @@ is_punctuation(char c)
     }
 }
 
+typedef struct InputWord
+{
+    char *original;
+    char *reduced; /* The lowercase word without any punctuation */
+    unsigned int line;
+    unsigned int column;
+    bool ends_sentence;
+    struct InputWord *next;
+    struct InputWord *prev;
+} InputWord;
+
 char *
 reduce_word(char *original)
 {
@@ -68,7 +96,7 @@ reduce_word(char *original)
 }
 
 void
-append_word(InputWord **list, char *data)
+append_word(InputWord **list, char *data, unsigned int line, unsigned int column)
 {
     InputWord *current = (InputWord *) malloc(sizeof(InputWord));
     if (current == NULL)
@@ -77,6 +105,8 @@ append_word(InputWord **list, char *data)
     }
     current->original = data;
     current->reduced = reduce_word(data);
+    current->line = line;
+    current->column = column;
     current->ends_sentence = is_ending_punctuation(data[strlen(data)-1]);
     current->next = NULL;
     current->prev = *list;
@@ -97,6 +127,18 @@ char *
 reduced_word(InputWord *word)
 {
     return word->reduced;
+}
+
+unsigned int
+line_word(InputWord *word)
+{
+    return word->line;
+}
+
+unsigned int
+column_word(InputWord *word)
+{
+    return word->column;
 }
 
 bool
@@ -144,22 +186,10 @@ free_word(InputWord *list)
     }
 }
 
-bool
-is_whitespace(char c)
-{
-    if (c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == EOF)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 void
 read_input(InputWord **list)
 {
+    unsigned int line = 1, column = 1;
     int c = getchar();
     while (c != EOF)
     {
@@ -168,6 +198,7 @@ read_input(InputWord **list)
         while (is_whitespace(c) == false)
         {
             len++;
+            column++;
             if (data == NULL)
             {
                 data = (char *) malloc(len * sizeof(char));
@@ -193,7 +224,16 @@ read_input(InputWord **list)
                 exit(EXIT_FAILURE);
             }
             data[len+1] = '\0';
-            append_word(list, data);
+            append_word(list, data, line, column);
+        }
+        if (is_line_break(c) == true)
+        {
+            line++;
+            column = 1;
+        }
+        else if (is_whitespace(c) == true)
+        {
+            column++;
         }
         c = getchar();
     }
