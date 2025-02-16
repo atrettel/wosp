@@ -2,7 +2,7 @@
 CC=gcc
 CFLAGS=-std=c99 -Wall -pedantic -Wfatal-errors -Werror -pedantic-errors -O2
 
-project=wrdh
+project=wrdp
 
 $(project): $(project).c
 	$(CC) $(CFLAGS) $^ -o $@

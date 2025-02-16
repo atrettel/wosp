@@ -1,4 +1,4 @@
-# Word hash search
+# Word proximity search (WRDP)
 
 by Andrew Trettel
 
