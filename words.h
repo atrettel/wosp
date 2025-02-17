@@ -7,7 +7,6 @@
 bool is_line_break(char);
 bool is_whitespace(char);
 bool is_ending_punctuation(char);
-bool is_punctuation(char);
 
 typedef struct InputWord
 {

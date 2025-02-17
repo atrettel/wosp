@@ -46,28 +46,13 @@ is_ending_punctuation(char c)
     }
 }
 
-bool
-is_punctuation(char c)
-{
-    if (is_ending_punctuation(c) ||
-        c == ',' || c == ':' || c == ';' ||
-        c == '-' || c == '(' || c == ')')
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 char *
 reduce_word(char *original)
 {
     size_t len = 0, j = 0;
     for (size_t i = 0; i < strlen(original); i++)
     {
-        if (is_punctuation(original[i]) == false )
+        if (ispunct(original[i]) == false )
         {
             len++;
         }
@@ -76,7 +61,7 @@ reduce_word(char *original)
     char *reduced = (char *) malloc(len * sizeof(char));
     for (size_t i = 0; i < strlen(original); i++)
     {
-        if (is_punctuation(original[i]) == false )
+        if (ispunct(original[i]) == false )
         {
             reduced[j] = tolower(original[i]);
             j++;
