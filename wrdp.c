@@ -64,8 +64,9 @@ typedef struct InputWord
 {
     char *original;
     char *reduced; /* The lowercase word without any punctuation */
-    unsigned int line;
+    unsigned int line; /* Line and column for locating word in input */
     unsigned int column;
+    unsigned int position; /* Position for order in doubly-linked list */
     bool ends_sentence;
     struct InputWord *next;
     struct InputWord *prev;
@@ -96,7 +97,8 @@ reduce_word(char *original)
 }
 
 void
-append_word(InputWord **list, char *data, unsigned int line, unsigned int column)
+append_word(InputWord **list, char *data, unsigned int line,
+            unsigned int column, unsigned int position)
 {
     InputWord *current = (InputWord *) malloc(sizeof(InputWord));
     if (current == NULL)
@@ -107,6 +109,7 @@ append_word(InputWord **list, char *data, unsigned int line, unsigned int column
     current->reduced = reduce_word(data);
     current->line = line;
     current->column = column;
+    current->position = position;
     current->ends_sentence = is_ending_punctuation(data[strlen(data)-1]);
     current->next = NULL;
     current->prev = *list;
@@ -139,6 +142,12 @@ unsigned int
 column_word(InputWord *word)
 {
     return word->column;
+}
+
+unsigned int
+position_word(InputWord *word)
+{
+    return word->position;
 }
 
 bool
@@ -189,7 +198,7 @@ free_word(InputWord *list)
 void
 read_input(InputWord **list)
 {
-    unsigned int line = 1, column = 1;
+    unsigned int line = 1, column = 1, position = 1;
     int c = getchar();
     while (c != EOF)
     {
@@ -199,6 +208,7 @@ read_input(InputWord **list)
         {
             len++;
             column++;
+            position++;
             if (data == NULL)
             {
                 data = (char *) malloc(len * sizeof(char));
@@ -224,16 +234,18 @@ read_input(InputWord **list)
                 exit(EXIT_FAILURE);
             }
             data[len+1] = '\0';
-            append_word(list, data, line, column);
+            append_word(list, data, line, column, position);
         }
         if (is_line_break(c) == true)
         {
             line++;
             column = 1;
+            position++;
         }
         else if (is_whitespace(c) == true)
         {
             column++;
+            position++;
         }
         c = getchar();
     }
