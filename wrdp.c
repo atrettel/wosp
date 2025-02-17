@@ -48,13 +48,13 @@ read_input(InputWord **list)
             data[len+1] = '\0';
             append_word(list, data, line, column, position);
         }
-        if (is_line_break(c) == true)
+        if ((isspace(c) == true) && (isblank(c) == false)) /* Line break? */
         {
             line++;
             column = 1;
             position++;
         }
-        else if (isspace(c) == true)
+        else if (isblank(c) == true)
         {
             column++;
             position++;

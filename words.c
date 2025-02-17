@@ -8,19 +8,6 @@
 #include "words.h"
 
 bool
-is_line_break(char c)
-{
-    if (c == '\n' || c == '\r')
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool
 is_ending_punctuation(char c)
 {
     if (c == '.' || c == '?' || c == '!')
