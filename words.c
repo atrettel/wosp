@@ -21,19 +21,6 @@ is_line_break(char c)
 }
 
 bool
-is_whitespace(char c)
-{
-    if (is_line_break(c) || c == ' ' || c == '\t' || c == EOF)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool
 is_ending_punctuation(char c)
 {
     if (c == '.' || c == '?' || c == '!')

@@ -16,7 +16,7 @@ read_input(InputWord **list)
     {
         size_t len = 0;
         char *data = NULL;
-        while (is_whitespace(c) == false)
+        while ((isspace(c) == false) && (c != EOF))
         {
             len++;
             column++;
@@ -54,7 +54,7 @@ read_input(InputWord **list)
             column = 1;
             position++;
         }
-        else if (is_whitespace(c) == true)
+        else if (isspace(c) == true)
         {
             column++;
             position++;
