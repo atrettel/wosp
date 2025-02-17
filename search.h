@@ -11,20 +11,20 @@ typedef struct Match
     struct Match *next;
 } Match;
 
-struct TreeNode;
-struct TreeEdge;
+struct TrieNode;
+struct TrieEdge;
 
-typedef struct TreeNode
+typedef struct TrieNode
 {
     char key;
-    struct TreeEdge *edges;
+    struct TrieEdge *edges;
     Match *match;
-} TreeNode;
+} TrieNode;
 
-typedef struct TreeEdge
+typedef struct TrieEdge
 {
-    struct TreeNode *node;
-    struct TreeEdge *next;
-} TreeEdge;
+    struct TrieNode *node;
+    struct TrieEdge *next;
+} TrieEdge;
 
 #endif /* SEARCH_H */
