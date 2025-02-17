@@ -86,8 +86,8 @@ reduce_word(char *original)
 }
 
 void
-append_word(InputWord **list, char *data, unsigned int line,
-            unsigned int column, unsigned int position)
+append_word(InputWord **list, char *data, unsigned long line,
+            unsigned long column, unsigned long position)
 {
     InputWord *current = (InputWord *) malloc(sizeof(InputWord));
     if (current == NULL)
@@ -121,19 +121,19 @@ reduced_word(InputWord *word)
     return word->reduced;
 }
 
-unsigned int
+unsigned long
 line_word(InputWord *word)
 {
     return word->line;
 }
 
-unsigned int
+unsigned long
 column_word(InputWord *word)
 {
     return word->column;
 }
 
-unsigned int
+unsigned long
 position_word(InputWord *word)
 {
     return word->position;

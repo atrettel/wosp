@@ -10,7 +10,7 @@
 void
 read_input(InputWord **list)
 {
-    unsigned int line = 1, column = 1, position = 1;
+    unsigned long line = 1, column = 1, position = 1;
     int c = getchar();
     while (c != EOF)
     {
