@@ -59,6 +59,7 @@ read_input(InputWord **list)
         }
         c = getchar();
     }
+    *list = first_word(*list);
 }
 
 int

@@ -147,15 +147,52 @@ prev_word(InputWord *word)
     }
 }
 
+InputWord *
+first_word(InputWord *word)
+{
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        InputWord *current = word;
+        while (prev_word(current) != NULL)
+        {
+            current = prev_word(current);
+        }
+        return current;
+    }
+}
+
+InputWord *
+last_word(InputWord *word)
+{
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        InputWord *current = word;
+        while (next_word(current) != NULL)
+        {
+            current = next_word(current);
+        }
+        return current;
+    }
+}
+
 void
 free_word(InputWord *list)
 {
-    if (list != NULL)
+    InputWord *current = list;
+    while (current != NULL)
     {
-        InputWord *prev = prev_word(list);
-        free_word(prev);
-        free(list->original);
-        free(list->reduced);
-        free(list);
+        InputWord *next = next_word(current);
+        free(current->original);
+        free(current->reduced);
+        free(current);
+        current = next;
     }
 }

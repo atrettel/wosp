@@ -28,6 +28,9 @@ InputWord *next_word(InputWord *);
 InputWord *prev_word(InputWord *);
 InputWord *next_sentence(InputWord *);
 InputWord *prev_sentence(InputWord *);
+InputWord *first_word(InputWord *);
+InputWord *last_word(InputWord *);
+void print_word(InputWord *);
 void free_word(InputWord *);
 
 #endif /* WORDS_H */
