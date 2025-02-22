@@ -148,6 +148,47 @@ prev_word(InputWord *word)
 }
 
 InputWord *
+next_sentence(InputWord *word)
+{
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        InputWord *current = word;
+        while (sentence_ending_word(current) == false)
+        {
+            current = next_word(current);
+        }
+        return next_word(current);
+    }
+}
+
+InputWord *
+prev_sentence(InputWord *word)
+{
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        InputWord *current = word;
+        while (sentence_ending_word(current) == false)
+        {
+            InputWord *prev = prev_word(current);
+            if (prev == NULL)
+            {
+                return current;
+            }
+            current = prev;
+        }
+        return next_word(current);
+    }
+}
+
+InputWord *
 first_word(InputWord *word)
 {
     if (word == NULL)
