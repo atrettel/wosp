@@ -67,6 +67,7 @@ main(void)
 {
     InputWord *list = NULL;
     read_input(&list);
+    print_word(list);
     free_word(list);
     return EXIT_SUCCESS;
 }

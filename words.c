@@ -184,6 +184,22 @@ last_word(InputWord *word)
 }
 
 void
+print_word(InputWord *list)
+{
+    InputWord *current = list;
+    while (current != NULL)
+    {
+        printf("%10zu: '%s' ('%s')", position_word(current), original_word(current), reduced_word(current));
+        if (sentence_ending_word(current) == true)
+        {
+            printf(" ...");
+        }
+        printf("\n");
+        current = next_word(current);
+    }
+}
+
+void
 free_word(InputWord *list)
 {
     InputWord *current = list;
