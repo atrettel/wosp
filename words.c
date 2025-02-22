@@ -97,6 +97,30 @@ position_word(InputWord *word)
     return word->position;
 }
 
+bool
+sentence_ending_word(InputWord *word)
+{
+    char *data = original_word(word);
+    size_t len = strlen(data);
+    InputWord *next = next_word(word);
+    if (next == NULL)
+    {
+        return is_ending_punctuation(data[len-1]);
+    }
+    else
+    {
+        char *next_data = original_word(next);
+        if ((is_ending_punctuation(data[len-1]) == true) && (isupper(next_data[0])))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
 InputWord *
 next_word(InputWord *word)
 {

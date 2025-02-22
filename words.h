@@ -23,8 +23,11 @@ char *reduced_word(InputWord *);
 unsigned long line_word(InputWord *);
 unsigned long column_word(InputWord *);
 unsigned long position_word(InputWord *);
+bool sentence_ending_word(InputWord *);
 InputWord *next_word(InputWord *);
 InputWord *prev_word(InputWord *);
+InputWord *next_sentence(InputWord *);
+InputWord *prev_sentence(InputWord *);
 void free_word(InputWord *);
 
 #endif /* WORDS_H */
