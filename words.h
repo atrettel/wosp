@@ -30,7 +30,7 @@ InputWord *next_sentence(InputWord *);
 InputWord *prev_sentence(InputWord *);
 InputWord *first_word(InputWord *);
 InputWord *last_word(InputWord *);
-void print_word(InputWord *);
-void free_word(InputWord *);
+void print_words(InputWord *);
+void free_words(InputWord *);
 
 #endif /* WORDS_H */

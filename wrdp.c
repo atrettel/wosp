@@ -6,7 +6,7 @@
 #include "words.h"
 
 void
-read_input(InputWord **list)
+read_input_words(InputWord **list)
 {
     unsigned long line = 1, column = 1, position = 1;
     int c = getchar();
@@ -66,8 +66,8 @@ int
 main(void)
 {
     InputWord *list = NULL;
-    read_input(&list);
-    print_word(list);
-    free_word(list);
+    read_input_words(&list);
+    print_words(list);
+    free_words(list);
     return EXIT_SUCCESS;
 }

@@ -184,7 +184,7 @@ last_word(InputWord *word)
 }
 
 void
-print_word(InputWord *list)
+print_words(InputWord *list)
 {
     InputWord *current = list;
     while (current != NULL)
@@ -200,7 +200,7 @@ print_word(InputWord *list)
 }
 
 void
-free_word(InputWord *list)
+free_words(InputWord *list)
 {
     InputWord *current = list;
     while (current != NULL)
