@@ -58,7 +58,6 @@ append_word(InputWord **list, char *data, unsigned long line,
     current->line = line;
     current->column = column;
     current->position = position;
-    current->ends_sentence = is_ending_punctuation(data[strlen(data)-1]);
     current->next = NULL;
     current->prev = *list;
     if ((*list) != NULL)
@@ -96,12 +95,6 @@ unsigned long
 position_word(InputWord *word)
 {
     return word->position;
-}
-
-bool
-sentence_ending_word(InputWord *word)
-{
-    return word->ends_sentence;
 }
 
 InputWord *

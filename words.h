@@ -12,7 +12,6 @@ typedef struct InputWord
     unsigned long line; /* Line and column for locating word in input */
     unsigned long column;
     unsigned long position; /* Position for order in doubly-linked list */
-    bool ends_sentence;
     struct InputWord *next;
     struct InputWord *prev;
 } InputWord;
@@ -24,7 +23,6 @@ char *reduced_word(InputWord *);
 unsigned long line_word(InputWord *);
 unsigned long column_word(InputWord *);
 unsigned long position_word(InputWord *);
-bool sentence_ending_word(InputWord *);
 InputWord *next_word(InputWord *);
 InputWord *prev_word(InputWord *);
 void free_word(InputWord *);
