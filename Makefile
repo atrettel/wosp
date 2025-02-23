@@ -1,10 +1,10 @@
 # Copyright (C) 2025 Andrew Trettel
 CC = gcc
-CFLAGS = -std=c99 -Wall -pedantic -Wfatal-errors -Werror -pedantic-errors -O2
+CFLAGS = -std=c99 -Wall -pedantic -Wfatal-errors -Werror -pedantic-errors -O0 -g
 
 project = wrdp
 
-OBJ = words.o
+OBJ = search.o words.o
 
 $(project): $(project).c $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
