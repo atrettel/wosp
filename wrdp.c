@@ -3,7 +3,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "search.h"
 #include "words.h"
+
+void
+build_trie(TrieNode **trie, InputWord *list)
+{
+    init_trie(trie);
+    InputWord *current = list;
+    while (current != NULL)
+    {
+        insert_trie(*trie, current, 0);
+        current = next_word(current);
+    }
+}
 
 void
 read_input_words(InputWord **list)
@@ -66,8 +79,14 @@ int
 main(void)
 {
     InputWord *list = NULL;
+    TrieNode *trie = NULL;
+
     read_input_words(&list);
+    build_trie(&trie, list);
+
     print_words(list);
+
+    free_trie(trie);
     free_words(list);
     return EXIT_SUCCESS;
 }
