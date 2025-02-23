@@ -33,6 +33,10 @@ reduce_word(char *original)
     }
     len++;
     char *reduced = (char *) malloc(len * sizeof(char));
+    if (reduced == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
     for (size_t i = 0; i < strlen(original); i++)
     {
         if (ispunct(original[i]) == false )
@@ -41,6 +45,7 @@ reduce_word(char *original)
             j++;
         }
     }
+    reduced[len-1] = '\0';
     return reduced;
 }
 
