@@ -2,6 +2,8 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
+#include <stdbool.h>
+
 #include "words.h"
 
 /* A continuous set of words matching a set of constraints */
@@ -40,6 +42,8 @@ typedef struct TrieEdge
 
 void init_trie(TrieNode **);
 void insert_trie(TrieNode *, InputWord *, size_t);
+bool has_word_trie(TrieNode *, char *);
+Match *match_trie(TrieNode *, char *);
 void free_trie(TrieNode *);
 
 #endif /* SEARCH_H */

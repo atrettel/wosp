@@ -1,5 +1,6 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -182,5 +183,23 @@ insert_trie(TrieNode *trie, InputWord *word, size_t i)
             insert_trie(current->node, word, i+1);
             trie->edges = current;
         }
+    }
+}
+
+void
+free_trie(TrieNode *trie)
+{
+    if (trie != NULL)
+    {
+        TrieEdge *edge = trie->edges;
+        while (edge != NULL)
+        {
+            TrieEdge *next = edge->next;
+            free_trie(edge->node);
+            free(edge);
+            edge = next;
+        }
+        free_matches(trie->match);
+        free(trie);
     }
 }
