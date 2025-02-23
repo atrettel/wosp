@@ -15,6 +15,7 @@ typedef struct Match
 void append_match(Match **, size_t);
 void set_match(Match *, size_t, InputWord *);
 size_t number_match(Match *);
+unsigned int number_matches(Match *);
 InputWord *word_match(Match *, size_t);
 Match *next_match(Match *);
 InputWord *start_match(Match *);
@@ -36,5 +37,9 @@ typedef struct TrieEdge
     struct TrieNode *node;
     struct TrieEdge *next;
 } TrieEdge;
+
+void init_trie(TrieNode **);
+void insert_trie(TrieNode *, InputWord *, size_t);
+void free_trie(TrieNode *);
 
 #endif /* SEARCH_H */
