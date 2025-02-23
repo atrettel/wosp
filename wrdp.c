@@ -43,7 +43,7 @@ read_input_words(InputWord **list)
             {
                 exit(EXIT_FAILURE);
             }
-            data[len+1] = '\0';
+            data[len-1] = '\0';
             append_word(list, data, line, column, position);
         }
         if ((isspace(c) == true) && (isblank(c) == false)) /* Line break? */
