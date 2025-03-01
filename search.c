@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "search.h"
+#include "words.h"
 
 void
 append_match(Match **list, size_t n)
