@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "config.h"
 #include "words.h"
 
 bool
@@ -41,7 +42,14 @@ reduce_word(char *original)
     {
         if (ispunct(original[i]) == false )
         {
-            reduced[j] = tolower(original[i]);
+            if (case_sensitive == true)
+            {
+                reduced[j] = original[i];
+            }
+            else
+            {
+                reduced[j] = tolower(original[i]);
+            }
             j++;
         }
     }
