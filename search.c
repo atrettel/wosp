@@ -77,7 +77,7 @@ next_match(Match *match)
 }
 
 InputWord *
-start_match(Match *match)
+start_word_match(Match *match)
 {
     InputWord *start = word_match(match, 0);
     size_t n = number_of_words_in_match(match);
@@ -93,7 +93,7 @@ start_match(Match *match)
 }
 
 InputWord *
-end_match(Match *match)
+end_word_match(Match *match)
 {
     InputWord *end = word_match(match, 0);
     size_t n = number_of_words_in_match(match);
@@ -108,15 +108,25 @@ end_match(Match *match)
     return end;
 }
 
+unsigned int
+start_position_match(Match *match)
+{
+    return position_word(start_word_match(match));
+}
+
+unsigned int
+end_position_match(Match *match)
+{
+    return position_word(end_word_match(match));
+}
+
 /* number_of_words_in_match returns the number of searched words.  This
  * function returns the total number of words, including those that the user
  * has not searched for in particular. */
 unsigned int
 width_match(Match *match)
 {
-    unsigned int start = position_word(start_match(match));
-    unsigned int end   = position_word(  end_match(match));
-    return end - start + 1;
+    return end_position_match(match) - start_position_match(match) + 1;
 }
 
 void
