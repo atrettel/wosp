@@ -48,7 +48,9 @@ typedef struct TrieEdge
 void init_trie(TrieNode **);
 void insert_trie(TrieNode *, InputWord *, size_t);
 bool has_word_trie(TrieNode *, char *);
-Match *match_trie(TrieNode *, char *);
+Match *match_trie(TrieNode *, char *, size_t);
 void free_trie(TrieNode *);
+
+void word_search(TrieNode *, char *, Match **);
 
 #endif /* SEARCH_H */

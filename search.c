@@ -207,6 +207,52 @@ insert_trie(TrieNode *trie, InputWord *word, size_t i)
     }
 }
 
+/* match_trie is the primitive operation that returns the same pointer as in
+ * the trie data structure.  word_search is a wrapper function that makes a
+ * copy of the matches and applies case sensitivity if needed. */
+Match *
+match_trie(TrieNode *trie, char *reduced, size_t i)
+{
+    char key = reduced[i];
+
+    Match *match = NULL;
+    if (i == strlen(reduced))
+    {
+        match = trie->match;
+    }
+    else
+    {
+        TrieEdge *edge = trie->edges;
+        while (edge != NULL)
+        {
+            if (edge->node->key == key)
+            {
+                match = match_trie(edge->node, reduced, i+1);
+                break;
+            }
+            else
+            {
+                edge = edge->next;
+            }
+        }
+    }
+    return match;
+}
+
+bool
+has_word_trie(TrieNode *trie, char *data)
+{
+    Match *match = match_trie(trie, data, 0);
+    if (match == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 void
 free_trie(TrieNode *trie)
 {
