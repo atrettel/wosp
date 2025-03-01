@@ -1,4 +1,4 @@
-# Word proximity search (WRDP)
+# `wosp` - Word search and print
 
 by Andrew Trettel
 
