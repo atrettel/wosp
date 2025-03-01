@@ -129,6 +129,24 @@ width_match(Match *match)
     return end_position_match(match) - start_position_match(match) + 1;
 }
 
+Match *
+copy_matches(Match *match)
+{
+    Match *copy = NULL;
+    Match *current = match;
+    while (current != NULL)
+    {
+        size_t n = number_of_words_in_match(current);
+        append_match(&copy, n);
+        for (size_t i = 0; i < n; i++)
+        {
+            set_match(copy, i, word_match(current, i));
+        }
+        current = next_match(current);
+    }
+    return copy;
+}
+
 void
 free_matches(Match *list)
 {
@@ -240,9 +258,9 @@ match_trie(TrieNode *trie, char *reduced, size_t i)
 }
 
 bool
-has_word_trie(TrieNode *trie, char *data)
+has_word_trie(TrieNode *trie, char *reduced)
 {
-    Match *match = match_trie(trie, data, 0);
+    Match *match = match_trie(trie, reduced, 0);
     if (match == NULL)
     {
         return false;
@@ -269,4 +287,14 @@ free_trie(TrieNode *trie)
         free_matches(trie->match);
         free(trie);
     }
+}
+
+Match *
+word_search(TrieNode *trie, char *original)
+{
+    char *reduced = reduce_word(original);
+    Match *match = match_trie(trie, reduced, 0);
+    Match *copy = copy_matches(match);
+    free(reduced);
+    return copy;
 }

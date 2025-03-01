@@ -27,6 +27,7 @@ InputWord *end_word_match(Match *);
 unsigned int start_position_match(Match *);
 unsigned int end_position_match(Match *);
 unsigned int width_match(Match *);
+Match *copy_matches(Match *);
 void free_matches(Match *);
 
 struct TrieNode;
@@ -51,6 +52,6 @@ bool has_word_trie(TrieNode *, char *);
 Match *match_trie(TrieNode *, char *, size_t);
 void free_trie(TrieNode *);
 
-void word_search(TrieNode *, char *, Match **);
+Match *word_search(TrieNode *, char *);
 
 #endif /* SEARCH_H */
