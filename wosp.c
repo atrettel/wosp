@@ -59,7 +59,7 @@ read_input_words(InputWord **list)
             append_word(list, data, line, column, position);
             position++;
         }
-        if ((isspace(c) == true) && (isblank(c) == false)) /* Line break? */
+        if (c == '\n' || c == '\r')
         {
             line++;
             column = 1;
