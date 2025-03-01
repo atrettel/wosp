@@ -22,6 +22,7 @@ void
 read_input_words(InputWord **list)
 {
     unsigned long line = 1, column = 1, position = 1;
+    int p = '\0';
     int c = getchar();
     while (c != EOF)
     {
@@ -45,6 +46,7 @@ read_input_words(InputWord **list)
                 exit(EXIT_FAILURE);
             }
             data[len-1] = (char) c;
+            p = c;
             c = getchar();
         }
         if (len > 0)
@@ -59,7 +61,7 @@ read_input_words(InputWord **list)
             append_word(list, data, line, column, position);
             position++;
         }
-        if (c == '\n' || c == '\r')
+        if ((p != '\r' && c == '\n') || c == '\r')
         {
             line++;
             column = 1;
@@ -68,6 +70,7 @@ read_input_words(InputWord **list)
         {
             column++;
         }
+        p = c;
         c = getchar();
     }
     *list = first_word(*list);
