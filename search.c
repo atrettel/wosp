@@ -1,6 +1,7 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -127,6 +128,27 @@ unsigned int
 width_match(Match *match)
 {
     return end_position_match(match) - start_position_match(match) + 1;
+}
+
+void
+print_matches(Match *match)
+{
+    printf("%u matches\n", length_of_match_list(match));
+    Match *current_match = match;
+    while (current_match != NULL)
+    {
+        InputWord *start_word = prev_sentence(start_word_match(current_match));
+        InputWord *end_word   = next_sentence(  end_word_match(current_match));
+        printf("%lu:", line_word(start_word));
+        InputWord *current_word = start_word;
+        while (current_word != end_word)
+        {
+            printf(" %s", original_word(current_word));
+            current_word = next_word(current_word);
+        }
+        printf("\n");
+        current_match = next_match(current_match);
+    }
 }
 
 Match *

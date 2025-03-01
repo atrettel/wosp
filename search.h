@@ -27,6 +27,7 @@ InputWord *end_word_match(Match *);
 unsigned int start_position_match(Match *);
 unsigned int end_position_match(Match *);
 unsigned int width_match(Match *);
+void print_matches(Match *);
 Match *copy_matches(Match *);
 void free_matches(Match *);
 

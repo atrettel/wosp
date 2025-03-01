@@ -87,6 +87,10 @@ main(void)
 
     print_words(list);
 
+    Match *match = word_search(trie, "sentence");
+    print_matches(match);
+    free_matches(match);
+
     free_trie(trie);
     free_words(list);
     return EXIT_SUCCESS;
