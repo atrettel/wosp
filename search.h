@@ -6,11 +6,13 @@
 
 #include "words.h"
 
-/* A continuous set of words matching a set of constraints */
+/* A match is a continuous set of words matching a set of constraints.  Each
+ * match is part of a linked list where subsequent matches are merely appended
+ * onto the list. */
 typedef struct Match
 {
-    size_t n; /* Number of matched words */
-    InputWord **words; /* Dynamically-allocated array of matching words */
+    size_t n; /* Number of searched words */
+    InputWord **words; /* Dynamically-allocated array of searched words */
     struct Match *next;
 } Match;
 
