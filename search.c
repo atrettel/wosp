@@ -108,6 +108,17 @@ end_match(Match *match)
     return end;
 }
 
+/* number_of_words_in_match returns the number of searched words.  This
+ * function returns the total number of words, including those that the user
+ * has not searched for in particular. */
+unsigned int
+width_match(Match *match)
+{
+    unsigned int start = position_word(start_match(match));
+    unsigned int end   = position_word(  end_match(match));
+    return end - start + 1;
+}
+
 void
 free_matches(Match *list)
 {

@@ -22,6 +22,7 @@ InputWord *word_match(Match *, size_t);
 Match *next_match(Match *);
 InputWord *start_match(Match *);
 InputWord *end_match(Match *);
+unsigned int width_match(Match *);
 void free_matches(Match *);
 
 struct TrieNode;
