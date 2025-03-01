@@ -31,7 +31,6 @@ read_input_words(InputWord **list)
         {
             len++;
             column++;
-            position++;
             if (data == NULL)
             {
                 data = (char *) malloc(len * sizeof(char));
@@ -58,17 +57,16 @@ read_input_words(InputWord **list)
             }
             data[len-1] = '\0';
             append_word(list, data, line, column, position);
+            position++;
         }
         if ((isspace(c) == true) && (isblank(c) == false)) /* Line break? */
         {
             line++;
             column = 1;
-            position++;
         }
         else if (isblank(c) == true)
         {
             column++;
-            position++;
         }
         c = getchar();
     }
