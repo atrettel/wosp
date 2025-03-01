@@ -32,18 +32,18 @@ void
 set_match(Match *match, size_t i, InputWord *word)
 {
     assert(i >= 0);
-    assert(i < number_match(match));
+    assert(i < number_of_words_in_match(match));
     match->words[i] = word;
 }
 
 size_t
-number_match(Match *match)
+number_of_words_in_match(Match *match)
 {
     return match->n;
 }
 
 unsigned int
-number_matches(Match *match)
+length_of_match_list(Match *match)
 {
     Match *current = match;
     unsigned int n = 0;
@@ -59,7 +59,7 @@ InputWord *
 word_match(Match *match, size_t i)
 {
     assert(i >= 0);
-    assert(i < number_match(match));
+    assert(i < number_of_words_in_match(match));
     return match->words[i];
 }
 
@@ -80,7 +80,7 @@ InputWord *
 start_match(Match *match)
 {
     InputWord *start = word_match(match, 0);
-    size_t n = number_match(match);
+    size_t n = number_of_words_in_match(match);
     for (size_t i = 1; i < n; i++)
     {
         InputWord *word = word_match(match, i);
@@ -96,7 +96,7 @@ InputWord *
 end_match(Match *match)
 {
     InputWord *end = word_match(match, 0);
-    size_t n = number_match(match);
+    size_t n = number_of_words_in_match(match);
     for (size_t i = 1; i < n; i++)
     {
         InputWord *word = word_match(match, i);
