@@ -1,6 +1,7 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #ifndef WORDS_H
 #define WORDS_H
+
 #include <stdbool.h>
 
 bool is_ending_punctuation(char);
@@ -16,6 +17,12 @@ typedef struct InputWord
     struct InputWord *prev;
 } InputWord;
 
+typedef enum LanguageElement
+{
+    WORD,
+    SENTENCE,
+} LanguageElement;
+
 char *reduce_word(char *);
 void append_word(InputWord **, char *, unsigned long, unsigned long, unsigned long);
 char *original_word(InputWord *);
@@ -30,6 +37,7 @@ InputWord *next_sentence(InputWord *);
 InputWord *prev_sentence(InputWord *);
 InputWord *first_word(InputWord *);
 InputWord *last_word(InputWord *);
+InputWord *advance_word(InputWord *, LanguageElement, int);
 void print_words(InputWord *);
 void free_words(InputWord *);
 

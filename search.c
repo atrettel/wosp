@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
 #include "search.h"
 
 void
@@ -137,8 +138,8 @@ print_matches(Match *match)
     Match *current_match = match;
     while (current_match != NULL)
     {
-        InputWord *start_word = prev_sentence(start_word_match(current_match));
-        InputWord *end_word   = next_sentence(  end_word_match(current_match));
+        InputWord *start_word = advance_word(start_word_match(current_match), print_element, -print_width);
+        InputWord *end_word   = advance_word(  end_word_match(current_match), print_element, +print_width);
         printf("%lu:", line_word(start_word));
         InputWord *current_word = start_word;
         while (current_word != end_word)

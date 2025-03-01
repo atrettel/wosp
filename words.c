@@ -1,9 +1,10 @@
 /* Copyright (C) 2025 Andrew Trettel */
+#include <assert.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "config.h"
 #include "words.h"
@@ -239,6 +240,48 @@ last_word(InputWord *word)
         }
         return current;
     }
+}
+
+/* This is a wrapper function to handle the ends of the input word list safely.
+ * The primitive operations can return NULL values.  This is necessary to check
+ * for the ends of the list.  This function cannot return NULL values. */
+InputWord *
+advance_word(InputWord *word, LanguageElement element, int n)
+{
+    InputWord *current = word;
+    if (n != 0)
+    {
+        InputWord *(*advance)(InputWord *) = NULL;
+        if (element == WORD && n > 0)
+        {
+            advance = next_word;
+        }
+        else if (element == WORD && n < 0)
+        {
+            advance = prev_word;
+        }
+        else if (element == SENTENCE && n > 0)
+        {
+            advance = next_sentence;
+        }
+        else if (element == SENTENCE && n < 0)
+        {
+            advance = prev_sentence;
+        }
+        assert(advance != NULL);
+
+        size_t m = abs(n);
+        current = word;
+        for (size_t i = 0; i < m; i++)
+        {
+            InputWord *next = advance(current);
+            if (next != NULL)
+            {
+                current = next;
+            }
+        }
+    }
+    return current;
 }
 
 void
