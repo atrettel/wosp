@@ -188,6 +188,10 @@ prev_sentence(InputWord *word)
     else
     {
         InputWord *current = word;
+        if (sentence_ending_word(current) == true)
+        {
+            current = prev_word(current);
+        }
         while (sentence_ending_word(current) == false)
         {
             InputWord *prev = prev_word(current);
