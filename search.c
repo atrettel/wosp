@@ -323,11 +323,8 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
     Match *outer_match = first_match;
     while (outer_match != NULL)
     {
-        InputWord *outer_start_word = advance_word(start_word_match(outer_match), element, start);
-        InputWord   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
-        unsigned long outer_start = position_word(outer_start_word);
-        unsigned long   outer_end = position_word(  outer_end_word);
-
+        unsigned long outer_start = position_word(advance_word(start_word_match(outer_match), element, start));
+        unsigned long   outer_end = position_word(advance_word(  end_word_match(outer_match), element,   end));
         Match *inner_match = second_match;
         while (inner_match != NULL)
         {
@@ -338,9 +335,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
                 /* We have a match.  Let's add it. */
                 size_t n_outer = number_of_words_in_match(outer_match);
                 size_t n_inner = number_of_words_in_match(inner_match);
-                size_t n = n_outer + n_inner;
-
-                append_match(&match, n);
+                append_match(&match, n_outer + n_inner);
                 for (size_t i = 0; i < n_outer; i++)
                 {
                     set_match(match, i, word_match(outer_match, i));
@@ -354,6 +349,5 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
         }
         outer_match = next_match(outer_match);
     }
-
     return match;
 }
