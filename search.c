@@ -301,6 +301,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
     {
         if (c == extended_wildcard_character)
         {
+            assert((i + 1 < strlen(original)));
             size_t n = (size_t) (original[i+1] - '0');
             assert(n > 0);
             assert(n < 10);
