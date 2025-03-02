@@ -59,7 +59,6 @@ op_near(Match *first_match, Match *second_match, int n)
     return proximity_search(first_match, second_match, WORD, -n, +n);
 }
 
-
 Match *
 op_adj(Match *first_match, Match *second_match, int n)
 {
