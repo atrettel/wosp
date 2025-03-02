@@ -23,12 +23,12 @@ is_ending_punctuation(char c)
 }
 
 char *
-reduce_word(char *original)
+reduce_word(char *original, WordOrigin origin)
 {
     size_t len = 0, j = 0;
     for (size_t i = 0; i < strlen(original); i++)
     {
-        if (ispunct(original[i]) == false )
+        if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == QUERY)))
         {
             len++;
         }
@@ -41,7 +41,7 @@ reduce_word(char *original)
     }
     for (size_t i = 0; i < strlen(original); i++)
     {
-        if (ispunct(original[i]) == false )
+        if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == QUERY)))
         {
             if (case_sensitive == true)
             {
@@ -68,7 +68,7 @@ append_word(InputWord **list, char *data, unsigned long line,
         exit(EXIT_FAILURE);
     }
     current->original = data;
-    current->reduced = reduce_word(data);
+    current->reduced = reduce_word(data, SOURCE);
     current->line = line;
     current->column = column;
     current->position = position;

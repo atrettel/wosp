@@ -20,10 +20,16 @@ typedef struct InputWord
 typedef enum LanguageElement
 {
     WORD,
-    SENTENCE,
+    SENTENCE
 } LanguageElement;
 
-char *reduce_word(char *);
+typedef enum WordOrigin
+{
+    SOURCE,
+    QUERY
+} WordOrigin;
+
+char *reduce_word(char *, WordOrigin);
 void append_word(InputWord **, char *, unsigned long, unsigned long, unsigned long);
 char *original_word(InputWord *);
 char *reduced_word(InputWord *);

@@ -19,7 +19,7 @@ build_trie(TrieNode **trie, InputWord *list)
 }
 
 void
-read_input_words(InputWord **list)
+read_source_words(InputWord **list)
 {
     unsigned long line = 1, column = 1, position = 1;
     int p = '\0';
@@ -82,13 +82,10 @@ main(void)
     InputWord *list = NULL;
     TrieNode *trie = NULL;
 
-    read_input_words(&list);
+    read_source_words(&list);
     build_trie(&trie, list);
 
     print_words(list);
-
-    bool has_word = has_word_trie(trie, "mucro");
-    printf("%d\n", (int) has_word);
 
     Match *match = wildcard_search(trie, "m?cro");
     print_matches(match);

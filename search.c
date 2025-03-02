@@ -279,7 +279,7 @@ backtrack_trie(TrieNode *trie, char *reduced, size_t i, Match **match)
         TrieEdge *edge = trie->edges;
         while (edge != NULL)
         {
-            if ((key == '?') || (edge->node->key == key))
+            if ((key == wildcard_character) || (edge->node->key == key))
             {
                 backtrack_trie(edge->node, reduced, i+1, match);
             }
@@ -307,9 +307,11 @@ free_trie(TrieNode *trie)
 }
 
 Match *
-wildcard_search(TrieNode *trie, char *reduced)
+wildcard_search(TrieNode *trie, char *original)
 {
+    char *reduced = reduce_word(original, QUERY);
     Match *match = NULL;
     backtrack_trie(trie, reduced, 0, &match);
+    free(reduced);
     return match;
 }
