@@ -3,6 +3,7 @@
 #define SEARCH_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #include "words.h"
 

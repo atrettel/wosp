@@ -4,7 +4,7 @@ CFLAGS = -std=c99 -Wall -pedantic -Wfatal-errors -Werror -pedantic-errors -O0 -g
 
 project = wosp
 
-OBJ = search.o words.o
+OBJ = operations.o search.o words.o
 
 $(project): $(project).c $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
