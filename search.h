@@ -28,7 +28,6 @@ unsigned int start_position_match(Match *);
 unsigned int end_position_match(Match *);
 unsigned int width_match(Match *);
 void print_matches(Match *);
-Match *copy_matches(Match *);
 void concatenate_matches(Match *, Match **);
 void free_matches(Match *);
 
@@ -50,12 +49,10 @@ typedef struct TrieEdge
 
 void init_trie(TrieNode **);
 void insert_trie(TrieNode *, InputWord *, size_t);
-Match *match_trie(TrieNode *, char *, size_t);
 bool has_word_trie(TrieNode *, char *);
 void backtrack_trie(TrieNode*, char *, size_t, Match **);
 void free_trie(TrieNode *);
 
-Match *word_search(TrieNode *, char *);
 Match *wildcard_search(TrieNode *, char *);
 
 #endif /* SEARCH_H */

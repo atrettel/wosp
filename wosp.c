@@ -87,7 +87,10 @@ main(void)
 
     print_words(list);
 
-    Match *match = word_search(trie, "sentence");
+    bool has_word = has_word_trie(trie, "mucro");
+    printf("%d\n", (int) has_word);
+
+    Match *match = wildcard_search(trie, "m?cro");
     print_matches(match);
     free_matches(match);
 

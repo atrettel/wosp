@@ -153,24 +153,6 @@ print_matches(Match *match)
     }
 }
 
-Match *
-copy_matches(Match *match)
-{
-    Match *copy = NULL;
-    Match *current = match;
-    while (current != NULL)
-    {
-        size_t n = number_of_words_in_match(current);
-        append_match(&copy, n);
-        for (size_t i = 0; i < n; i++)
-        {
-            set_match(copy, i, word_match(current, i));
-        }
-        current = next_match(current);
-    }
-    return copy;
-}
-
 void
 concatenate_matches(Match *src, Match **dest)
 {
@@ -265,50 +247,22 @@ insert_trie(TrieNode *trie, InputWord *word, size_t i)
     }
 }
 
-/* match_trie is the primitive operation that returns the same pointer as in
- * the trie data structure.  word_search is a wrapper function that makes a
- * copy of the matches and applies case sensitivity if needed. */
-Match *
-match_trie(TrieNode *trie, char *reduced, size_t i)
-{
-    char key = reduced[i];
-
-    Match *match = NULL;
-    if (i == strlen(reduced))
-    {
-        match = trie->match;
-    }
-    else
-    {
-        TrieEdge *edge = trie->edges;
-        while (edge != NULL)
-        {
-            if (edge->node->key == key)
-            {
-                match = match_trie(edge->node, reduced, i+1);
-                break;
-            }
-            else
-            {
-                edge = edge->next;
-            }
-        }
-    }
-    return match;
-}
-
 bool
 has_word_trie(TrieNode *trie, char *reduced)
 {
-    Match *match = match_trie(trie, reduced, 0);
+    Match *match = NULL;
+    backtrack_trie(trie, reduced, 0, &match);
+    bool result = false;
     if (match == NULL)
     {
-        return false;
+        result = false;
     }
     else
     {
-        return true;
+        result = true;
     }
+    free_matches(match);
+    return result;
 }
 
 void
@@ -350,16 +304,6 @@ free_trie(TrieNode *trie)
         free_matches(trie->match);
         free(trie);
     }
-}
-
-Match *
-word_search(TrieNode *trie, char *original)
-{
-    char *reduced = reduce_word(original);
-    Match *match = match_trie(trie, reduced, 0);
-    Match *copy = copy_matches(match);
-    free(reduced);
-    return copy;
 }
 
 Match *
