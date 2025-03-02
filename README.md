@@ -1,4 +1,4 @@
-# `wosp` - Word search and print
+# `wosp` - Word-oriented search and print
 
 by Andrew Trettel
 
