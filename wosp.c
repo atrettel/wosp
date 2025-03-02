@@ -87,7 +87,11 @@ main(void)
 
     print_words(list);
 
-    Match *match = wildcard_search(trie, "m?cro");
+    Match *first_match = wildcard_search(trie, "laws");
+    Match *second_match = wildcard_search(trie, "assent");
+    Match *match = proximity_search(first_match, second_match, CLAUSE, -1, +1);
+    free_matches(first_match);
+    free_matches(second_match);
     print_matches(match);
     free_matches(match);
 

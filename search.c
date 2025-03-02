@@ -315,3 +315,45 @@ wildcard_search(TrieNode *trie, char *original)
     free(reduced);
     return match;
 }
+
+Match *
+proximity_search(Match *first_match, Match *second_match, LanguageElement element, int start, int end)
+{
+    Match *match = NULL;
+    Match *outer_match = first_match;
+    while (outer_match != NULL)
+    {
+        InputWord *outer_start_word = advance_word(start_word_match(outer_match), element, start);
+        InputWord   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
+        unsigned long outer_start = position_word(outer_start_word);
+        unsigned long   outer_end = position_word(  outer_end_word);
+
+        Match *inner_match = second_match;
+        while (inner_match != NULL)
+        {
+            unsigned long inner_start = position_word(start_word_match(inner_match));
+            unsigned long   inner_end = position_word(  end_word_match(inner_match));
+            if ((inner_start >= outer_start) && (inner_end <= outer_end))
+            {
+                /* We have a match.  Let's add it. */
+                size_t n_outer = number_of_words_in_match(outer_match);
+                size_t n_inner = number_of_words_in_match(inner_match);
+                size_t n = n_outer + n_inner;
+
+                append_match(&match, n);
+                for (size_t i = 0; i < n_outer; i++)
+                {
+                    set_match(match, i, word_match(outer_match, i));
+                }
+                for (size_t i = 0; i < n_inner; i++)
+                {
+                    set_match(match, n_outer + i, word_match(inner_match, i));
+                }
+            }
+            inner_match = next_match(inner_match);
+        }
+        outer_match = next_match(outer_match);
+    }
+
+    return match;
+}

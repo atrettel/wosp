@@ -54,5 +54,6 @@ void backtrack_trie(TrieNode*, char *, size_t, Match **);
 void free_trie(TrieNode *);
 
 Match *wildcard_search(TrieNode *, char *);
+Match *proximity_search(Match *, Match *, LanguageElement, int, int);
 
 #endif /* SEARCH_H */
