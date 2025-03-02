@@ -172,6 +172,22 @@ copy_matches(Match *match)
 }
 
 void
+concatenate_matches(Match *src, Match **dest)
+{
+    Match *current = src;
+    while (current != NULL)
+    {
+        size_t n = number_of_words_in_match(current);
+        append_match(dest, n);
+        for (size_t i = 0; i < n; i++)
+        {
+            set_match(*dest, i, word_match(current, i));
+        }
+        current = next_match(current);
+    }
+}
+
+void
 free_matches(Match *list)
 {
     Match *current = list;
@@ -296,6 +312,29 @@ has_word_trie(TrieNode *trie, char *reduced)
 }
 
 void
+backtrack_trie(TrieNode *trie, char *reduced, size_t i, Match **match)
+{
+    char key = reduced[i];
+
+    if (i == strlen(reduced))
+    {
+        concatenate_matches(trie->match, match);
+    }
+    else
+    {
+        TrieEdge *edge = trie->edges;
+        while (edge != NULL)
+        {
+            if ((key == '?') || (edge->node->key == key))
+            {
+                backtrack_trie(edge->node, reduced, i+1, match);
+            }
+            edge = edge->next;
+        }
+    }
+}
+
+void
 free_trie(TrieNode *trie)
 {
     if (trie != NULL)
@@ -321,4 +360,12 @@ word_search(TrieNode *trie, char *original)
     Match *copy = copy_matches(match);
     free(reduced);
     return copy;
+}
+
+Match *
+wildcard_search(TrieNode *trie, char *reduced)
+{
+    Match *match = NULL;
+    backtrack_trie(trie, reduced, 0, &match);
+    return match;
 }
