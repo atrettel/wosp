@@ -22,6 +22,19 @@ is_ending_punctuation(char c)
     }
 }
 
+bool
+is_clause_punctuation(char c)
+{
+    if (c == ',' || c == ';' || c == ':' || is_ending_punctuation(c))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 char *
 reduce_word(char *original, WordOrigin origin)
 {
@@ -112,6 +125,21 @@ position_word(InputWord *word)
 }
 
 bool
+clause_ending_word(InputWord *word)
+{
+    if (sentence_ending_word(word) == true)
+    {
+        return true;
+    }
+    else
+    {
+        char *data = original_word(word);
+        size_t len = strlen(data);
+        return is_clause_punctuation(data[len-1]);
+    }
+}
+
+bool
 sentence_ending_word(InputWord *word)
 {
     char *data = original_word(word);
@@ -158,6 +186,51 @@ prev_word(InputWord *word)
     else
     {
         return word->prev;
+    }
+}
+
+InputWord *
+next_clause(InputWord *word)
+{
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        InputWord *current = word;
+        while (clause_ending_word(current) == false)
+        {
+            current = next_word(current);
+        }
+        return next_word(current);
+    }
+}
+
+InputWord *
+prev_clause(InputWord *word)
+{
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        InputWord *current = word;
+        if (clause_ending_word(current) == true)
+        {
+            current = prev_word(current);
+        }
+        while (clause_ending_word(current) == false)
+        {
+            InputWord *prev = prev_word(current);
+            if (prev == NULL)
+            {
+                return current;
+            }
+            current = prev;
+        }
+        return next_word(current);
     }
 }
 
@@ -259,6 +332,14 @@ advance_word(InputWord *word, LanguageElement element, int n)
         else if (element == WORD && n < 0)
         {
             advance = prev_word;
+        }
+        else if (element == CLAUSE && n > 0)
+        {
+            advance = next_clause;
+        }
+        else if (element == CLAUSE && n < 0)
+        {
+            advance = prev_clause;
         }
         else if (element == SENTENCE && n > 0)
         {

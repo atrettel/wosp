@@ -20,6 +20,7 @@ typedef struct InputWord
 typedef enum LanguageElement
 {
     WORD,
+    CLAUSE,
     SENTENCE
 } LanguageElement;
 
@@ -36,9 +37,12 @@ char *reduced_word(InputWord *);
 unsigned long line_word(InputWord *);
 unsigned long column_word(InputWord *);
 unsigned long position_word(InputWord *);
+bool clause_ending_word(InputWord *);
 bool sentence_ending_word(InputWord *);
 InputWord *next_word(InputWord *);
 InputWord *prev_word(InputWord *);
+InputWord *next_clause(InputWord *);
+InputWord *prev_clause(InputWord *);
 InputWord *next_sentence(InputWord *);
 InputWord *prev_sentence(InputWord *);
 InputWord *first_word(InputWord *);
