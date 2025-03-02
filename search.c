@@ -269,7 +269,6 @@ void
 backtrack_trie(TrieNode *trie, char *reduced, size_t i, Match **match)
 {
     char key = reduced[i];
-
     if (i == strlen(reduced))
     {
         concatenate_matches(trie->match, match);
@@ -284,6 +283,55 @@ backtrack_trie(TrieNode *trie, char *reduced, size_t i, Match **match)
                 backtrack_trie(edge->node, reduced, i+1, match);
             }
             edge = edge->next;
+        }
+    }
+}
+
+void
+expand_word(TrieNode *trie, char *original, size_t i, Match **match)
+{
+    char c = original[i];
+    if (i == strlen(original))
+    {
+        char *reduced = reduce_word(original, QUERY);
+        backtrack_trie(trie, reduced, 0, match);
+        free(reduced);
+    }
+    else
+    {
+        if (c == extended_wildcard_character)
+        {
+            size_t n = (size_t) (original[i+1] - '0');
+            assert(n > 0);
+            assert(n < 10);
+            for (size_t j = 0; j <= n; j++)
+            {
+                size_t len = j + strlen(original) - 1;
+                char *modified = malloc(len * sizeof(char));
+                if (modified == NULL)
+                {
+                    exit(EXIT_FAILURE);
+                }
+                for (size_t k = 0; k < i; k++)
+                {
+                    modified[k] = original[k];
+                }
+                for (size_t k = 0; k < j; k++)
+                {
+                    modified[i+k] = wildcard_character;
+                }
+                for (size_t k = 0; k < (len - i - j); k++)
+                {
+                    modified[i+j+k] = original[i+k+2];
+                }
+                modified[len-1] = '\0';
+                expand_word(trie, modified, i, match);
+                free(modified);
+            }
+        }
+        else
+        {
+            expand_word(trie, original, i+1, match);
         }
     }
 }
@@ -309,10 +357,8 @@ free_trie(TrieNode *trie)
 Match *
 wildcard_search(TrieNode *trie, char *original)
 {
-    char *reduced = reduce_word(original, QUERY);
     Match *match = NULL;
-    backtrack_trie(trie, reduced, 0, &match);
-    free(reduced);
+    expand_word(trie, original, 0, &match);
     return match;
 }
 

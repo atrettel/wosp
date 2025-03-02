@@ -9,6 +9,7 @@
 /* Search options */
 static const bool case_sensitive = false;
 static const char wildcard_character = '?';
+static const char extended_wildcard_character = '$';
 
 /* Output options */
 static const LanguageElement print_element = CLAUSE;
