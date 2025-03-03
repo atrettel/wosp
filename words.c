@@ -374,6 +374,17 @@ advance_word(InputWord *word, LanguageElement element, int n)
             {
                 current = next;
             }
+            else
+            {
+                if (n > 0)
+                {
+                    current = last_word(current);
+                }
+                else
+                {
+                    current = first_word(current);
+                }
+            }
         }
     }
     return current;

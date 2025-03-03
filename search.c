@@ -374,8 +374,23 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
     Match *outer_match = first_match;
     while (outer_match != NULL)
     {
-        unsigned long outer_start = position_word(advance_word(start_word_match(outer_match), element, start));
-        unsigned long   outer_end = position_word(advance_word(  end_word_match(outer_match), element,   end));
+        InputWord *outer_start_word = advance_word(start_word_match(outer_match), element, start);
+        InputWord   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
+        unsigned long outer_start = position_word(outer_start_word);
+        unsigned long   outer_end =   position_word(outer_end_word);
+
+        if (next_word(outer_end_word) == NULL)
+        {
+            outer_end++;
+        }
+
+        /* Clauses and sentences return the start of the next element.
+         * Decrement to include only the desired element. */
+        if ((element != WORD))
+        {
+            outer_end--;
+        }
+
         Match *inner_match = second_match;
         while (inner_match != NULL)
         {
