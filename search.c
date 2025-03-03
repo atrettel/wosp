@@ -141,6 +141,10 @@ print_matches(Match *match)
     {
         InputWord *start_word = advance_word(start_word_match(current_match), print_element, -print_width);
         InputWord *end_word   = advance_word(  end_word_match(current_match), print_element, +print_width);
+        if (next_word(end_word) == NULL)
+        {
+            end_word = NULL;
+        }
         printf("%lu:", line_word(start_word));
         InputWord *current_word = start_word;
         while (current_word != end_word)
