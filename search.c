@@ -379,14 +379,9 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
         unsigned long outer_start = position_word(outer_start_word);
         unsigned long   outer_end =   position_word(outer_end_word);
 
-        if (next_word(outer_end_word) == NULL)
-        {
-            outer_end++;
-        }
-
         /* Clauses and sentences return the start of the next element.
          * Decrement to include only the desired element. */
-        if ((element != WORD))
+        if ((element != WORD) && (next_word(outer_end_word) != NULL))
         {
             outer_end--;
         }
