@@ -127,7 +127,29 @@ position_word(InputWord *word)
 bool
 clause_ending_word(InputWord *word)
 {
-    if (sentence_ending_word(word) == true)
+    if (word == NULL)
+    {
+        return true;
+    }
+    else
+    {
+        if (sentence_ending_word(word) == true)
+        {
+            return true;
+        }
+        else
+        {
+            char *data = original_word(word);
+            size_t len = strlen(data);
+            return is_clause_punctuation(data[len-1]);
+        }
+    }
+}
+
+bool
+sentence_ending_word(InputWord *word)
+{
+    if (word == NULL)
     {
         return true;
     }
@@ -135,30 +157,22 @@ clause_ending_word(InputWord *word)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
-        return is_clause_punctuation(data[len-1]);
-    }
-}
-
-bool
-sentence_ending_word(InputWord *word)
-{
-    char *data = original_word(word);
-    size_t len = strlen(data);
-    InputWord *next = next_word(word);
-    if (next == NULL)
-    {
-        return is_ending_punctuation(data[len-1]);
-    }
-    else
-    {
-        char *next_data = original_word(next);
-        if ((is_ending_punctuation(data[len-1]) == true) && (isupper(next_data[0])))
+        InputWord *next = next_word(word);
+        if (next == NULL)
         {
-            return true;
+            return is_ending_punctuation(data[len-1]);
         }
         else
         {
-            return false;
+            char *next_data = original_word(next);
+            if ((is_ending_punctuation(data[len-1]) == true) && (isupper(next_data[0])))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
