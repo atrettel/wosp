@@ -3,17 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "operations.h"
 #include "search.h"
 #include "words.h"
 
 void
-build_trie(TrieNode **trie, InputWord *list)
+add_words_to_trie(TrieNode *trie, InputWord *list)
 {
-    init_trie(trie);
     InputWord *current = list;
     while (current != NULL)
     {
-        insert_trie(*trie, current, 0);
+        insert_trie(trie, current, 0);
         current = next_word(current);
     }
 }
@@ -82,16 +82,16 @@ main(void)
     InputWord *list = NULL;
     TrieNode *trie = NULL;
 
+    init_trie(&trie);
     read_source_words(&list);
-    build_trie(&trie, list);
+    add_words_to_trie(trie, list);
 
-    print_words(list);
-
-    Match *first_match = wildcard_search(trie, "laws");
+    Match *first_match = wildcard_search(trie, "law$1");
     Match *second_match = wildcard_search(trie, "assent");
-    Match *match = proximity_search(first_match, second_match, CLAUSE, -1, +1);
+    Match *match = op_with(first_match, second_match, 1);
     free_matches(first_match);
     free_matches(second_match);
+
     print_matches(match);
     free_matches(match);
 
