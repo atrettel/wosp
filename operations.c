@@ -76,22 +76,7 @@ count_matches_by_document(Match *first_match, Match *second_match,
 }
 
 Match *
-op_or(Match *first_match, Match *second_match)
-{
-    Match *match = NULL;
-    concatenate_matches(first_match, &match);
-    concatenate_matches(second_match, &match);
-    return match;
-}
-
-bool
-cond_and(unsigned int first, unsigned int second)
-{
-    return ((first > 0) && (second > 0));
-}
-
-Match *
-op_and(Match *first_match, Match *second_match)
+op_boolean(Match *first_match, Match *second_match, bool condition(unsigned int, unsigned int))
 {
     Match *match = NULL;
 
@@ -108,7 +93,7 @@ op_and(Match *first_match, Match *second_match)
         InputWord *document = document_match(current);
         for (size_t i = 0; i < n_documents; i++)
         {
-            if ((document == documents[i]) && (cond_and(first_counts[i], second_counts[i]) == true))
+            if ((document == documents[i]) && (condition(first_counts[i], second_counts[i]) == true))
             {
                 append_match(current, &match);
                 break;
@@ -135,6 +120,27 @@ op_near(Match *first_match, Match *second_match, int n)
 {
     assert(n > 0);
     return proximity_search(first_match, second_match, WORD, -n, +n);
+}
+
+Match *
+op_or(Match *first_match, Match *second_match)
+{
+    Match *match = NULL;
+    concatenate_matches(first_match, &match);
+    concatenate_matches(second_match, &match);
+    return match;
+}
+
+bool
+cond_and(unsigned int first, unsigned int second)
+{
+    return ((first > 0) && (second > 0));
+}
+
+Match *
+op_and(Match *first_match, Match *second_match)
+{
+    return op_boolean(first_match, second_match, cond_and);
 }
 
 Match *
