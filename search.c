@@ -12,6 +12,7 @@
 void
 append_match(Match **list, size_t n)
 {
+    assert(n > 0);
     Match *current = (Match *) malloc(sizeof(Match));
     if (current == NULL)
     {
@@ -64,6 +65,13 @@ word_match(Match *match, size_t i)
     assert(i >= 0);
     assert(i < number_of_words_in_match(match));
     return match->words[i];
+}
+
+InputWord *
+document_match(Match *match)
+{
+    assert(match->words[0] != NULL);
+    return first_word(match->words[0]);
 }
 
 Match *
@@ -389,21 +397,24 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
         Match *inner_match = second_match;
         while (inner_match != NULL)
         {
-            unsigned long inner_start = position_word(start_word_match(inner_match));
-            unsigned long   inner_end = position_word(  end_word_match(inner_match));
-            if ((inner_start >= outer_start) && (inner_end <= outer_end))
+            if (document_match(outer_match) == document_match(inner_match))
             {
-                /* We have a match.  Let's add it. */
-                size_t n_outer = number_of_words_in_match(outer_match);
-                size_t n_inner = number_of_words_in_match(inner_match);
-                append_match(&match, n_outer + n_inner);
-                for (size_t i = 0; i < n_outer; i++)
+                unsigned long inner_start = position_word(start_word_match(inner_match));
+                unsigned long   inner_end = position_word(  end_word_match(inner_match));
+                if ((inner_start >= outer_start) && (inner_end <= outer_end))
                 {
-                    set_match(match, i, word_match(outer_match, i));
-                }
-                for (size_t i = 0; i < n_inner; i++)
-                {
-                    set_match(match, n_outer + i, word_match(inner_match, i));
+                    /* We have a match.  Let's add it. */
+                    size_t n_outer = number_of_words_in_match(outer_match);
+                    size_t n_inner = number_of_words_in_match(inner_match);
+                    append_match(&match, n_outer + n_inner);
+                    for (size_t i = 0; i < n_outer; i++)
+                    {
+                        set_match(match, i, word_match(outer_match, i));
+                    }
+                    for (size_t i = 0; i < n_inner; i++)
+                    {
+                        set_match(match, n_outer + i, word_match(inner_match, i));
+                    }
                 }
             }
             inner_match = next_match(inner_match);

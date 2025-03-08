@@ -22,6 +22,7 @@ void set_match(Match *, size_t, InputWord *);
 size_t number_of_words_in_match(Match *);
 unsigned int length_of_match_list(Match *);
 InputWord *word_match(Match *, size_t);
+InputWord *document_match(Match *);
 Match *next_match(Match *);
 InputWord *start_word_match(Match *);
 InputWord *end_word_match(Match *);
