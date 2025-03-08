@@ -104,7 +104,7 @@ op_and(Match *first_match, Match *second_match)
             if ((document == documents[i]) &&  (first_counts[i] > 0)
                                            && (second_counts[i] > 0))
             {
-                copy_match(current, &match);
+                append_match(current, &match);
                 break;
             }
         }

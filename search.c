@@ -10,7 +10,7 @@
 #include "words.h"
 
 void
-append_match(Match **list, size_t n)
+insert_match(Match **list, size_t n)
 {
     assert(n > 0);
     Match *current = (Match *) malloc(sizeof(Match));
@@ -42,10 +42,10 @@ set_match(Match *match, size_t i, InputWord *word)
 
 /* This only copies current match.  It does not go down the list. */
 void
-copy_match(Match *current, Match **dest)
+append_match(Match *current, Match **dest)
 {
     size_t n = number_of_words_in_match(current);
-    append_match(dest, n);
+    insert_match(dest, n);
     for (size_t i = 0; i < n; i++)
     {
         set_match(*dest, i, word_match(current, i));
@@ -183,7 +183,7 @@ concatenate_matches(Match *src, Match **dest)
     Match *current = src;
     while (current != NULL)
     {
-        copy_match(current, dest);
+        append_match(current, dest);
         current = next_match(current);
     }
 }
@@ -224,7 +224,7 @@ insert_trie(TrieNode *trie, InputWord *word, size_t i)
     /* If we are using the entire word, stop and add the match to the list. */
     if (i == strlen(reduced))
     {
-        append_match(&(trie->match), 1);
+        insert_match(&(trie->match), 1);
         set_match(trie->match, 0, word);
     }
     else
@@ -413,7 +413,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
                     /* We have a match.  Let's add it. */
                     size_t n_outer = number_of_words_in_match(outer_match);
                     size_t n_inner = number_of_words_in_match(inner_match);
-                    append_match(&match, n_outer + n_inner);
+                    insert_match(&match, n_outer + n_inner);
                     for (size_t i = 0; i < n_outer; i++)
                     {
                         set_match(match, i, word_match(outer_match, i));
