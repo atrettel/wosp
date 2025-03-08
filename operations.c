@@ -1,5 +1,6 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 #include "operations.h"
@@ -83,6 +84,12 @@ op_or(Match *first_match, Match *second_match)
     return match;
 }
 
+bool
+cond_and(unsigned int first, unsigned int second)
+{
+    return ((first > 0) && (second > 0));
+}
+
 Match *
 op_and(Match *first_match, Match *second_match)
 {
@@ -101,8 +108,7 @@ op_and(Match *first_match, Match *second_match)
         InputWord *document = document_match(current);
         for (size_t i = 0; i < n_documents; i++)
         {
-            if ((document == documents[i]) &&  (first_counts[i] > 0)
-                                           && (second_counts[i] > 0))
+            if ((document == documents[i]) && (cond_and(first_counts[i], second_counts[i]) == true))
             {
                 append_match(current, &match);
                 break;
