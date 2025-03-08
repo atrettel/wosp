@@ -19,6 +19,7 @@ typedef struct Match
 
 void append_match(Match **, size_t);
 void set_match(Match *, size_t, InputWord *);
+void copy_match(Match *, Match **);
 size_t number_of_words_in_match(Match *);
 unsigned int length_of_match_list(Match *);
 InputWord *word_match(Match *, size_t);

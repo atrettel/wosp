@@ -104,12 +104,7 @@ op_and(Match *first_match, Match *second_match)
             if ((document == documents[i]) &&  (first_counts[i] > 0)
                                            && (second_counts[i] > 0))
             {
-                size_t n = number_of_words_in_match(current);
-                append_match(&match, n);
-                for (size_t i = 0; i < n; i++)
-                {
-                    set_match(match, i, word_match(current, i));
-                }
+                copy_match(current, &match);
                 break;
             }
         }

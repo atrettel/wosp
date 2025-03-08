@@ -40,6 +40,18 @@ set_match(Match *match, size_t i, InputWord *word)
     match->words[i] = word;
 }
 
+/* This only copies current match.  It does not go down the list. */
+void
+copy_match(Match *current, Match **dest)
+{
+    size_t n = number_of_words_in_match(current);
+    append_match(dest, n);
+    for (size_t i = 0; i < n; i++)
+    {
+        set_match(*dest, i, word_match(current, i));
+    }
+}
+
 size_t
 number_of_words_in_match(Match *match)
 {
@@ -171,12 +183,7 @@ concatenate_matches(Match *src, Match **dest)
     Match *current = src;
     while (current != NULL)
     {
-        size_t n = number_of_words_in_match(current);
-        append_match(dest, n);
-        for (size_t i = 0; i < n; i++)
-        {
-            set_match(*dest, i, word_match(current, i));
-        }
+        copy_match(current, dest);
         current = next_match(current);
     }
 }
