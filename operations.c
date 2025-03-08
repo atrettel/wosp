@@ -143,6 +143,30 @@ op_and(Match *first_match, Match *second_match)
     return op_boolean(first_match, second_match, cond_and);
 }
 
+bool
+cond_not(unsigned int first, unsigned int second)
+{
+    return ((first > 0) && (second == 0));
+}
+
+Match *
+op_not(Match *first_match, Match *second_match)
+{
+    return op_boolean(first_match, second_match, cond_not);
+}
+
+bool
+cond_xor(unsigned int first, unsigned int second)
+{
+    return (((first > 0) && (second == 0)) || ((first == 0) && (second > 0)));
+}
+
+Match *
+op_xor(Match *first_match, Match *second_match)
+{
+    return op_boolean(first_match, second_match, cond_xor);
+}
+
 Match *
 op_adj(Match *first_match, Match *second_match, int n)
 {
