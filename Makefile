@@ -1,6 +1,8 @@
 # Copyright (C) 2025 Andrew Trettel
 CC = gcc
-CFLAGS = -std=c99 -Wall -pedantic -Wfatal-errors -Werror -pedantic-errors -O0 -g
+CFLAGS = -std=c99 -Wall -pedantic -Wfatal-errors -Werror -pedantic-errors -O2 -g
+RM = rm
+RMFLAGS = -frv
 
 project = wosp
 
@@ -14,5 +16,5 @@ $(project): $(project).c $(OBJ)
 
 .PHONY: clean
 clean:
-	-rm -fv $(project)
-	-rm -fv *.o
+	-$(RM) $(RMFLAGS) $(project)
+	-$(RM) $(RMFLAGS) *.o
