@@ -19,7 +19,7 @@ insert_match(Match **list, size_t n)
         exit(EXIT_FAILURE);
     }
     current->n = n;
-    current->words = (InputWord **) malloc(n * sizeof(InputWord *));
+    current->words = (Word **) malloc(n * sizeof(Word *));
     if (current->words == NULL)
     {
         exit(EXIT_FAILURE);
@@ -33,7 +33,7 @@ insert_match(Match **list, size_t n)
 }
 
 void
-set_match(Match *match, size_t i, InputWord *word)
+set_match(Match *match, size_t i, Word *word)
 {
     assert(i >= 0);
     assert(i < number_of_words_in_match(match));
@@ -71,7 +71,7 @@ length_of_match_list(Match *match)
     return n;
 }
 
-InputWord *
+Word *
 word_match(Match *match, size_t i)
 {
     assert(i >= 0);
@@ -79,7 +79,7 @@ word_match(Match *match, size_t i)
     return match->words[i];
 }
 
-InputWord *
+Word *
 document_match(Match *match)
 {
     assert(match->words[0] != NULL);
@@ -99,14 +99,14 @@ next_match(Match *match)
     }
 }
 
-InputWord *
+Word *
 start_word_match(Match *match)
 {
-    InputWord *start = word_match(match, 0);
+    Word *start = word_match(match, 0);
     size_t n = number_of_words_in_match(match);
     for (size_t i = 1; i < n; i++)
     {
-        InputWord *word = word_match(match, i);
+        Word *word = word_match(match, i);
         if (position_word(word) < position_word(start))
         {
             start = word;
@@ -115,14 +115,14 @@ start_word_match(Match *match)
     return start;
 }
 
-InputWord *
+Word *
 end_word_match(Match *match)
 {
-    InputWord *end = word_match(match, 0);
+    Word *end = word_match(match, 0);
     size_t n = number_of_words_in_match(match);
     for (size_t i = 1; i < n; i++)
     {
-        InputWord *word = word_match(match, i);
+        Word *word = word_match(match, i);
         if (position_word(word) > position_word(end))
         {
             end = word;
@@ -159,14 +159,14 @@ print_matches(Match *match)
     Match *current_match = match;
     while (current_match != NULL)
     {
-        InputWord *start_word = advance_word(start_word_match(current_match), print_element, -print_width);
-        InputWord *end_word   = advance_word(  end_word_match(current_match), print_element, +print_width);
+        Word *start_word = advance_word(start_word_match(current_match), print_element, -print_width);
+        Word *end_word   = advance_word(  end_word_match(current_match), print_element, +print_width);
         if (next_word(end_word) == NULL)
         {
             end_word = NULL;
         }
         printf("%lu:", line_word(start_word));
-        InputWord *current_word = start_word;
+        Word *current_word = start_word;
         while (current_word != end_word)
         {
             printf(" %s", original_word(current_word));
@@ -216,7 +216,7 @@ init_trie(TrieNode **trie)
 }
 
 void
-insert_trie(TrieNode *trie, InputWord *word, size_t i)
+insert_trie(TrieNode *trie, Word *word, size_t i)
 {
     char *reduced = reduced_word(word);
     char key = reduced[i];
@@ -389,8 +389,8 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
     Match *outer_match = first_match;
     while (outer_match != NULL)
     {
-        InputWord *outer_start_word = advance_word(start_word_match(outer_match), element, start);
-        InputWord   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
+        Word *outer_start_word = advance_word(start_word_match(outer_match), element, start);
+        Word   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
         unsigned long outer_start = position_word(outer_start_word);
         unsigned long   outer_end =   position_word(outer_end_word);
 

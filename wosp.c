@@ -8,9 +8,9 @@
 #include "words.h"
 
 void
-add_words_to_trie(TrieNode *trie, InputWord *list)
+add_words_to_trie(TrieNode *trie, Word *list)
 {
-    InputWord *current = list;
+    Word *current = list;
     while (current != NULL)
     {
         insert_trie(trie, current, 0);
@@ -19,7 +19,7 @@ add_words_to_trie(TrieNode *trie, InputWord *list)
 }
 
 void
-read_source_words(InputWord **list)
+read_source_words(Word **list)
 {
     unsigned long line = 1, column = 1, position = 1;
     int p = '\0';
@@ -79,7 +79,7 @@ read_source_words(InputWord **list)
 int
 main(void)
 {
-    InputWord *list = NULL;
+    Word *list = NULL;
     TrieNode *trie = NULL;
 
     init_trie(&trie);

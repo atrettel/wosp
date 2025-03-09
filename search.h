@@ -13,20 +13,20 @@
 typedef struct Match
 {
     size_t n; /* Number of searched words */
-    InputWord **words; /* Dynamically-allocated array of searched words */
+    Word **words; /* Dynamically-allocated array of searched words */
     struct Match *next;
 } Match;
 
 void insert_match(Match **, size_t);
-void set_match(Match *, size_t, InputWord *);
+void set_match(Match *, size_t, Word *);
 void append_match(Match *, Match **);
 size_t number_of_words_in_match(Match *);
 unsigned int length_of_match_list(Match *);
-InputWord *word_match(Match *, size_t);
-InputWord *document_match(Match *);
+Word *word_match(Match *, size_t);
+Word *document_match(Match *);
 Match *next_match(Match *);
-InputWord *start_word_match(Match *);
-InputWord *end_word_match(Match *);
+Word *start_word_match(Match *);
+Word *end_word_match(Match *);
 unsigned int start_position_match(Match *);
 unsigned int end_position_match(Match *);
 unsigned int width_match(Match *);
@@ -51,7 +51,7 @@ typedef struct TrieEdge
 } TrieEdge;
 
 void init_trie(TrieNode **);
-void insert_trie(TrieNode *, InputWord *, size_t);
+void insert_trie(TrieNode *, Word *, size_t);
 bool has_word_trie(TrieNode *, char *);
 void backtrack_trie(TrieNode *, char *, size_t, Match **);
 void expand_word(TrieNode *, char *, size_t, Match **);

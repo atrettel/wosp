@@ -9,7 +9,7 @@
 
 size_t
 count_matches_by_document(Match *first_match, Match *second_match,
-                          InputWord ***documents,
+                          Word ***documents,
                           unsigned int **first_counts, unsigned int **second_counts)
 {
     size_t n_documents = 0;
@@ -39,13 +39,13 @@ count_matches_by_document(Match *first_match, Match *second_match,
             n_documents++;
             if (n_documents == 1)
             {
-                *documents = (InputWord **) malloc(n_documents * sizeof(InputWord *));
+                *documents = (Word **) malloc(n_documents * sizeof(Word *));
                 *first_counts = (unsigned int *) malloc(n_documents * sizeof(unsigned int));
                 *second_counts = (unsigned int *) malloc(n_documents * sizeof(unsigned int));
             }
             else
             {
-                *documents = (InputWord **) realloc(*documents, n_documents);
+                *documents = (Word **) realloc(*documents, n_documents);
                 *first_counts = (unsigned int *) realloc(*first_counts, n_documents);
                 *second_counts = (unsigned int *) realloc(*second_counts, n_documents);
             }
@@ -80,7 +80,7 @@ op_boolean(Match *first_match, Match *second_match, bool condition(unsigned int,
 {
     Match *match = NULL;
 
-    InputWord **documents = NULL;
+    Word **documents = NULL;
     unsigned int *first_counts = NULL;
     unsigned int *second_counts = NULL;
     size_t n_documents = count_matches_by_document(first_match, second_match,
@@ -90,7 +90,7 @@ op_boolean(Match *first_match, Match *second_match, bool condition(unsigned int,
     Match *current = first_match;
     while (current != NULL)
     {
-        InputWord *document = document_match(current);
+        Word *document = document_match(current);
         for (size_t i = 0; i < n_documents; i++)
         {
             if ((document == documents[i]) && (condition(first_counts[i], second_counts[i]) == true))

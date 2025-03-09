@@ -6,16 +6,16 @@
 
 bool is_ending_punctuation(char);
 
-typedef struct InputWord
+typedef struct Word
 {
     char *original;
     char *reduced; /* The lowercase word without any punctuation */
     unsigned long line; /* Line and column for locating word in input */
     unsigned long column;
     unsigned long position; /* Position for order in doubly-linked list */
-    struct InputWord *next;
-    struct InputWord *prev;
-} InputWord;
+    struct Word *next;
+    struct Word *prev;
+} Word;
 
 typedef enum LanguageElement
 {
@@ -31,24 +31,24 @@ typedef enum WordOrigin
 } WordOrigin;
 
 char *reduce_word(char *, WordOrigin);
-void append_word(InputWord **, char *, unsigned long, unsigned long, unsigned long);
-char *original_word(InputWord *);
-char *reduced_word(InputWord *);
-unsigned long line_word(InputWord *);
-unsigned long column_word(InputWord *);
-unsigned long position_word(InputWord *);
-bool clause_ending_word(InputWord *);
-bool sentence_ending_word(InputWord *);
-InputWord *next_word(InputWord *);
-InputWord *prev_word(InputWord *);
-InputWord *next_clause(InputWord *);
-InputWord *prev_clause(InputWord *);
-InputWord *next_sentence(InputWord *);
-InputWord *prev_sentence(InputWord *);
-InputWord *first_word(InputWord *);
-InputWord *last_word(InputWord *);
-InputWord *advance_word(InputWord *, LanguageElement, int);
-void print_words(InputWord *);
-void free_words(InputWord *);
+void append_word(Word **, char *, unsigned long, unsigned long, unsigned long);
+char *original_word(Word *);
+char *reduced_word(Word *);
+unsigned long line_word(Word *);
+unsigned long column_word(Word *);
+unsigned long position_word(Word *);
+bool clause_ending_word(Word *);
+bool sentence_ending_word(Word *);
+Word *next_word(Word *);
+Word *prev_word(Word *);
+Word *next_clause(Word *);
+Word *prev_clause(Word *);
+Word *next_sentence(Word *);
+Word *prev_sentence(Word *);
+Word *first_word(Word *);
+Word *last_word(Word *);
+Word *advance_word(Word *, LanguageElement, int);
+void print_words(Word *);
+void free_words(Word *);
 
 #endif /* WORDS_H */

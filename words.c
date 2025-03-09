@@ -72,10 +72,10 @@ reduce_word(char *original, WordOrigin origin)
 }
 
 void
-append_word(InputWord **list, char *data, unsigned long line,
+append_word(Word **list, char *data, unsigned long line,
             unsigned long column, unsigned long position)
 {
-    InputWord *current = (InputWord *) malloc(sizeof(InputWord));
+    Word *current = (Word *) malloc(sizeof(Word));
     if (current == NULL)
     {
         exit(EXIT_FAILURE);
@@ -95,37 +95,37 @@ append_word(InputWord **list, char *data, unsigned long line,
 }
 
 char *
-original_word(InputWord *word)
+original_word(Word *word)
 {
     return word->original;
 }
 
 char *
-reduced_word(InputWord *word)
+reduced_word(Word *word)
 {
     return word->reduced;
 }
 
 unsigned long
-line_word(InputWord *word)
+line_word(Word *word)
 {
     return word->line;
 }
 
 unsigned long
-column_word(InputWord *word)
+column_word(Word *word)
 {
     return word->column;
 }
 
 unsigned long
-position_word(InputWord *word)
+position_word(Word *word)
 {
     return word->position;
 }
 
 bool
-clause_ending_word(InputWord *word)
+clause_ending_word(Word *word)
 {
     if (word == NULL)
     {
@@ -147,7 +147,7 @@ clause_ending_word(InputWord *word)
 }
 
 bool
-sentence_ending_word(InputWord *word)
+sentence_ending_word(Word *word)
 {
     if (word == NULL)
     {
@@ -157,7 +157,7 @@ sentence_ending_word(InputWord *word)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
-        InputWord *next = next_word(word);
+        Word *next = next_word(word);
         if (next == NULL)
         {
             return is_ending_punctuation(data[len-1]);
@@ -177,8 +177,8 @@ sentence_ending_word(InputWord *word)
     }
 }
 
-InputWord *
-next_word(InputWord *word)
+Word *
+next_word(Word *word)
 {
     if (word == NULL)
     {
@@ -190,8 +190,8 @@ next_word(InputWord *word)
     }
 }
 
-InputWord *
-prev_word(InputWord *word)
+Word *
+prev_word(Word *word)
 {
     if (word == NULL)
     {
@@ -203,8 +203,8 @@ prev_word(InputWord *word)
     }
 }
 
-InputWord *
-next_clause(InputWord *word)
+Word *
+next_clause(Word *word)
 {
     if (word == NULL)
     {
@@ -212,7 +212,7 @@ next_clause(InputWord *word)
     }
     else
     {
-        InputWord *current = word;
+        Word *current = word;
         while (clause_ending_word(current) == false)
         {
             current = next_word(current);
@@ -221,8 +221,8 @@ next_clause(InputWord *word)
     }
 }
 
-InputWord *
-prev_clause(InputWord *word)
+Word *
+prev_clause(Word *word)
 {
     if (word == NULL)
     {
@@ -230,14 +230,14 @@ prev_clause(InputWord *word)
     }
     else
     {
-        InputWord *current = word;
+        Word *current = word;
         if (clause_ending_word(current) == true)
         {
             current = prev_word(current);
         }
         while (clause_ending_word(current) == false)
         {
-            InputWord *prev = prev_word(current);
+            Word *prev = prev_word(current);
             if (prev == NULL)
             {
                 return current;
@@ -248,8 +248,8 @@ prev_clause(InputWord *word)
     }
 }
 
-InputWord *
-next_sentence(InputWord *word)
+Word *
+next_sentence(Word *word)
 {
     if (word == NULL)
     {
@@ -257,7 +257,7 @@ next_sentence(InputWord *word)
     }
     else
     {
-        InputWord *current = word;
+        Word *current = word;
         while (sentence_ending_word(current) == false)
         {
             current = next_word(current);
@@ -266,8 +266,8 @@ next_sentence(InputWord *word)
     }
 }
 
-InputWord *
-prev_sentence(InputWord *word)
+Word *
+prev_sentence(Word *word)
 {
     if (word == NULL)
     {
@@ -275,14 +275,14 @@ prev_sentence(InputWord *word)
     }
     else
     {
-        InputWord *current = word;
+        Word *current = word;
         if (sentence_ending_word(current) == true)
         {
             current = prev_word(current);
         }
         while (sentence_ending_word(current) == false)
         {
-            InputWord *prev = prev_word(current);
+            Word *prev = prev_word(current);
             if (prev == NULL)
             {
                 return current;
@@ -293,8 +293,8 @@ prev_sentence(InputWord *word)
     }
 }
 
-InputWord *
-first_word(InputWord *word)
+Word *
+first_word(Word *word)
 {
     if (word == NULL)
     {
@@ -302,7 +302,7 @@ first_word(InputWord *word)
     }
     else
     {
-        InputWord *current = word;
+        Word *current = word;
         while (prev_word(current) != NULL)
         {
             current = prev_word(current);
@@ -311,8 +311,8 @@ first_word(InputWord *word)
     }
 }
 
-InputWord *
-last_word(InputWord *word)
+Word *
+last_word(Word *word)
 {
     if (word == NULL)
     {
@@ -320,7 +320,7 @@ last_word(InputWord *word)
     }
     else
     {
-        InputWord *current = word;
+        Word *current = word;
         while (next_word(current) != NULL)
         {
             current = next_word(current);
@@ -332,13 +332,13 @@ last_word(InputWord *word)
 /* This is a wrapper function to handle the ends of the input word list safely.
  * The primitive operations can return NULL values.  This is necessary to check
  * for the ends of the list.  This function cannot return NULL values. */
-InputWord *
-advance_word(InputWord *word, LanguageElement element, int n)
+Word *
+advance_word(Word *word, LanguageElement element, int n)
 {
-    InputWord *current = word;
+    Word *current = word;
     if (n != 0)
     {
-        InputWord *(*advance)(InputWord *) = NULL;
+        Word *(*advance)(Word *) = NULL;
         if (element == WORD && n > 0)
         {
             advance = next_word;
@@ -369,7 +369,7 @@ advance_word(InputWord *word, LanguageElement element, int n)
         current = word;
         for (size_t i = 0; i < m; i++)
         {
-            InputWord *next = advance(current);
+            Word *next = advance(current);
             if (next != NULL)
             {
                 current = next;
@@ -391,9 +391,9 @@ advance_word(InputWord *word, LanguageElement element, int n)
 }
 
 void
-print_words(InputWord *list)
+print_words(Word *list)
 {
-    InputWord *current = list;
+    Word *current = list;
     while (current != NULL)
     {
         printf("%10zu: '%s' ('%s')", position_word(current), original_word(current), reduced_word(current));
@@ -407,12 +407,12 @@ print_words(InputWord *list)
 }
 
 void
-free_words(InputWord *list)
+free_words(Word *list)
 {
-    InputWord *current = list;
+    Word *current = list;
     while (current != NULL)
     {
-        InputWord *next = next_word(current);
+        Word *next = next_word(current);
         free(current->original);
         free(current->reduced);
         free(current);
