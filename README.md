@@ -3,6 +3,11 @@
 by Andrew Trettel
 
 
+## Usage
+
+    ./wosp < example.txt
+
+
 ## How does it work?
 
 1. `wosp` reads each word of a source document and puts them into a
