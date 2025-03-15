@@ -8,35 +8,28 @@
 #include "words.h"
 
 Match *
-op_boolean(Match *first_match, Match *second_match, bool condition(DocumentNode *, Word *))
+op_boolean(Match *first_match, Match *second_match, bool condition(DocumentNode *, DocumentNode *, Word *))
 {
     Match *match = NULL;
-
     DocumentNode *first_documents = document_list_match_list(first_match);
     DocumentNode *second_documents = document_list_match_list(second_match);
-
     bool processed_first = false;
     Match *current_match = first_match;
-    DocumentNode *current_documents = second_documents;
     while (current_match != NULL)
     {
-        if (condition(current_documents, document_match(current_match)) == true)
+        if (condition(first_documents, second_documents, document_match(current_match)) == true)
         {
             append_match(current_match, &match);
         }
-
         current_match = next_match(current_match);
         if ((current_match == NULL) && (processed_first == false))
         {
             processed_first = true;
             current_match = second_match;
-            current_documents = first_documents;
         }
     }
-
     free_document_list(first_documents);
     free_document_list(second_documents);
-
     return match;
 }
 
@@ -50,9 +43,16 @@ op_or(Match *first_match, Match *second_match)
 }
 
 bool
-cond_and(DocumentNode *documents, Word *document)
+cond_and(DocumentNode *first, DocumentNode *second, Word *document)
 {
-    return has_document(documents, document);
+    if ((has_document(first, document) == true) && (has_document(second, document) == true))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Match *
