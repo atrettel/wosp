@@ -7,6 +7,17 @@
 
 #include "words.h"
 
+typedef struct DocumentNode
+{
+    Word *document;
+    struct DocumentNode *next;
+} DocumentNode;
+
+void insert_document(DocumentNode **, Word *document);
+DocumentNode *next_document(DocumentNode *);
+bool has_document(DocumentNode *, Word *);
+void free_document_list(DocumentNode *);
+
 /* A match is a continuous set of words matching a set of constraints.  Each
  * match is part of a linked list where subsequent matches are merely appended
  * onto the list. */
@@ -25,6 +36,7 @@ size_t number_of_words_in_match(Match *);
 unsigned int length_of_match_list(Match *);
 Word *word_match(Match *, size_t);
 Word *document_match(Match *);
+DocumentNode *document_list_match_list(Match *);
 Match *next_match(Match *);
 Word *start_word_match(Match *);
 Word *end_word_match(Match *);
@@ -57,17 +69,6 @@ bool has_word_trie(TrieNode *, char *);
 void backtrack_trie(TrieNode *, char *, size_t, Match **);
 void expand_word(TrieNode *, char *, size_t, Match **);
 void free_trie(TrieNode *);
-
-typedef struct DocumentNode
-{
-    Word *document;
-    struct DocumentNode *next;
-} DocumentNode;
-
-void insert_document(DocumentNode **, Word *document);
-DocumentNode *next_document(DocumentNode *);
-bool has_document(DocumentNode *, Word *);
-void free_document_list(DocumentNode *);
 
 Match *wildcard_search(TrieNode *, char *);
 Match *proximity_search(Match *, Match *, LanguageElement, int, int);

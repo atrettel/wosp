@@ -93,6 +93,19 @@ document_match(Match *match)
     return match->document;
 }
 
+DocumentNode *
+document_list_match_list(Match *match)
+{
+    DocumentNode *list = NULL;
+    Match *current = match;
+    while (current != NULL)
+    {
+        insert_document(&list, document_match(current));
+        current = next_match(current);
+    }
+    return list;
+}
+
 Match *
 next_match(Match *match)
 {
