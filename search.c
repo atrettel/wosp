@@ -29,6 +29,7 @@ insert_match(Match **list, size_t n)
         current->words[i] = NULL;
     }
     current->next = *list;
+    current->document = NULL;
     *list = current;
 }
 
@@ -37,6 +38,12 @@ set_match(Match *match, size_t i, Word *word)
 {
     assert(i >= 0);
     assert(i < number_of_words_in_match(match));
+    if (match->document == NULL)
+    {
+        match->document = first_word(word);
+    }
+    else
+    assert(document_match(match) == first_word(word));
     match->words[i] = word;
 }
 
@@ -82,8 +89,8 @@ word_match(Match *match, size_t i)
 Word *
 document_match(Match *match)
 {
-    assert(match->words[0] != NULL);
-    return first_word(match->words[0]);
+    assert(match->document != NULL);
+    return match->document;
 }
 
 Match *

@@ -15,6 +15,7 @@ typedef struct Match
     size_t n; /* Number of searched words */
     Word **words; /* Dynamically-allocated array of searched words */
     struct Match *next;
+    Word *document;
 } Match;
 
 void insert_match(Match **, size_t);
