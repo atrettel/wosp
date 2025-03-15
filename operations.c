@@ -7,119 +7,37 @@
 #include "search.h"
 #include "words.h"
 
-size_t
-count_matches_by_document(Match *first_match, Match *second_match,
-                          Word ***documents,
-                          unsigned int **first_counts, unsigned int **second_counts)
-{
-    size_t n_documents = 0;
-    bool processed_first = false;
-    Match *current = first_match;
-    while (current != NULL)
-    {
-        bool found_document = false;
-        for (size_t i = 0; i < n_documents; i++)
-        {
-            if (document_match(current) == (*documents)[i])
-            {
-                if (processed_first == false)
-                {
-                    (*first_counts)[i] = (*first_counts)[i] + 1;
-                }
-                else
-                {
-                    (*second_counts)[i] = (*second_counts)[i] + 1;
-                }
-                found_document = true;
-                break;
-            }
-        }
-        if (found_document == false)
-        {
-            n_documents++;
-            if (n_documents == 1)
-            {
-                *documents = (Word **) malloc(n_documents * sizeof(Word *));
-                *first_counts = (unsigned int *) malloc(n_documents * sizeof(unsigned int));
-                *second_counts = (unsigned int *) malloc(n_documents * sizeof(unsigned int));
-            }
-            else
-            {
-                *documents = (Word **) realloc(*documents, n_documents);
-                *first_counts = (unsigned int *) realloc(*first_counts, n_documents);
-                *second_counts = (unsigned int *) realloc(*second_counts, n_documents);
-            }
-            if ((documents == NULL) || (*first_counts == NULL) || (*second_counts == NULL))
-            {
-                exit(EXIT_FAILURE);
-            }
-            (*documents)[n_documents-1] = document_match(current);
-            (*first_counts)[n_documents-1] = 0;
-            (*second_counts)[n_documents-1] = 0;
-            if (processed_first == false)
-            {
-                (*first_counts)[n_documents-1] = 1;
-            }
-            else
-            {
-                (*second_counts)[n_documents-1] = 1;
-            }
-        }
-        current = next_match(current);
-        if ((current == NULL) && (processed_first == false))
-        {
-            processed_first = true;
-            current = second_match;
-        }
-    }
-    return n_documents;
-}
-
 Match *
-op_boolean(Match *first_match, Match *second_match, bool condition(unsigned int, unsigned int))
+op_boolean(Match *first_match, Match *second_match, bool condition(DocumentNode *, Word *))
 {
     Match *match = NULL;
 
-    Word **documents = NULL;
-    unsigned int *first_counts = NULL;
-    unsigned int *second_counts = NULL;
-    size_t n_documents = count_matches_by_document(first_match, second_match,
-        &documents, &first_counts, &second_counts);
+    DocumentNode *first_documents = document_list_match_list(first_match);
+    DocumentNode *second_documents = document_list_match_list(second_match);
 
     bool processed_first = false;
-    Match *current = first_match;
-    while (current != NULL)
+    Match *current_match = first_match;
+    DocumentNode *current_documents = second_documents;
+    while (current_match != NULL)
     {
-        Word *document = document_match(current);
-        for (size_t i = 0; i < n_documents; i++)
+        if (condition(current_documents, document_match(current_match)) == true)
         {
-            if ((document == documents[i]) && (condition(first_counts[i], second_counts[i]) == true))
-            {
-                append_match(current, &match);
-                break;
-            }
+            append_match(current_match, &match);
         }
 
-        current = next_match(current);
-        if ((current == NULL) && (processed_first == false))
+        current_match = next_match(current_match);
+        if ((current_match == NULL) && (processed_first == false))
         {
             processed_first = true;
-            current = second_match;
+            current_match = second_match;
+            current_documents = first_documents;
         }
     }
 
-    free(documents);
-    free(first_counts);
-    free(second_counts);
+    free_document_list(first_documents);
+    free_document_list(second_documents);
 
     return match;
-}
-
-Match *
-op_near(Match *first_match, Match *second_match, int n)
-{
-    assert(n > 0);
-    return proximity_search(first_match, second_match, WORD, -n, +n);
 }
 
 Match *
@@ -132,9 +50,9 @@ op_or(Match *first_match, Match *second_match)
 }
 
 bool
-cond_and(unsigned int first, unsigned int second)
+cond_and(DocumentNode *documents, Word *document)
 {
-    return ((first > 0) && (second > 0));
+    return has_document(documents, document);
 }
 
 Match *
@@ -143,35 +61,18 @@ op_and(Match *first_match, Match *second_match)
     return op_boolean(first_match, second_match, cond_and);
 }
 
-bool
-cond_not(unsigned int first, unsigned int second)
-{
-    return ((first > 0) && (second == 0));
-}
-
-Match *
-op_not(Match *first_match, Match *second_match)
-{
-    return op_boolean(first_match, second_match, cond_not);
-}
-
-bool
-cond_xor(unsigned int first, unsigned int second)
-{
-    return (((first > 0) && (second == 0)) || ((first == 0) && (second > 0)));
-}
-
-Match *
-op_xor(Match *first_match, Match *second_match)
-{
-    return op_boolean(first_match, second_match, cond_xor);
-}
-
 Match *
 op_adj(Match *first_match, Match *second_match, int n)
 {
     assert(n > 0);
     return proximity_search(first_match, second_match, WORD, 1, n);
+}
+
+Match *
+op_near(Match *first_match, Match *second_match, int n)
+{
+    assert(n > 0);
+    return proximity_search(first_match, second_match, WORD, -n, +n);
 }
 
 Match *
