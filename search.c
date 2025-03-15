@@ -396,7 +396,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
 
         /* Clauses and sentences return the start of the next element.
          * Decrement to include only the desired element. */
-        if ((element != WORD) && (next_word(outer_end_word) != NULL))
+        if ((element == CLAUSE || element == SENTENCE) && (next_word(outer_end_word) != NULL))
         {
             outer_end--;
         }
