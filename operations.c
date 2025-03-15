@@ -61,6 +61,48 @@ op_and(Match *first_match, Match *second_match)
     return op_boolean(first_match, second_match, cond_and);
 }
 
+bool
+cond_not(DocumentNode *first, DocumentNode *second, Word *document)
+{
+    if ((has_document(first, document) == true) && (has_document(second, document) == false))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+Match *
+op_not(Match *first_match, Match *second_match)
+{
+    return op_boolean(first_match, second_match, cond_not);
+}
+
+bool
+cond_xor(DocumentNode *first, DocumentNode *second, Word *document)
+{
+    if ((has_document(first, document) == true) && (has_document(second, document) == false))
+    {
+        return true;
+    }
+    else if ((has_document(first, document) == false) && (has_document(second, document) == true))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+Match *
+op_xor(Match *first_match, Match *second_match)
+{
+    return op_boolean(first_match, second_match, cond_xor);
+}
+
 Match *
 op_adj(Match *first_match, Match *second_match, int n)
 {
