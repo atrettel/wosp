@@ -58,6 +58,17 @@ void backtrack_trie(TrieNode *, char *, size_t, Match **);
 void expand_word(TrieNode *, char *, size_t, Match **);
 void free_trie(TrieNode *);
 
+typedef struct DocumentNode
+{
+    Word *document;
+    struct DocumentNode *next;
+} DocumentNode;
+
+void insert_document(DocumentNode **, Word *document);
+DocumentNode *next_document(DocumentNode *);
+bool has_document(DocumentNode *, Word *);
+void free_document_list(DocumentNode *);
+
 Match *wildcard_search(TrieNode *, char *);
 Match *proximity_search(Match *, Match *, LanguageElement, int, int);
 

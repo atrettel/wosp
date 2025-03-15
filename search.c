@@ -381,6 +381,62 @@ free_trie(TrieNode *trie)
     }
 }
 
+void
+insert_document(DocumentNode **list, Word *document)
+{
+    if (has_document(*list, document) == false)
+    {
+        DocumentNode *current = malloc(sizeof(DocumentNode));
+        if (current == NULL)
+        {
+            exit(EXIT_FAILURE);
+        }
+        current->document = document;
+        current->next = *list;
+        *list = current;
+    }
+}
+
+DocumentNode *
+next_document(DocumentNode *list)
+{
+    if (list == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        return list->next;
+    }
+}
+
+bool
+has_document(DocumentNode *list, Word *document)
+{
+    DocumentNode *current = list;
+    while (current != NULL)
+    {
+        if (current->document == document)
+        {
+            return true;
+        }
+        current = next_document(current);
+    }
+    return false;
+}
+
+void
+free_document_list(DocumentNode *list)
+{
+    DocumentNode *current = list;
+    while (current != NULL)
+    {
+        DocumentNode *next = next_document(current);
+        free(current);
+        current = next;
+    }
+}
+
 Match *
 wildcard_search(TrieNode *trie, char *original)
 {
