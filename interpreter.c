@@ -10,7 +10,7 @@
 #include <stdio.h>
 
 void
-insert_token(Token **list, TokenType type, char *string)
+insert_token(Token **list, TokenType type, char *string, int n)
 {
     TokenType prev_type = type_token(*list);
     if (
@@ -23,7 +23,7 @@ insert_token(Token **list, TokenType type, char *string)
         )
     {
         /* Default operation */
-        insert_token(list, OP_OR, "OR");
+        insert_token(list, OP_OR, "OR", 0);
     }
     Token *current = (Token *) malloc(sizeof(Token));
     if (current == NULL)
@@ -31,6 +31,7 @@ insert_token(Token **list, TokenType type, char *string)
         exit(EXIT_FAILURE);
     }
     current->type = type;
+    current->n = n;
     current->string = string;
     current->next = NULL;
     current->prev = *list;
@@ -51,6 +52,19 @@ type_token(Token *token)
     else
     {
         return token->type;
+    }
+}
+
+int
+number_token(Token *token)
+{
+    if (token == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        return token->n;
     }
 }
 
@@ -155,7 +169,7 @@ lex_query(char *query)
             char *data = (char *) malloc(2 * sizeof(char));
             data[0] = query[i];
             data[1] = '\0';
-            insert_token(&tokens, (query[i] == '(' ? L_PAREN : R_PAREN), data);
+            insert_token(&tokens, (query[i] == '(' ? L_PAREN : R_PAREN), data, 0);
             printf("data = '%s'\n", data);
             i++;
         }

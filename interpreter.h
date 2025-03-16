@@ -21,13 +21,15 @@ typedef enum TokenType
 typedef struct Token
 {
     TokenType type;
+    int n;
     char *string;
     struct Token *prev;
     struct Token *next;
 } Token;
 
-void insert_token(Token **, TokenType, char *);
+void insert_token(Token **, TokenType, char *, int);
 TokenType type_token(Token *);
+int number_token(Token *);
 char *string_token(Token *);
 Token *prev_token(Token *);
 Token *next_token(Token *);
