@@ -1,9 +1,13 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
+#include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 #include "interpreter.h"
+
+#include <stdio.h>
 
 void
 insert_token(Token **list, TokenType type, char *string)
@@ -132,8 +136,54 @@ free_tokens(Token *list)
     while (current != NULL)
     {
         Token *next = next_token(current);
-        /*free(current->string);*/
+        free(current->string);
         free(current);
         current = next;
     }
+}
+
+Token *
+lex_query(char *query)
+{
+    Token *tokens = NULL;
+    size_t i = 0;
+    size_t n = strlen(query);
+    while (i < n)
+    {
+        if ((query[i] == '(') || (query[i] == ')'))
+        {
+            char *data = (char *) malloc(2 * sizeof(char));
+            data[0] = query[i];
+            data[1] = '\0';
+            insert_token(&tokens, (query[i] == '(' ? L_PAREN : R_PAREN), data);
+            printf("data = '%s'\n", data);
+            i++;
+        }
+        size_t len = 1;
+        char *data = (char *) malloc(len * sizeof(char));
+        if (data == NULL)
+        {
+            exit(EXIT_FAILURE);
+        }
+        data[len - 1] = '\0';
+        while ((isspace(query[i]) == false) && (query[i] != ')') && (i < n))
+        {
+            len++;
+            data = (char *) realloc(data, len);
+            data[len - 2] = query[i];
+            data[len - 1] = '\0';
+            i++;
+        }
+        if (len > 1)
+        {
+            data[len - 1] = '\0';
+            printf("data = '%s'\n", data);
+        }
+        free(data);
+        if (query[i] != ')')
+        {
+            i++;
+        }
+    }
+    return first_token(tokens);
 }
