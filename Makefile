@@ -6,7 +6,7 @@ RMFLAGS = -frv
 
 project = wosp
 
-OBJ = operations.o search.o words.o
+OBJ = interpreter.o operations.o search.o words.o
 
 $(project): $(project).c $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
