@@ -27,7 +27,7 @@ typedef struct Token
     struct Token *next;
 } Token;
 
-void insert_token(Token **, TokenType, char *, int);
+void insert_token(Token **, TokenType, int, char *);
 TokenType type_token(Token *);
 int number_token(Token *);
 char *string_token(Token *);
