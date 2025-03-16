@@ -13,14 +13,8 @@ void
 insert_token(Token **list, TokenType type, char *string, int n)
 {
     TokenType prev_type = type_token(*list);
-    if (
-        ((type == WILDCARD) ||
-         (type == QUOTE)    ||
-         (type == L_PAREN)) &&
-        ((prev_type == WILDCARD) || 
-         (prev_type == QUOTE)    ||
-         (prev_type == R_PAREN))
-        )
+    if ((     (type == WILDCARD) ||      (type == QUOTE) ||      (type == L_PAREN)) &&
+        ((prev_type == WILDCARD) || (prev_type == QUOTE) || (prev_type == R_PAREN)))
     {
         /* Default operation */
         insert_token(list, OP_OR, "OR", 0);
