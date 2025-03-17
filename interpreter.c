@@ -16,7 +16,11 @@ insert_token(Token **list, TokenType type, int n, char *string)
     if ((     (type == WILDCARD) ||      (type == QUOTE) ||      (type == L_PAREN)) &&
         ((prev_type == WILDCARD) || (prev_type == QUOTE) || (prev_type == R_PAREN)))
     {
-        insert_token(list, OP_OR, 0, "OR"); /* Default operation */
+        char *tmp = malloc(3 * sizeof(char));
+        tmp[0] = 'O';
+        tmp[1] = 'R';
+        tmp[2] = '\0';
+        insert_token(list, OP_OR, 0, tmp); /* Default operation */
     }
     Token *current = (Token *) malloc(sizeof(Token));
     if (current == NULL)
@@ -149,6 +153,101 @@ free_tokens(Token *list)
     }
 }
 
+void
+get_token_type(char *data, TokenType *type, int *n)
+{
+    size_t len = strlen(data);
+    size_t j = len; /* Where the numbers start */
+    char *lcase = (char *) malloc((len + 1) * sizeof(char));
+    for (size_t i = 0; i < len; i++)
+    {
+        lcase[i] = tolower(data[i]);
+        if (isdigit(lcase[i]) && (i < j))
+        {
+            j = i;
+        }
+    }
+    size_t k = len - j;
+    lcase[len] = '\0';
+    char *prefix = (char *) malloc((j + 1) * sizeof(char));
+    for (size_t i = 0; i < j; i++)
+    {
+        prefix[i] = lcase[i];
+    }
+    prefix[j] = '\0';
+    char *suffix = (char *) malloc((k + 1) * sizeof(char));
+    bool has_nondigits = false;
+    for (size_t i = 0; i < k; i++)
+    {
+        suffix[i] = lcase[i+j];
+        if (!isdigit(suffix[i]))
+        {
+            has_nondigits = true;
+        }
+    }
+    suffix[k] = '\0';
+    char *endptr;
+    long m = strtol(suffix, &endptr, 10);
+
+    if (j < 2)
+    {
+        *type = WILDCARD;
+        *n = 0;
+    }
+    else if (j < 3)
+    {
+        if (strncmp(prefix, "or", 2) == 0)
+        {
+            *type = OP_OR;
+            *n = 0;
+        }
+    }
+    else if (j < 4)
+    {
+        if (strncmp(prefix, "and", 3) == 0)
+        {
+            *type = OP_AND;
+            *n = 0;
+        }
+        else if (strncmp(prefix, "not", 3) ==0)
+        {
+            *type = OP_NOT;
+            *n = 0;
+        }
+        else if (strncmp(prefix, "xor", 3) == 0)
+        {
+            *type = OP_XOR;
+            *n = 0;
+        }
+        else if ((strncmp(prefix, "adj", 3) == 0) && (has_nondigits == false))
+        {
+            *type = OP_ADJ;
+            *n = (int) m;
+        }
+    }
+    else
+    {
+        if ((strncmp(prefix, "near", 4) == 0) && (has_nondigits == false))
+        {
+            *type = OP_NEAR;
+            *n = (int) m;
+        }
+        else if ((strncmp(prefix, "with", 4) == 0) && (has_nondigits == false))
+        {
+            *type = OP_WITH;
+            *n = (int) m;
+        }
+        else
+        {
+            *type = WILDCARD;
+            *n = 0;
+        }
+    }
+    free(lcase);
+    free(prefix);
+    free(suffix);
+}
+
 Token *
 lex_query(char *query)
 {
@@ -157,13 +256,25 @@ lex_query(char *query)
     size_t n = strlen(query);
     while (i < n)
     {
-        if ((query[i] == '(') || (query[i] == ')'))
+        if ((query[i] == '(') || (query[i] == ')') || (query[i] == '"') || (query[i] == '\''))
         {
             char *data = (char *) malloc(2 * sizeof(char));
             data[0] = query[i];
             data[1] = '\0';
-            insert_token(&tokens, (query[i] == '(' ? L_PAREN : R_PAREN), 0, data);
-            printf("data = '%s'\n", data);
+            TokenType type = ERROR_TOKEN;
+            if (query[i] == '(')
+            {
+                type = L_PAREN;
+            }
+            else if (query[i] == ')')
+            {
+                type = R_PAREN;
+            }
+            else if ((query[i] == '"') || (query[i] == '\''))
+            {
+                type = QUOTE;
+            }
+            insert_token(&tokens, type, 0, data);
             i++;
         }
         size_t len = 1;
@@ -173,7 +284,7 @@ lex_query(char *query)
             exit(EXIT_FAILURE);
         }
         data[len - 1] = '\0';
-        while ((isspace(query[i]) == false) && (query[i] != ')') && (i < n))
+        while ((isspace(query[i]) == false) && (query[i] != ')') && (query[i] != '"') && (query[i] != '\'') && (i < n))
         {
             len++;
             data = (char *) realloc(data, len);
@@ -183,10 +294,16 @@ lex_query(char *query)
         }
         if (len > 1)
         {
-            data[len - 1] = '\0';
-            insert_token(&tokens, ERROR_TOKEN, 0, data);
+            TokenType type = ERROR_TOKEN;
+            int n = -1;
+            get_token_type(data, &type, &n);
+            insert_token(&tokens, type, n, data);
         }
-        if (query[i] != ')')
+        else
+        {
+            free(data);
+        }
+        if ((query[i] != ')') && (query[i] != '"') && (query[i] != '\''))
         {
             i++;
         }

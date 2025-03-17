@@ -5,7 +5,7 @@
 typedef enum TokenType
 {               /* Example */
     WILDCARD,   /* w?rd$1 */
-    QUOTE,      /* "first second" */
+    QUOTE,      /* " or ' */
     L_PAREN,    /* ( */
     R_PAREN,    /* ) */
     OP_OR,      /* OR */
