@@ -25,6 +25,7 @@ typedef struct Token
     char *string;
     struct Token *prev;
     struct Token *next;
+    unsigned int cumulative_quotes;
 } Token;
 
 void insert_token(Token **, TokenType, int, char *);

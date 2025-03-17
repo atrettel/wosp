@@ -12,9 +12,15 @@
 void
 insert_token(Token **list, TokenType type, int n, char *string)
 {
+    unsigned int cumulative_quotes = 0;
+    if (*list != NULL)
+    {
+        cumulative_quotes = (*list)->cumulative_quotes;
+    }
     TokenType prev_type = type_token(*list);
     if ((     (type == WILDCARD) ||      (type == QUOTE) ||      (type == L_PAREN)) &&
-        ((prev_type == WILDCARD) || (prev_type == QUOTE) || (prev_type == R_PAREN)))
+        ((prev_type == WILDCARD) || (prev_type == QUOTE) || (prev_type == R_PAREN))
+        && (cumulative_quotes % 2 == 0))
     {
         char *tmp = malloc(3 * sizeof(char));
         tmp[0] = 'O';
@@ -32,6 +38,18 @@ insert_token(Token **list, TokenType type, int n, char *string)
     current->string = string;
     current->next = NULL;
     current->prev = *list;
+    if (current->prev == NULL)
+    {
+        current->cumulative_quotes = 0;
+    }
+    else if (type == QUOTE)
+    {
+        current->cumulative_quotes = current->prev->cumulative_quotes + 1;
+    }
+    else
+    {
+        current->cumulative_quotes = current->prev->cumulative_quotes;
+    }
     if ((*list) != NULL)
     {
         (*list)->next = current;
