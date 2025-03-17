@@ -175,7 +175,7 @@ void
 get_token_type(char *data, TokenType *type, int *n)
 {
     size_t len = strlen(data);
-    size_t j = len; /* Where the numbers start */
+    size_t j = len; /* Where the numbers start, length of prefix */
     char *lcase = (char *) malloc((len + 1) * sizeof(char));
     for (size_t i = 0; i < len; i++)
     {
@@ -185,7 +185,7 @@ get_token_type(char *data, TokenType *type, int *n)
             j = i;
         }
     }
-    size_t k = len - j;
+    size_t k = len - j; /* Length of suffix */
     lcase[len] = '\0';
     char *prefix = (char *) malloc((j + 1) * sizeof(char));
     for (size_t i = 0; i < j; i++)
@@ -214,7 +214,7 @@ get_token_type(char *data, TokenType *type, int *n)
     }
     else if (j < 3)
     {
-        if (strncmp(prefix, "or", 2) == 0)
+        if ((strncmp(prefix, "or", 2) == 0) && (k == 0))
         {
             *type = OP_OR;
             *n = 0;
@@ -222,17 +222,17 @@ get_token_type(char *data, TokenType *type, int *n)
     }
     else if (j < 4)
     {
-        if (strncmp(prefix, "and", 3) == 0)
+        if ((strncmp(prefix, "and", 3) == 0) && (k == 0))
         {
             *type = OP_AND;
             *n = 0;
         }
-        else if (strncmp(prefix, "not", 3) ==0)
+        else if ((strncmp(prefix, "not", 3) ==0) && (k == 0))
         {
             *type = OP_NOT;
             *n = 0;
         }
-        else if (strncmp(prefix, "xor", 3) == 0)
+        else if ((strncmp(prefix, "xor", 3) == 0) && (k == 0))
         {
             *type = OP_XOR;
             *n = 0;
@@ -240,7 +240,14 @@ get_token_type(char *data, TokenType *type, int *n)
         else if ((strncmp(prefix, "adj", 3) == 0) && (has_nondigits == false))
         {
             *type = OP_ADJ;
-            *n = (int) m;
+            if (k == 0)
+            {
+                *n = 1;
+            }
+            else
+            {
+                *n = (int) m;
+            }
         }
     }
     else
@@ -248,14 +255,34 @@ get_token_type(char *data, TokenType *type, int *n)
         if ((strncmp(prefix, "near", 4) == 0) && (has_nondigits == false))
         {
             *type = OP_NEAR;
-            *n = (int) m;
+            if (k == 0)
+            {
+                *n = 1;
+            }
+            else
+            {
+                *n = (int) m;
+            }
         }
         else if ((strncmp(prefix, "with", 4) == 0) && (has_nondigits == false))
         {
             *type = OP_WITH;
-            *n = (int) m;
+            if (k == 0)
+            {
+                *n = 1;
+            }
+            else
+            {
+                *n = (int) m;
+            }
         }
-        else
+        else if ((strncmp(prefix, "or",   2) != 0) &&
+                 (strncmp(prefix, "and",  3) != 0) &&
+                 (strncmp(prefix, "not",  3) != 0) &&
+                 (strncmp(prefix, "xor",  3) != 0) &&
+                 (strncmp(prefix, "adj",  3) != 0) &&
+                 (strncmp(prefix, "near", 4) != 0) &&
+                 (strncmp(prefix, "with", 4) != 0))
         {
             *type = WILDCARD;
             *n = 0;
