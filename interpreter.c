@@ -172,7 +172,7 @@ free_tokens(Token *list)
 }
 
 void
-get_token_type(char *data, TokenType *type, int *n)
+identity_token_type(char *data, TokenType *type, int *n)
 {
     size_t len = strlen(data);
     size_t j = len; /* Where the numbers start, length of prefix */
@@ -341,7 +341,7 @@ lex_query(char *query)
         {
             TokenType type = ERROR_TOKEN;
             int n = -1;
-            get_token_type(data, &type, &n);
+            identity_token_type(data, &type, &n);
             insert_token(&tokens, type, n, data);
         }
         else
