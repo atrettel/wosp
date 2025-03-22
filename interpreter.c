@@ -198,6 +198,10 @@ identity_token_type(char *data, TokenType *type, int *n)
     size_t len = strlen(data);
     size_t j = len; /* Where the numbers start, length of prefix */
     char *lcase = (char *) malloc((len + 1) * sizeof(char));
+    if (lcase == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
     for (size_t i = 0; i < len; i++)
     {
         lcase[i] = tolower(data[i]);
@@ -209,12 +213,20 @@ identity_token_type(char *data, TokenType *type, int *n)
     size_t k = len - j; /* Length of suffix */
     lcase[len] = '\0';
     char *prefix = (char *) malloc((j + 1) * sizeof(char));
+    if (prefix == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
     for (size_t i = 0; i < j; i++)
     {
         prefix[i] = lcase[i];
     }
     prefix[j] = '\0';
     char *suffix = (char *) malloc((k + 1) * sizeof(char));
+    if (suffix == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
     bool has_nondigits = false;
     for (size_t i = 0; i < k; i++)
     {
@@ -275,6 +287,10 @@ lex_query(char *query)
         if ((query[i] == '(') || (query[i] == ')') || (query[i] == '"') || (query[i] == '\''))
         {
             char *data = (char *) malloc(2 * sizeof(char));
+            if (data == NULL)
+            {
+                exit(EXIT_FAILURE);
+            }
             data[0] = query[i];
             data[1] = '\0';
             TokenType type = ERROR_TOKEN;
