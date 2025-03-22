@@ -286,13 +286,13 @@ lex_query(char *query)
     {
         if ((query[i] == '(') || (query[i] == ')') || (query[i] == '"') || (query[i] == '\''))
         {
-            char *data = (char *) malloc(2 * sizeof(char));
-            if (data == NULL)
+            char *tmp = (char *) malloc(2 * sizeof(char));
+            if (tmp == NULL)
             {
                 exit(EXIT_FAILURE);
             }
-            data[0] = query[i];
-            data[1] = '\0';
+            tmp[0] = query[i];
+            tmp[1] = '\0';
             TokenType type = ERROR_TOKEN;
             if (query[i] == '(')
             {
@@ -306,7 +306,7 @@ lex_query(char *query)
             {
                 type = QUOTE;
             }
-            insert_token(&tokens, type, 0, data);
+            insert_token(&tokens, type, 0, tmp);
             i++;
         }
         size_t len = 1;
