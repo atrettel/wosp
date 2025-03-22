@@ -347,6 +347,9 @@ unsigned int
 count_errors_tokens(Token *list, bool print_errors)
 {
     unsigned int n = 0;
+    unsigned int n_quotes = 0;
+    unsigned int n_l_parens = 0;
+    unsigned int n_r_parens = 0;
     Token *current = list;
     while (current != NULL)
     {
@@ -359,7 +362,37 @@ count_errors_tokens(Token *list, bool print_errors)
                 fprintf(stderr, "(%u) error in token '%s'\n", n, string_token(current));
             }
         }
+        else if (type == QUOTE)
+        {
+            n_quotes++;
+        }
+        else if (type == L_PAREN)
+        {
+            n_l_parens++;
+        }
+        else if (type == R_PAREN)
+        {
+            n_r_parens++;
+        }
         current = next_token(current);
     }
+
+    if (n_quotes % 2 != 0)
+    {
+        n++;
+        if (print_errors)
+        {
+            printf("(%u) unbalanced quotation marks present\n", n);
+        }
+    }
+    if (n_l_parens != n_r_parens)
+    {
+        n++;
+        if (print_errors)
+        {
+            printf("(%u) unbalanced parentheses present\n", n);
+        }
+    }
+
     return n;
 }
