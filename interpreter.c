@@ -22,11 +22,13 @@ insert_token(Token **list, TokenType type, int n, char *string)
         ((prev_type == WILDCARD) || (prev_type == QUOTE) || (prev_type == R_PAREN))
         && (cumulative_quotes % 2 == 0))
     {
-        char *tmp = malloc(3 * sizeof(char));
-        tmp[0] = 'O';
-        tmp[1] = 'R';
-        tmp[2] = '\0';
-        insert_token(list, OP_OR, 0, tmp); /* Default operation */
+        char *tmp = malloc(sizeof(default_operation_string));
+        if (tmp == NULL)
+        {
+            exit(EXIT_FAILURE);
+        }
+        snprintf(tmp, sizeof(default_operation_string), "%s", default_operation_string);
+        insert_token(list, default_operation_type, 0, tmp);
     }
     Token *current = (Token *) malloc(sizeof(Token));
     if (current == NULL)
