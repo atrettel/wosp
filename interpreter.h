@@ -2,6 +2,8 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
+#include <stdbool.h>
+
 typedef enum TokenType
 {               /* Example */
     WILDCARD,   /* w?rd$1 */
@@ -39,5 +41,6 @@ Token *last_token(Token *);
 void free_tokens(Token *);
 
 Token *lex_query(char *);
+unsigned int count_errors_tokens(Token *, bool);
 
 #endif /* INTERPRETER_H */

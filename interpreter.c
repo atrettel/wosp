@@ -342,3 +342,24 @@ lex_query(char *query)
     }
     return first_token(tokens);
 }
+
+unsigned int
+count_errors_tokens(Token *list, bool print_errors)
+{
+    unsigned int n = 0;
+    Token *current = list;
+    while (current != NULL)
+    {
+        TokenType type = type_token(current);
+        if (type == ERROR_TOKEN)
+        {
+            n++;
+            if (print_errors)
+            {
+                fprintf(stderr, "(%u) error in token '%s'\n", n, string_token(current));
+            }
+        }
+        current = next_token(current);
+    }
+    return n;
+}
