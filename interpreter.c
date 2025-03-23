@@ -213,7 +213,8 @@ identity_token_type(char *data, TokenType *type, int *n)
     size_t k = len - j; /* Length of suffix */
     lcase[len] = '\0';
     char *prefix = (char *) malloc((j + 1) * sizeof(char));
-    if (prefix == NULL)
+    char *suffix = (char *) malloc((k + 1) * sizeof(char));
+    if ((prefix == NULL) || (suffix == NULL))
     {
         exit(EXIT_FAILURE);
     }
@@ -222,11 +223,6 @@ identity_token_type(char *data, TokenType *type, int *n)
         prefix[i] = lcase[i];
     }
     prefix[j] = '\0';
-    char *suffix = (char *) malloc((k + 1) * sizeof(char));
-    if (suffix == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
     bool has_nondigits = false;
     for (size_t i = 0; i < k; i++)
     {
