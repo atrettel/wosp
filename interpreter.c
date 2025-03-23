@@ -241,35 +241,32 @@ identity_token_type(char *data, TokenType *type, int *n)
     long m = strtol(suffix, &endptr, 10);
 
     TokenType prefix_type = find_operator_type(prefix);
-    if (prefix_type == ERROR_TOKEN)
+    if (((prefix_type == OP_OR)  ||
+         (prefix_type == OP_AND) ||
+         (prefix_type == OP_NOT) ||
+         (prefix_type == OP_XOR)) && (k == 0))
     {
-        *type = WILDCARD;
+        *type = prefix_type;
         *n = 0;
+    }
+    else if (((prefix_type == OP_ADJ)  ||
+              (prefix_type == OP_NEAR) ||
+              (prefix_type == OP_WITH)) && (has_nondigits == false))
+    {
+        *type = prefix_type;
+        if (k == 0)
+        {
+            *n = 1;
+        }
+        else
+        {
+            *n = (int) m;
+        }
     }
     else
     {
-        if (((prefix_type == OP_OR)  ||
-             (prefix_type == OP_AND) ||
-             (prefix_type == OP_NOT) ||
-             (prefix_type == OP_XOR)) && (k == 0))
-        {
-            *type = prefix_type;
-            *n = 0;
-        }
-        else if (((prefix_type == OP_ADJ)  ||
-                  (prefix_type == OP_NEAR) ||
-                  (prefix_type == OP_WITH)) && (has_nondigits == false))
-        {
-            *type = prefix_type;
-            if (k == 0)
-            {
-                *n = 1;
-            }
-            else
-            {
-                *n = (int) m;
-            }
-        }
+        *type = WILDCARD;
+        *n = 0;
     }
     free(lcase);
     free(prefix);
