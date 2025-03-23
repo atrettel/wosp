@@ -13,7 +13,7 @@ static const char wildcard_character = '?';
 static const char extended_wildcard_character = '$';
 
 /* Query options */
-static const TokenType default_operation_type = OP_OR;
+static const TokenType default_operation_type = TK_OR_OP;
 static const char default_operation_string[] = "OR";
 
 /* Output options */

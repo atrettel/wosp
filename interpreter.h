@@ -5,19 +5,19 @@
 #include <stdbool.h>
 
 typedef enum TokenType
-{               /* Example */
-    WILDCARD,   /* w?rd$1 */
-    QUOTE,      /* " or ' */
-    L_PAREN,    /* ( */
-    R_PAREN,    /* ) */
-    OP_OR,      /* OR */
-    OP_AND,     /* AND */
-    OP_NOT,     /* NOT */
-    OP_XOR,     /* XOR */
-    OP_ADJ,     /* ADJ5 */
-    OP_NEAR,    /* NEAR5 */
-    OP_WITH,    /* WITH5 */
-    ERROR_TOKEN /* This should not happen. */
+{                /* Example */
+    TK_WILDCARD, /* w?rd$1 */
+    TK_QUOTE,    /* " or ' */
+    TK_L_PAREN,  /* ( */
+    TK_R_PAREN,  /* ) */
+    TK_OR_OP,    /* OR */
+    TK_AND_OP,   /* AND */
+    TK_NOT_OP,   /* NOT */
+    TK_XOR_OP,   /* XOR */
+    TK_ADJ_OP,   /* ADJ5 */
+    TK_NEAR_OP,  /* NEAR5 */
+    TK_WITH_OP,  /* WITH5 */
+    TK_ERROR     /* This should not happen. */
 } TokenType;
 
 typedef struct Token

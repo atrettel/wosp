@@ -18,8 +18,8 @@ insert_token(Token **list, TokenType type, int n, char *string)
         cumulative_quotes = (*list)->cumulative_quotes;
     }
     TokenType prev_type = type_token(*list);
-    if ((     (type == WILDCARD) ||      (type == QUOTE) ||      (type == L_PAREN)) &&
-        ((prev_type == WILDCARD) || (prev_type == QUOTE) || (prev_type == R_PAREN))
+    if ((     (type == TK_WILDCARD) ||      (type == TK_QUOTE) ||      (type == TK_L_PAREN)) &&
+        ((prev_type == TK_WILDCARD) || (prev_type == TK_QUOTE) || (prev_type == TK_R_PAREN))
         && (cumulative_quotes % 2 == 0))
     {
         char *tmp = malloc(sizeof(default_operation_string));
@@ -44,7 +44,7 @@ insert_token(Token **list, TokenType type, int n, char *string)
     {
         current->cumulative_quotes = 0;
     }
-    else if (type == QUOTE)
+    else if (type == TK_QUOTE)
     {
         current->cumulative_quotes = current->prev->cumulative_quotes + 1;
     }
@@ -64,7 +64,7 @@ type_token(Token *token)
 {
     if (token == NULL)
     {
-        return ERROR_TOKEN;
+        return TK_ERROR;
     }
     else
     {
@@ -173,13 +173,13 @@ free_tokens(Token *list)
     }
 }
 
-static const char  *operator_prefixes[] = { "or",  "and",  "not",  "xor",  "adj",  "near",  "with"};
-static const TokenType operator_types[] = {OP_OR, OP_AND, OP_NOT, OP_XOR, OP_ADJ, OP_NEAR, OP_WITH};
+static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "with"};
+static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_WITH_OP};
 
 TokenType
 find_operator_type(char *prefix)
 {
-    TokenType type = ERROR_TOKEN;
+    TokenType type = TK_ERROR;
     size_t n = sizeof(operator_types) / sizeof(operator_types[0]);
     for (size_t i = 0; i < n; i++)
     {
@@ -237,17 +237,17 @@ identity_token_type(char *data, TokenType *type, int *n)
     long m = strtol(suffix, &endptr, 10);
 
     TokenType prefix_type = find_operator_type(prefix);
-    if (((prefix_type == OP_OR)  ||
-         (prefix_type == OP_AND) ||
-         (prefix_type == OP_NOT) ||
-         (prefix_type == OP_XOR)) && (k == 0))
+    if (((prefix_type == TK_OR_OP)  ||
+         (prefix_type == TK_AND_OP) ||
+         (prefix_type == TK_NOT_OP) ||
+         (prefix_type == TK_XOR_OP)) && (k == 0))
     {
         *type = prefix_type;
         *n = 0;
     }
-    else if (((prefix_type == OP_ADJ)  ||
-              (prefix_type == OP_NEAR) ||
-              (prefix_type == OP_WITH)) && (has_nondigits == false))
+    else if (((prefix_type == TK_ADJ_OP)  ||
+              (prefix_type == TK_NEAR_OP) ||
+              (prefix_type == TK_WITH_OP)) && (has_nondigits == false))
     {
         *type = prefix_type;
         if (k == 0)
@@ -261,7 +261,7 @@ identity_token_type(char *data, TokenType *type, int *n)
     }
     else
     {
-        *type = WILDCARD;
+        *type = TK_WILDCARD;
         *n = 0;
     }
     free(lcase);
@@ -286,18 +286,18 @@ lex_query(char *query)
             }
             tmp[0] = query[i];
             tmp[1] = '\0';
-            TokenType type = ERROR_TOKEN;
+            TokenType type = TK_ERROR;
             if (query[i] == '(')
             {
-                type = L_PAREN;
+                type = TK_L_PAREN;
             }
             else if (query[i] == ')')
             {
-                type = R_PAREN;
+                type = TK_R_PAREN;
             }
             else if ((query[i] == '"') || (query[i] == '\''))
             {
-                type = QUOTE;
+                type = TK_QUOTE;
             }
             insert_token(&tokens, type, 0, tmp);
             i++;
@@ -319,7 +319,7 @@ lex_query(char *query)
         }
         if (len > 1)
         {
-            TokenType type = ERROR_TOKEN;
+            TokenType type = TK_ERROR;
             int n = -1;
             identity_token_type(data, &type, &n);
             insert_token(&tokens, type, n, data);
@@ -347,7 +347,7 @@ count_errors_tokens(Token *list, bool print_errors)
     while (current != NULL)
     {
         TokenType type = type_token(current);
-        if (type == ERROR_TOKEN)
+        if (type == TK_ERROR)
         {
             n++;
             if (print_errors)
@@ -355,15 +355,15 @@ count_errors_tokens(Token *list, bool print_errors)
                 fprintf(stderr, "(%u) error in token '%s'\n", n, string_token(current));
             }
         }
-        else if (type == QUOTE)
+        else if (type == TK_QUOTE)
         {
             n_quotes++;
         }
-        else if (type == L_PAREN)
+        else if (type == TK_L_PAREN)
         {
             n_l_parens++;
         }
-        else if (type == R_PAREN)
+        else if (type == TK_R_PAREN)
         {
             n_r_parens++;
         }
