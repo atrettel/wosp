@@ -192,6 +192,20 @@ find_operator_type(char *prefix)
     return type;
 }
 
+const char *
+find_operator_prefix(TokenType type)
+{
+    size_t n = sizeof(operator_types) / sizeof(operator_types[0]);
+    for (size_t i = 0; i < n; i++)
+    {
+        if (operator_types[i] == type)
+        {
+            return operator_prefixes[i];
+        }
+    }
+    return NULL;
+}
+
 void
 identity_token_type(char *data, TokenType *type, int *n)
 {
@@ -388,4 +402,83 @@ count_errors_tokens(Token *list, bool print_errors)
     }
 
     return n;
+}
+
+TokenType type_syntax_tree(SyntaxTree *tree)
+{
+    return tree->type;
+}
+
+int number_syntax_tree(SyntaxTree *tree)
+{
+    return tree->n;
+}
+
+char *string_syntax_tree(SyntaxTree *tree)
+{
+    return tree->string;
+}
+
+SyntaxTree *left_syntax_tree(SyntaxTree *tree)
+{
+    return tree->left;
+}
+
+SyntaxTree *right_syntax_tree(SyntaxTree *tree)
+{
+    return tree->right;
+}
+
+SyntaxTree *
+insert_parent(TokenType type, int n, char *string, SyntaxTree *left, SyntaxTree *right)
+{
+    SyntaxTree *current = (SyntaxTree *) malloc(sizeof(SyntaxTree));
+    if (current == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    current->type = type;
+    current->n = n;
+    current->string = string;
+    current->left = left;
+    current->right = right;
+    return current;
+}
+
+void
+print_syntax_tree(SyntaxTree *tree)
+{
+    if (tree != NULL)
+    {
+        TokenType type = type_syntax_tree(tree);
+        if (type == TK_WILDCARD)
+        {
+            printf("%s", string_syntax_tree(tree));
+        }
+        else
+        {
+            printf("(");
+            free_syntax_tree(left_syntax_tree(tree));
+            printf(" %s", find_operator_prefix(type));
+            if (number_syntax_tree(tree) != 0)
+            {
+                printf("%d", number_syntax_tree(tree));
+            }
+            printf(" ");
+            free_syntax_tree(right_syntax_tree(tree));
+            printf(")");
+        }
+    }
+}
+
+void
+free_syntax_tree(SyntaxTree *tree)
+{
+    if (tree != NULL)
+    {
+        free(string_syntax_tree(tree));
+        free_syntax_tree(left_syntax_tree(tree));
+        free_syntax_tree(right_syntax_tree(tree));
+    }
+    free(tree);
 }
