@@ -17,7 +17,7 @@ static const TokenType default_operation_type = TK_OR_OP;
 static const char default_operation_string[] = "OR";
 
 /* Output options */
-static const LanguageElement print_element = CLAUSE;
+static const LanguageElement print_element = LE_CLAUSE;
 static const int print_width = 1;
 
 #endif /* CONFIG_H */

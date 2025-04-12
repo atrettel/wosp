@@ -332,7 +332,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
     char c = original[i];
     if (i == strlen(original))
     {
-        char *reduced = reduce_word(original, QUERY);
+        char *reduced = reduce_word(original, WO_QUERY);
         backtrack_trie(trie, reduced, 0, match);
         free(reduced);
     }
@@ -472,7 +472,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
 
         /* Clauses and sentences return the start of the next element.
          * Decrement to include only the desired element. */
-        if ((element == CLAUSE || element == SENTENCE) && (next_word(outer_end_word) != NULL))
+        if ((element == LE_CLAUSE || element == LE_SENTENCE) && (next_word(outer_end_word) != NULL))
         {
             outer_end--;
         }

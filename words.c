@@ -41,7 +41,7 @@ reduce_word(char *original, WordOrigin origin)
     size_t len = 0, j = 0;
     for (size_t i = 0; i < strlen(original); i++)
     {
-        if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == QUERY)))
+        if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == WO_QUERY)))
         {
             len++;
         }
@@ -54,7 +54,7 @@ reduce_word(char *original, WordOrigin origin)
     }
     for (size_t i = 0; i < strlen(original); i++)
     {
-        if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == QUERY)))
+        if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == WO_QUERY)))
         {
             if (case_sensitive == true)
             {
@@ -81,7 +81,7 @@ append_word(Word **list, char *data, unsigned long line,
         exit(EXIT_FAILURE);
     }
     current->original = data;
-    current->reduced = reduce_word(data, SOURCE);
+    current->reduced = reduce_word(data, WO_SOURCE);
     current->line = line;
     current->column = column;
     current->position = position;
@@ -339,27 +339,27 @@ advance_word(Word *word, LanguageElement element, int n)
     if (n != 0)
     {
         Word *(*advance)(Word *) = NULL;
-        if (element == WORD && n > 0)
+        if (element == LE_WORD && n > 0)
         {
             advance = next_word;
         }
-        else if (element == WORD && n < 0)
+        else if (element == LE_WORD && n < 0)
         {
             advance = prev_word;
         }
-        else if (element == CLAUSE && n > 0)
+        else if (element == LE_CLAUSE && n > 0)
         {
             advance = next_clause;
         }
-        else if (element == CLAUSE && n < 0)
+        else if (element == LE_CLAUSE && n < 0)
         {
             advance = prev_clause;
         }
-        else if (element == SENTENCE && n > 0)
+        else if (element == LE_SENTENCE && n > 0)
         {
             advance = next_sentence;
         }
-        else if (element == SENTENCE && n < 0)
+        else if (element == LE_SENTENCE && n < 0)
         {
             advance = prev_sentence;
         }

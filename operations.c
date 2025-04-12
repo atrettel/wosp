@@ -107,20 +107,20 @@ Match *
 op_adj(Match *first_match, Match *second_match, int n)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, WORD, 1, n);
+    return proximity_search(first_match, second_match, LE_WORD, 1, n);
 }
 
 Match *
 op_near(Match *first_match, Match *second_match, int n)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, WORD, -n, +n);
+    return proximity_search(first_match, second_match, LE_WORD, -n, +n);
 }
 
 Match *
 op_with(Match *first_match, Match *second_match, int n)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, SENTENCE, -n, +n);
+    return proximity_search(first_match, second_match, LE_SENTENCE, -n, +n);
 }
 

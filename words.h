@@ -17,17 +17,18 @@ typedef struct Word
     struct Word *prev;
 } Word;
 
+/* TODO: lines and paragraphs */
 typedef enum LanguageElement
 {
-    WORD,
-    CLAUSE,
-    SENTENCE
+    LE_WORD,
+    LE_CLAUSE,
+    LE_SENTENCE
 } LanguageElement;
 
 typedef enum WordOrigin
 {
-    SOURCE,
-    QUERY
+    WO_SOURCE,
+    WO_QUERY
 } WordOrigin;
 
 char *reduce_word(char *, WordOrigin);
