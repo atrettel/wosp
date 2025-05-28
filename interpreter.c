@@ -350,6 +350,25 @@ lex_query(char *query)
     return first_token(tokens);
 }
 
+bool
+operator_token_type(TokenType type)
+{
+    if (type == TK_OR_OP   ||
+        type == TK_AND_OP  ||
+        type == TK_NOT_OP  ||
+        type == TK_XOR_OP  ||
+        type == TK_ADJ_OP  ||
+        type == TK_NEAR_OP ||
+        type == TK_WITH_OP)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 unsigned int
 count_errors_tokens(Token *list, bool print_errors)
 {
@@ -357,6 +376,7 @@ count_errors_tokens(Token *list, bool print_errors)
     unsigned int n_quotes = 0;
     unsigned int n_l_parens = 0;
     unsigned int n_r_parens = 0;
+    TokenType prev_type = TK_ERROR;
     Token *current = list;
     while (current != NULL)
     {
@@ -381,6 +401,25 @@ count_errors_tokens(Token *list, bool print_errors)
         {
             n_r_parens++;
         }
+        else if (operator_token_type(prev_type) && operator_token_type(type))
+        {
+            n++;
+            if (print_errors)
+            {
+                fprintf(stderr, "(%u) sequential operators at tokens '%s' and '%s'\n", n, string_token(prev_token(current)), string_token(current));
+            }
+        }
+        else if (prev_type == TK_WILDCARD && type == TK_WILDCARD && (n_quotes % 2 == 0))
+        {
+            /* This should be impossible given that the code inserts default
+             * operators, but I add it for completeness. */
+            n++;
+            if (print_errors)
+            {
+                fprintf(stderr, "(%u) sequential wildcards at tokens '%s' and '%s'\n", n, string_token(prev_token(current)), string_token(current));
+            }
+        }
+        prev_type = type;
         current = next_token(current);
     }
 
