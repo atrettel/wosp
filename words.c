@@ -246,11 +246,7 @@ prev_word(Word *word)
 Word *
 next_clause(Word *word)
 {
-    if (word == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (has_word(word) == true)
     {
         Word *current = word;
         while (clause_ending_word(current) == false)
@@ -259,16 +255,16 @@ next_clause(Word *word)
         }
         return next_word(current);
     }
+    else
+    {
+        return NULL;
+    }
 }
 
 Word *
 prev_clause(Word *word)
 {
-    if (word == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (has_word(word) == true)
     {
         Word *current = word;
         if (clause_ending_word(current) == true)
@@ -277,14 +273,17 @@ prev_clause(Word *word)
         }
         while (clause_ending_word(current) == false)
         {
-            Word *prev = prev_word(current);
-            if (prev == NULL)
+            if (has_prev_word(current) == false)
             {
                 return current;
             }
-            current = prev;
+            current = prev_word(current);
         }
         return next_word(current);
+    }
+    else
+    {
+        return NULL;
     }
 }
 
