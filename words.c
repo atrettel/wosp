@@ -194,14 +194,13 @@ sentence_ending_word(Word *word)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
-        Word *next = next_word(word);
-        if (next == NULL)
+        if (has_next_word(word) == false)
         {
             return is_ending_punctuation(data[len-1]);
         }
         else
         {
-            char *next_data = original_word(next);
+            char *next_data = original_word(next_word(word));
             if ((is_ending_punctuation(data[len-1]) == true) && (isupper(next_data[0])))
             {
                 return true;
