@@ -290,11 +290,7 @@ prev_clause(Word *word)
 Word *
 next_sentence(Word *word)
 {
-    if (word == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (has_word(word) == true)
     {
         Word *current = word;
         while (sentence_ending_word(current) == false)
@@ -303,16 +299,16 @@ next_sentence(Word *word)
         }
         return next_word(current);
     }
+    else
+    {
+        return NULL;
+    }
 }
 
 Word *
 prev_sentence(Word *word)
 {
-    if (word == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (has_word(word) == true)
     {
         Word *current = word;
         if (sentence_ending_word(current) == true)
@@ -321,14 +317,17 @@ prev_sentence(Word *word)
         }
         while (sentence_ending_word(current) == false)
         {
-            Word *prev = prev_word(current);
-            if (prev == NULL)
+            if (has_prev_word(current) == false)
             {
                 return current;
             }
-            current = prev;
+            current = prev_word(current);
         }
         return next_word(current);
+    }
+    else
+    {
+        return NULL;
     }
 }
 
