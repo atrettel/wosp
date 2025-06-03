@@ -220,26 +220,26 @@ sentence_ending_word(Word *word)
 Word *
 next_word(Word *word)
 {
-    if (word == NULL)
+    if (has_word(word) == true)
     {
-        return NULL;
+        return word->next;
     }
     else
     {
-        return word->next;
+        return NULL;
     }
 }
 
 Word *
 prev_word(Word *word)
 {
-    if (word == NULL)
+    if (has_word(word) == true)
     {
-        return NULL;
+        return word->prev;
     }
     else
     {
-        return word->prev;
+        return NULL;
     }
 }
 
