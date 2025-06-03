@@ -87,7 +87,7 @@ append_word(Word **list, char *data, unsigned long line,
     current->position = position;
     current->next = NULL;
     current->prev = *list;
-    if ((*list) != NULL)
+    if (has_word(*list) == true)
     {
         (*list)->next = current;
     }
