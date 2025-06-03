@@ -125,6 +125,47 @@ position_word(Word *word)
 }
 
 bool
+has_word(Word *word)
+{
+    if (word == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool
+has_next_word(Word *word)
+{
+    if ((has_word(          word)  == false) ||
+        (has_word(next_word(word)) == false))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool
+has_prev_word(Word *word)
+{
+    if ((has_word(          word)  == false) ||
+        (has_word(prev_word(word)) == false))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool
 clause_ending_word(Word *word)
 {
     if (word == NULL)
@@ -303,7 +344,7 @@ first_word(Word *word)
     else
     {
         Word *current = word;
-        while (prev_word(current) != NULL)
+        while (has_prev_word(current) == true)
         {
             current = prev_word(current);
         }
@@ -321,7 +362,7 @@ last_word(Word *word)
     else
     {
         Word *current = word;
-        while (next_word(current) != NULL)
+        while (has_next_word(current) == true)
         {
             current = next_word(current);
         }
@@ -394,7 +435,7 @@ void
 print_words(Word *list)
 {
     Word *current = list;
-    while (current != NULL)
+    while (has_word(current) == true)
     {
         printf("%10zu: '%s' ('%s')", position_word(current), original_word(current), reduced_word(current));
         if (sentence_ending_word(current) == true)
@@ -410,7 +451,7 @@ void
 free_words(Word *list)
 {
     Word *current = list;
-    while (current != NULL)
+    while (has_word(current) == true)
     {
         Word *next = next_word(current);
         free(current->original);
