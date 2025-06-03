@@ -168,11 +168,7 @@ has_prev_word(Word *word)
 bool
 clause_ending_word(Word *word)
 {
-    if (word == NULL)
-    {
-        return true;
-    }
-    else
+    if (has_word(word) == true)
     {
         if (sentence_ending_word(word) == true)
         {
@@ -185,16 +181,16 @@ clause_ending_word(Word *word)
             return is_clause_punctuation(data[len-1]);
         }
     }
+    else
+    {
+        return true;
+    }
 }
 
 bool
 sentence_ending_word(Word *word)
 {
-    if (word == NULL)
-    {
-        return true;
-    }
-    else
+    if (has_word(word) == true)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
@@ -215,6 +211,10 @@ sentence_ending_word(Word *word)
                 return false;
             }
         }
+    }
+    else
+    {
+        return true;
     }
 }
 
