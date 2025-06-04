@@ -13,7 +13,7 @@ void
 insert_token(Token **list, TokenType type, int n, char *string)
 {
     unsigned int cumulative_quotes = 0;
-    if (*list != NULL)
+    if (is_token(*list) == true)
     {
         cumulative_quotes = (*list)->cumulative_quotes;
     }
@@ -40,7 +40,7 @@ insert_token(Token **list, TokenType type, int n, char *string)
     current->string = string;
     current->next = NULL;
     current->prev = *list;
-    if (current->prev == NULL)
+    if (is_token(current->prev) == false)
     {
         current->cumulative_quotes = 0;
     }
@@ -52,7 +52,7 @@ insert_token(Token **list, TokenType type, int n, char *string)
     {
         current->cumulative_quotes = current->prev->cumulative_quotes;
     }
-    if ((*list) != NULL)
+    if (is_token(*list) == true)
     {
         (*list)->next = current;
     }
