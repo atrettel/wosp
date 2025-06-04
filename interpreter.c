@@ -583,12 +583,13 @@ parse_phrase(Token **token)
     SyntaxTree *a = parse_atom(token);
     while (true)
     {
-        if (type_token(*token) == TK_ADJ_OP)
+        TokenType type = type_token(*token);
+        if (type == TK_ADJ_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_atom(token);
-            return insert_parent(TK_ADJ_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(TK_ADJ_OP, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
