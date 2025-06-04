@@ -70,8 +70,8 @@ void free_syntax_tree(SyntaxTree *);
 /*
  * <Query>      -> <Expression> {AND <Expression> | OR <Expression> | NOT <Expression> | XOR <Expression>}
  * <Expression> -> <Phrase> {NEARn <Phrase> | WITHn <Phrase>}
- * <Phrase>     -> <Atom> {ADJn <Atom>} | "wildcard {wildcard}"
- * <Atom>       -> wildcard | (<Query>)
+ * <Phrase>     -> <Atom> {ADJn <Atom>}
+ * <Atom>       -> wildcard | (<Query>) | "wildcard {wildcard}"
 */
 SyntaxTree *parse_query(Token **);
 SyntaxTree *parse_expression(Token **);

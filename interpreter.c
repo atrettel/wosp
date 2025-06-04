@@ -613,6 +613,22 @@ parse_atom(Token **token)
         *token = next_token(*token);
         return parse_query(token);
     }
+    else if (type == TK_QUOTE)
+    {
+        *token = next_token(*token);
+        SyntaxTree *a = parse_atom(token);
+        while (type_token(*token) == TK_WILDCARD)
+        {
+            SyntaxTree *b = parse_atom(token);
+            a = insert_parent(TK_ADJ_OP, 1, NULL, a, b);
+        }
+        assert(type_token(*token) == TK_QUOTE);
+        if (type_token(*token) == TK_QUOTE)
+        {
+            *token = next_token(*token);
+        }
+        return a;
+    }
     else
     {
         Token *current = *token;
