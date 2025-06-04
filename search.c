@@ -38,7 +38,7 @@ set_match(Match *match, size_t i, Word *word)
 {
     assert(i >= 0);
     assert(i < number_of_words_in_match(match));
-    if (match->document == NULL)
+    if (is_word(match->document) == false)
     {
         match->document = first_word(word);
     }
@@ -70,7 +70,7 @@ length_of_match_list(Match *match)
 {
     Match *current = match;
     unsigned int n = 0;
-    while (current != NULL)
+    while (is_match_list(current) == true)
     {
         n++;
         current = next_match(current);
@@ -89,7 +89,7 @@ word_match(Match *match, size_t i)
 Word *
 document_match(Match *match)
 {
-    assert(match->document != NULL);
+    assert(is_word(match->document) == true);
     return match->document;
 }
 
@@ -98,7 +98,7 @@ document_list_match_list(Match *match)
 {
     DocumentNode *list = NULL;
     Match *current = match;
-    while (current != NULL)
+    while (is_match_list(current) == true)
     {
         insert_document(&list, document_match(current));
         current = next_match(current);
