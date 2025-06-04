@@ -122,13 +122,13 @@ is_match(Match * match)
 Match *
 next_match(Match *match)
 {
-    if (match == NULL)
+    if (is_match(match) == true)
     {
-        return NULL;
+        return match->next;
     }
     else
     {
-        return match->next;
+        return NULL;
     }
 }
 
@@ -190,11 +190,11 @@ print_matches(Match *match)
 {
     printf("%u matches\n", length_of_match_list(match));
     Match *current_match = match;
-    while (current_match != NULL)
+    while (is_match(current_match) == true)
     {
         Word *start_word = advance_word(start_word_match(current_match), print_element, -print_width);
         Word *end_word   = advance_word(  end_word_match(current_match), print_element, +print_width);
-        if (next_word(end_word) == NULL)
+        if (has_next_word(end_word) == false)
         {
             end_word = NULL;
         }
@@ -214,7 +214,7 @@ void
 concatenate_matches(Match *src, Match **dest)
 {
     Match *current = src;
-    while (current != NULL)
+    while (is_match(current) == true)
     {
         append_match(current, dest);
         current = next_match(current);
@@ -225,7 +225,7 @@ void
 free_matches(Match *list)
 {
     Match *current = list;
-    while (current != NULL)
+    while (is_match(current) == true)
     {
         Match *next = next_match(current);
         free(current->words);
