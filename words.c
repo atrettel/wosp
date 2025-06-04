@@ -334,11 +334,7 @@ prev_sentence(Word *word)
 Word *
 first_word(Word *word)
 {
-    if (word == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (has_word(word) == true)
     {
         Word *current = word;
         while (has_prev_word(current) == true)
@@ -347,16 +343,16 @@ first_word(Word *word)
         }
         return current;
     }
+    else
+    {
+        return NULL;
+    }
 }
 
 Word *
 last_word(Word *word)
 {
-    if (word == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (has_word(word) == true)
     {
         Word *current = word;
         while (has_next_word(current) == true)
@@ -364,6 +360,10 @@ last_word(Word *word)
             current = next_word(current);
         }
         return current;
+    }
+    else
+    {
+        return NULL;
     }
 }
 
