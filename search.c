@@ -489,7 +489,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
 {
     Match *match = NULL;
     Match *outer_match = first_match;
-    while (outer_match != NULL)
+    while (is_match(outer_match) == true)
     {
         Word *outer_start_word = advance_word(start_word_match(outer_match), element, start);
         Word   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
@@ -504,7 +504,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
         }
 
         Match *inner_match = second_match;
-        while (inner_match != NULL)
+        while (is_match(inner_match) == true)
         {
             if (document_match(outer_match) == document_match(inner_match))
             {
