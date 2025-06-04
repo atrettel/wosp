@@ -408,7 +408,7 @@ advance_word(Word *word, LanguageElement element, int n)
         for (size_t i = 0; i < m; i++)
         {
             Word *next = advance(current);
-            if (next != NULL)
+            if (has_word(next) == true)
             {
                 current = next;
             }
