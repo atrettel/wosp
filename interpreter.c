@@ -419,7 +419,7 @@ count_errors_tokens(Token *list, bool print_errors)
     unsigned int n_r_parens = 0;
     TokenType prev_type = TK_ERROR;
     Token *current = list;
-    while (current != NULL)
+    while (is_token(current) == true)
     {
         TokenType type = type_token(current);
         if (type == TK_ERROR)
