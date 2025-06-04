@@ -87,7 +87,7 @@ append_word(Word **list, char *data, unsigned long line,
     current->position = position;
     current->next = NULL;
     current->prev = *list;
-    if (has_word(*list) == true)
+    if (is_word(*list) == true)
     {
         (*list)->next = current;
     }
@@ -125,7 +125,7 @@ position_word(Word *word)
 }
 
 bool
-has_word(Word *word)
+is_word(Word *word)
 {
     if (word == NULL)
     {
@@ -140,8 +140,8 @@ has_word(Word *word)
 bool
 has_next_word(Word *word)
 {
-    if ((has_word(          word)  == false) ||
-        (has_word(next_word(word)) == false))
+    if ((is_word(          word)  == false) ||
+        (is_word(next_word(word)) == false))
     {
         return false;
     }
@@ -154,8 +154,8 @@ has_next_word(Word *word)
 bool
 has_prev_word(Word *word)
 {
-    if ((has_word(          word)  == false) ||
-        (has_word(prev_word(word)) == false))
+    if ((is_word(          word)  == false) ||
+        (is_word(prev_word(word)) == false))
     {
         return false;
     }
@@ -168,7 +168,7 @@ has_prev_word(Word *word)
 bool
 clause_ending_word(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         if (sentence_ending_word(word) == true)
         {
@@ -190,7 +190,7 @@ clause_ending_word(Word *word)
 bool
 sentence_ending_word(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
@@ -220,7 +220,7 @@ sentence_ending_word(Word *word)
 Word *
 next_word(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         return word->next;
     }
@@ -233,7 +233,7 @@ next_word(Word *word)
 Word *
 prev_word(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         return word->prev;
     }
@@ -246,7 +246,7 @@ prev_word(Word *word)
 Word *
 next_clause(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         Word *current = word;
         while (clause_ending_word(current) == false)
@@ -264,7 +264,7 @@ next_clause(Word *word)
 Word *
 prev_clause(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         Word *current = word;
         if (clause_ending_word(current) == true)
@@ -290,7 +290,7 @@ prev_clause(Word *word)
 Word *
 next_sentence(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         Word *current = word;
         while (sentence_ending_word(current) == false)
@@ -308,7 +308,7 @@ next_sentence(Word *word)
 Word *
 prev_sentence(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         Word *current = word;
         if (sentence_ending_word(current) == true)
@@ -334,7 +334,7 @@ prev_sentence(Word *word)
 Word *
 first_word(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         Word *current = word;
         while (has_prev_word(current) == true)
@@ -352,7 +352,7 @@ first_word(Word *word)
 Word *
 last_word(Word *word)
 {
-    if (has_word(word) == true)
+    if (is_word(word) == true)
     {
         Word *current = word;
         while (has_next_word(current) == true)
@@ -407,7 +407,7 @@ advance_word(Word *word, LanguageElement element, int n)
         for (size_t i = 0; i < m; i++)
         {
             Word *next = advance(current);
-            if (has_word(next) == true)
+            if (is_word(next) == true)
             {
                 current = next;
             }
@@ -431,7 +431,7 @@ void
 print_words(Word *list)
 {
     Word *current = list;
-    while (has_word(current) == true)
+    while (is_word(current) == true)
     {
         printf("%10zu: '%s' ('%s')", position_word(current), original_word(current), reduced_word(current));
         if (sentence_ending_word(current) == true)
@@ -447,7 +447,7 @@ void
 free_words(Word *list)
 {
     Word *current = list;
-    while (has_word(current) == true)
+    while (is_word(current) == true)
     {
         Word *next = next_word(current);
         free(current->original);

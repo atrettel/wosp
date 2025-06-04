@@ -38,7 +38,7 @@ char *reduced_word(Word *);
 unsigned long line_word(Word *);
 unsigned long column_word(Word *);
 unsigned long position_word(Word *);
-bool has_word(Word *);
+bool is_word(Word *);
 bool has_next_word(Word *);
 bool has_prev_word(Word *);
 bool clause_ending_word(Word *);
