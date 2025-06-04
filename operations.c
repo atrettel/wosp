@@ -15,14 +15,14 @@ op_boolean(Match *first_match, Match *second_match, bool condition(DocumentNode 
     DocumentNode *second_documents = document_list_match_list(second_match);
     bool processed_first = false;
     Match *current_match = first_match;
-    while (current_match != NULL)
+    while (is_match(current_match) == true)
     {
         if (condition(first_documents, second_documents, document_match(current_match)) == true)
         {
             append_match(current_match, &match);
         }
         current_match = next_match(current_match);
-        if ((current_match == NULL) && (processed_first == false))
+        if ((is_match(current_match) == false) && (processed_first == false))
         {
             processed_first = true;
             current_match = second_match;
