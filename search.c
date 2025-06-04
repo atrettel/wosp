@@ -426,13 +426,13 @@ insert_document(DocumentNode **list, Word *document)
 DocumentNode *
 next_document(DocumentNode *list)
 {
-    if (list == NULL)
+    if (is_document(list) == true)
     {
-        return NULL;
+        return list->next;
     }
     else
     {
-        return list->next;
+        return NULL;
     }
 }
 
@@ -440,7 +440,7 @@ bool
 has_document(DocumentNode *list, Word *document)
 {
     DocumentNode *current = list;
-    while (current != NULL)
+    while (is_document(current) == true)
     {
         if (current->document == document)
         {
@@ -468,7 +468,7 @@ void
 free_document_list(DocumentNode *list)
 {
     DocumentNode *current = list;
-    while (current != NULL)
+    while (is_document(current) == true)
     {
         DocumentNode *next = next_document(current);
         free(current);
