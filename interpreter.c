@@ -160,6 +160,47 @@ last_token(Token *token)
     }
 }
 
+bool
+is_token(Token *token)
+{
+    if (token == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool
+has_next_token(Token *token)
+{
+    if ((is_token(           token)  == false) ||
+        (is_token(next_token(token)) == false))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool
+has_prev_token(Token *token)
+{
+    if ((is_token(           token)  == false) ||
+        (is_token(prev_token(token)) == false))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 void
 free_tokens(Token *list)
 {
