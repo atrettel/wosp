@@ -73,10 +73,10 @@ void free_syntax_tree(SyntaxTree *);
  * <Phrase>     -> <Atom> {ADJn <Atom>} | "wildcard {wildcard}"
  * <Atom>       -> wildcard | (<Query>)
 */
-SyntaxTree *parse_query(Token *);
-SyntaxTree *parse_expression(Token *);
-SyntaxTree *parse_phrase(Token *);
-SyntaxTree *parse_atom(Token *);
+SyntaxTree *parse_query(Token **);
+SyntaxTree *parse_expression(Token **);
+SyntaxTree *parse_phrase(Token **);
+SyntaxTree *parse_atom(Token **);
 
 Match *eval_syntax_tree(SyntaxTree *);
 

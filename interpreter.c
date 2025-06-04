@@ -538,14 +538,14 @@ print_syntax_tree(SyntaxTree *tree)
         else
         {
             printf("(");
-            free_syntax_tree(left_syntax_tree(tree));
+            print_syntax_tree(left_syntax_tree(tree));
             printf(" %s", find_operator_prefix(type));
             if (number_syntax_tree(tree) != 0)
             {
                 printf("%d", number_syntax_tree(tree));
             }
             printf(" ");
-            free_syntax_tree(right_syntax_tree(tree));
+            print_syntax_tree(right_syntax_tree(tree));
             printf(")");
         }
     }
@@ -561,4 +561,61 @@ free_syntax_tree(SyntaxTree *tree)
         free_syntax_tree(right_syntax_tree(tree));
     }
     free(tree);
+}
+
+SyntaxTree *
+parse_query(Token **token)
+{
+    SyntaxTree *a = parse_expression(token);
+    return a;
+}
+
+SyntaxTree *
+parse_expression(Token **token)
+{
+    SyntaxTree *a = parse_phrase(token);
+    return a;
+}
+
+SyntaxTree *
+parse_phrase(Token **token)
+{
+    SyntaxTree *a = parse_atom(token);
+    while (true)
+    {
+        if (type_token(*token) == TK_ADJ_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_atom(token);
+            return insert_parent(TK_ADJ_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else
+        {
+            return a;
+        }
+    }
+}
+
+SyntaxTree *
+parse_atom(Token **token)
+{
+    TokenType type = type_token(*token);
+    if (type == TK_WILDCARD)
+    {
+        Token *current = *token;
+        *token = next_token(*token);
+        return insert_parent(TK_WILDCARD, 0, string_token(current), NULL, NULL);
+    }
+    else if (type == TK_L_PAREN)
+    {
+        *token = next_token(*token);
+        return parse_query(token);
+    }
+    else
+    {
+        Token *current = *token;
+        *token = next_token(*token);
+        return insert_parent(TK_ERROR, number_token(current), string_token(current), NULL, NULL);
+    }
 }
