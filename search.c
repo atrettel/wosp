@@ -70,7 +70,7 @@ length_of_match_list(Match *match)
 {
     Match *current = match;
     unsigned int n = 0;
-    while (is_match_list(current) == true)
+    while (is_match(current) == true)
     {
         n++;
         current = next_match(current);
@@ -98,7 +98,7 @@ document_list_match_list(Match *match)
 {
     DocumentNode *list = NULL;
     Match *current = match;
-    while (is_match_list(current) == true)
+    while (is_match(current) == true)
     {
         insert_document(&list, document_match(current));
         current = next_match(current);
@@ -107,7 +107,7 @@ document_list_match_list(Match *match)
 }
 
 bool
-is_match_list(Match * match)
+is_match(Match * match)
 {
     if (match == NULL)
     {
@@ -452,7 +452,7 @@ has_document(DocumentNode *list, Word *document)
 }
 
 bool
-is_document_list(DocumentNode *list)
+is_document(DocumentNode *list)
 {
     if (list == NULL)
     {
