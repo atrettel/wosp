@@ -305,7 +305,7 @@ has_word_trie(TrieNode *trie, char *reduced)
     Match *match = NULL;
     backtrack_trie(trie, reduced, 0, &match);
     bool result = false;
-    if (match == NULL)
+    if (is_match(match) == false)
     {
         result = false;
     }
