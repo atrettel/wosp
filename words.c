@@ -404,7 +404,6 @@ advance_word(Word *word, LanguageElement element, int n)
         assert(advance != NULL);
 
         size_t m = abs(n);
-        current = word;
         for (size_t i = 0; i < m; i++)
         {
             Word *next = advance(current);
