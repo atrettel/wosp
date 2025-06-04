@@ -62,101 +62,101 @@ insert_token(Token **list, TokenType type, int n, char *string)
 TokenType
 type_token(Token *token)
 {
-    if (token == NULL)
+    if (is_token(token) == true)
     {
-        return TK_ERROR;
+        return token->type;
     }
     else
     {
-        return token->type;
+        return TK_ERROR;
     }
 }
 
 int
 number_token(Token *token)
 {
-    if (token == NULL)
+    if (is_token(token) == true)
     {
-        return 0;
+        return token->n;
     }
     else
     {
-        return token->n;
+        return 0;
     }
 }
 
 char *
 string_token(Token *token)
 {
-    if (token == NULL)
+    if (is_token(token) == true)
     {
-        return NULL;
+        return token->string;
     }
     else
     {
-        return token->string;
+        return NULL;
     }
 }
 
 Token *
 prev_token(Token *token)
 {
-    if (token == NULL)
+    if (is_token(token) == true)
     {
-        return NULL;
+        return token->prev;
     }
     else
     {
-        return token->prev;
+        return NULL;
     }
 }
 
 Token *
 next_token(Token *token)
 {
-    if (token == NULL)
+    if (is_token(token) == true)
     {
-        return NULL;
+        return token->next;
     }
     else
     {
-        return token->next;
+        return NULL;
     }
 }
 
 Token *
 first_token(Token *token)
 {
-    if (token == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (is_token(token) == true)
     {
         Token *current = token;
-        while (prev_token(current) != NULL)
+        while (has_prev_token(current) == true)
         {
             current = prev_token(current);
         }
         return current;
+    }
+    else
+    {
+        return NULL;
     }
 }
 
 Token *
 last_token(Token *token)
 {
-    if (token == NULL)
-    {
-        return NULL;
-    }
-    else
+    if (is_token(token) == true)
     {
         Token *current = token;
-        while (next_token(current) != NULL)
+        while (has_next_token(current) == true)
         {
             current = next_token(current);
         }
         return current;
+    }
+    else
+    {
+        return NULL;
     }
 }
 
@@ -205,7 +205,7 @@ void
 free_tokens(Token *list)
 {
     Token *current = list;
-    while (current != NULL)
+    while (is_token(current) == true)
     {
         Token *next = next_token(current);
         free(current->string);
