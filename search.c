@@ -106,6 +106,19 @@ document_list_match_list(Match *match)
     return list;
 }
 
+bool
+is_match_list(Match * match)
+{
+    if (match == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 Match *
 next_match(Match *match)
 {
@@ -436,6 +449,19 @@ has_document(DocumentNode *list, Word *document)
         current = next_document(current);
     }
     return false;
+}
+
+bool
+is_document_list(DocumentNode *list)
+{
+    if (list == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 void

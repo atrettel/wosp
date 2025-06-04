@@ -16,6 +16,7 @@ typedef struct DocumentNode
 void insert_document(DocumentNode **, Word *document);
 DocumentNode *next_document(DocumentNode *);
 bool has_document(DocumentNode *, Word *);
+bool is_document_list(DocumentNode *);
 void free_document_list(DocumentNode *);
 
 /* A match is a continuous set of words matching a set of constraints.  Each
@@ -37,6 +38,7 @@ unsigned int length_of_match_list(Match *);
 Word *word_match(Match *, size_t);
 Word *document_match(Match *);
 DocumentNode *document_list_match_list(Match *);
+bool is_match_list(Match *);
 Match *next_match(Match *);
 Word *start_word_match(Match *);
 Word *end_word_match(Match *);
