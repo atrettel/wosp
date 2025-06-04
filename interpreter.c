@@ -604,14 +604,16 @@ parse_atom(Token **token)
     TokenType type = type_token(*token);
     if (type == TK_WILDCARD)
     {
-        Token *current = *token;
+        SyntaxTree *a = insert_parent(TK_WILDCARD, 0, string_token(*token), NULL, NULL);
         *token = next_token(*token);
-        return insert_parent(TK_WILDCARD, 0, string_token(current), NULL, NULL);
+        return a;
     }
     else if (type == TK_L_PAREN)
     {
         *token = next_token(*token);
-        return parse_query(token);
+        SyntaxTree *a = parse_query(token);
+        *token = next_token(*token);
+        return a;
     }
     else if (type == TK_QUOTE)
     {
@@ -619,8 +621,9 @@ parse_atom(Token **token)
         SyntaxTree *a = parse_atom(token);
         while (type_token(*token) == TK_WILDCARD)
         {
-            SyntaxTree *b = parse_atom(token);
+            SyntaxTree *b = insert_parent(TK_WILDCARD, 0, string_token(*token), NULL, NULL);
             a = insert_parent(TK_ADJ_OP, 1, NULL, a, b);
+            *token = next_token(*token);
         }
         assert(type_token(*token) == TK_QUOTE);
         if (type_token(*token) == TK_QUOTE)
