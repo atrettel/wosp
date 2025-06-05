@@ -626,7 +626,11 @@ parse_atom(Token **token)
     {
         *token = next_token(*token);
         SyntaxTree *a = parse_query(token);
-        *token = next_token(*token);
+        assert(type_token(*token) == TK_R_PAREN);
+        if (type_token(*token) == TK_R_PAREN)
+        {
+            *token = next_token(*token);
+        }
         return a;
     }
     else if (type == TK_QUOTE)
