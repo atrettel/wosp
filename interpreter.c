@@ -581,7 +581,21 @@ SyntaxTree *
 parse_expression_b(Token **token)
 {
     SyntaxTree *a = parse_expression_c(token);
-    return a;
+    while (true)
+    {
+        TokenType type = type_token(*token);
+        if (type == TK_WITH_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_c(token);
+            a = insert_parent(TK_WITH_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else
+        {
+            return a;
+        }
+    }
 }
 
 SyntaxTree *
