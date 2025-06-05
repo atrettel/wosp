@@ -574,7 +574,42 @@ SyntaxTree *
 parse_expression_a(Token **token)
 {
     SyntaxTree *a = parse_expression_b(token);
-    return a;
+    while (true)
+    {
+        TokenType type = type_token(*token);
+        if (type == TK_AND_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_a(token);
+            a = insert_parent(TK_AND_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else if (type == TK_OR_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_a(token);
+            a = insert_parent(TK_OR_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else if (type == TK_NOT_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_a(token);
+            a = insert_parent(TK_NOT_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else if (type == TK_XOR_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_a(token);
+            a = insert_parent(TK_XOR_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else
+        {
+            return a;
+        }
+    }
 }
 
 SyntaxTree *
