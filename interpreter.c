@@ -332,7 +332,7 @@ lex_query(char *query)
     size_t n = strlen(query);
     while (i < n)
     {
-        if ((query[i] == '(') || (query[i] == ')') || (query[i] == '"') || (query[i] == '\''))
+        while ((query[i] == '(') || (query[i] == ')') || (query[i] == '"') || (query[i] == '\''))
         {
             char *tmp = (char *) malloc(2 * sizeof(char));
             if (tmp == NULL)
