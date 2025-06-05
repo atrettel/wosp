@@ -72,7 +72,8 @@ void free_syntax_tree(SyntaxTree *);
  * <Expression A> -> <Expression B> {SAMEn <Expression B>}
  * <Expression B> -> <Expression C> {WITHn <Expression C> | ALONGn <Expression C>}
  * <Expression C> -> <Expression D> {AMONGn <Expression D>}
- * <Expression D> -> <Atom> {NEARn <Atom>}
+ * <Expression D> -> <Expression E> {NEARn <Expression E>}
+ * <Expression E> -> <Atom> {ADJn <Atom>}
  * <Atom>       -> wildcard | (<Query>) | "wildcard {wildcard}"
 */
 SyntaxTree *parse_query(Token **);
@@ -80,6 +81,7 @@ SyntaxTree *parse_expression_a(Token **);
 SyntaxTree *parse_expression_b(Token **);
 SyntaxTree *parse_expression_c(Token **);
 SyntaxTree *parse_expression_d(Token **);
+SyntaxTree *parse_expression_e(Token **);
 SyntaxTree *parse_atom(Token **);
 
 Match *eval_syntax_tree(SyntaxTree *);

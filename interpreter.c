@@ -594,6 +594,13 @@ parse_expression_c(Token **token)
 SyntaxTree *
 parse_expression_d(Token **token)
 {
+    SyntaxTree *a = parse_expression_e(token);
+    return a;
+}
+
+SyntaxTree *
+parse_expression_e(Token **token)
+{
     SyntaxTree *a = parse_atom(token);
     while (true)
     {
