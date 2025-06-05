@@ -566,19 +566,33 @@ free_syntax_tree(SyntaxTree *tree)
 SyntaxTree *
 parse_query(Token **token)
 {
-    SyntaxTree *a = parse_expression(token);
+    SyntaxTree *a = parse_expression_a(token);
     return a;
 }
 
 SyntaxTree *
-parse_expression(Token **token)
+parse_expression_a(Token **token)
 {
-    SyntaxTree *a = parse_phrase(token);
+    SyntaxTree *a = parse_expression_b(token);
     return a;
 }
 
 SyntaxTree *
-parse_phrase(Token **token)
+parse_expression_b(Token **token)
+{
+    SyntaxTree *a = parse_expression_c(token);
+    return a;
+}
+
+SyntaxTree *
+parse_expression_c(Token **token)
+{
+    SyntaxTree *a = parse_expression_d(token);
+    return a;
+}
+
+SyntaxTree *
+parse_expression_d(Token **token)
 {
     SyntaxTree *a = parse_atom(token);
     while (true)
