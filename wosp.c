@@ -92,7 +92,7 @@ main(int argc, char *argv[])
     Token *tokens = lex_query(argv[1]);
     unsigned int n_errors = count_errors_tokens(tokens, true);
 
-    printf("Lex tokens\n");
+    printf("Lex query into tokens\n");
     Token *current = tokens;
     while (is_token(current) == true)
     {
@@ -102,10 +102,11 @@ main(int argc, char *argv[])
 
     if (n_errors == 0)
     {
-        printf("Parse tokens\n");
+        printf("Parse tokens into syntax tree\n");
         SyntaxTree *tree = parse_query(&tokens);
         print_syntax_tree(tree);
         printf("\n");
+        printf("Evaluate syntax tree\n");
         bool error_flag = false;
         Match *matches = eval_syntax_tree(tree, trie, &error_flag);
         if (error_flag == false)
@@ -115,7 +116,7 @@ main(int argc, char *argv[])
         }
         else
         {
-            printf("At least one syntax error present!\n");
+            fprintf(stderr, "At least one syntax error present\n");
         }
     }
     else
