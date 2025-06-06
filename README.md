@@ -5,7 +5,23 @@ by Andrew Trettel
 
 ## Usage
 
-    ./wosp < example.txt
+    ./wosp "QUERY" < file.txt
+
+For example,
+
+    ./wosp "(assent ADJ5 (law\$1 OR act\$1)) OR (right\$1 ADJ5 people)" < declaration.txt
+
+
+## Query language
+
+The query language is based on the query language used at the
+[USPTO](https://www.uspto.gov/patents/search/patent-public-search/operators).
+
+Currently supported operators:
+
+- Boolean operators: `AND`, `OR`, `NOT`, and `XOR`.
+
+- Proximity operators: `ADJ`, `NEAR`, and `WITH`.
 
 
 ## How does it work?
