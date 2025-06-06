@@ -1,8 +1,10 @@
 /* Copyright (C) 2025 Andrew Trettel */
+#include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "interpreter.h"
 #include "operations.h"
 #include "search.h"
 #include "words.h"
@@ -77,7 +79,7 @@ read_source_words(Word **list)
 }
 
 int
-main(void)
+main(int argc, char *argv[])
 {
     Word *list = NULL;
     TrieNode *trie = NULL;
@@ -86,14 +88,42 @@ main(void)
     read_source_words(&list);
     add_words_to_trie(trie, list);
 
-    Match *first_match = wildcard_search(trie, "law$1");
-    Match *second_match = wildcard_search(trie, "assent");
-    Match *match = op_with(first_match, second_match, 1);
-    free_matches(first_match);
-    free_matches(second_match);
+    assert(argc > 1);
+    Token *tokens = lex_query(argv[1]);
+    unsigned int n_errors = count_errors_tokens(tokens, true);
 
-    print_matches(match);
-    free_matches(match);
+    printf("Lex tokens\n");
+    Token *current = tokens;
+    while (is_token(current) == true)
+    {
+        printf("%s - %d\n", string_token(current), type_token(current));
+        current = next_token(current);
+    }
+
+    if (n_errors == 0)
+    {
+        printf("Parse tokens\n");
+        SyntaxTree *tree = parse_query(&tokens);
+        print_syntax_tree(tree);
+        printf("\n");
+        bool error_flag = false;
+        Match *matches = eval_syntax_tree(tree, trie, &error_flag);
+        if (error_flag == false)
+        {
+            print_matches(matches);
+            free_matches(matches);
+        }
+        else
+        {
+            printf("At least one syntax error present!\n");
+        }
+    }
+    else
+    {
+        fprintf(stderr, "One of more errors in query\n");
+    }
+
+    free_tokens(tokens);
 
     free_trie(trie);
     free_words(list);

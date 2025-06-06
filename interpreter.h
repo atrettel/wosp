@@ -84,6 +84,6 @@ SyntaxTree *parse_expression_d(Token **);
 SyntaxTree *parse_expression_e(Token **);
 SyntaxTree *parse_atom(Token **);
 
-Match *eval_syntax_tree(SyntaxTree *);
+Match *eval_syntax_tree(SyntaxTree *, TrieNode *, bool *);
 
 #endif /* INTERPRETER_H */

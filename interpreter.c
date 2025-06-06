@@ -6,6 +6,7 @@
 
 #include "config.h"
 #include "interpreter.h"
+#include "operations.h"
 
 #include <stdio.h>
 
@@ -726,4 +727,65 @@ parse_atom(Token **token)
         *token = next_token(*token);
         return insert_parent(TK_ERROR, number_token(current), string_token(current), NULL, NULL);
     }
+}
+
+Match *
+eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
+{
+    Match *matches = NULL;
+    TokenType type = type_syntax_tree(tree);
+    if (type == TK_ERROR)
+    {
+        *error_flag = true;
+        printf("Fatal syntax error in token %s\n", string_syntax_tree(tree));
+    }
+    else if (type == TK_WILDCARD)
+    {
+        matches = wildcard_search(trie, string_syntax_tree(tree));
+    }
+    else
+    {
+        Match *left  = eval_syntax_tree(left_syntax_tree(tree),  trie, error_flag);
+        Match *right = eval_syntax_tree(right_syntax_tree(tree), trie, error_flag);
+        int n = number_syntax_tree(tree);
+        if (*error_flag == false)
+        {
+            if (type == TK_OR_OP)
+            {
+                matches = op_or(left, right);
+            }
+            else if (type == TK_AND_OP)
+            {
+                matches = op_and(left, right);
+            }
+            else if (type == TK_NOT_OP)
+            {
+                matches = op_not(left, right);
+            }
+            else if (type == TK_XOR_OP)
+            {
+                matches = op_xor(left, right);
+            }
+            else if (type == TK_ADJ_OP)
+            {
+                matches = op_adj(left, right, n);
+            }
+            else if (type == TK_NEAR_OP)
+            {
+                matches = op_near(left, right, n);
+            }
+            else if (type == TK_WITH_OP)
+            {
+                matches = op_with(left, right, n);
+            }
+            else
+            {
+                *error_flag = true;
+                printf("Unidentified operator in token %s\n", string_syntax_tree(tree));
+            }
+        }
+        free(left);
+        free(right);
+    }
+    return matches;
 }
