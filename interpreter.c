@@ -784,8 +784,8 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
                 fprintf(stderr, "Unidentified operator in token %s\n", string_syntax_tree(tree));
             }
         }
-        free(left);
-        free(right);
+        free_matches(left);
+        free_matches(right);
     }
     return matches;
 }
