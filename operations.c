@@ -125,6 +125,13 @@ op_among(Match *first_match, Match *second_match, int n)
 }
 
 Match *
+op_along(Match *first_match, Match *second_match, int n)
+{
+    assert(n > 0);
+    return proximity_search(first_match, second_match, LE_LINE, -n, +n);
+}
+
+Match *
 op_with(Match *first_match, Match *second_match, int n)
 {
     assert(n > 0);

@@ -288,6 +288,48 @@ prev_clause(Word *word)
 }
 
 Word *
+next_line(Word *word)
+{
+    if (is_word(word) == true)
+    {
+        unsigned long line = line_word(word);
+        Word *current = word;
+        while (line_word(current) == line)
+        {
+            current = next_word(current);
+        }
+        return next_word(current);
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
+prev_line(Word *word)
+{
+    if (is_word(word) == true)
+    {
+        unsigned long line = line_word(word);
+        Word *current = word;
+        while (line_word(current) == line)
+        {
+            if (has_prev_word(current) == false)
+            {
+                return current;
+            }
+            current = prev_word(current);
+        }
+        return next_word(current);
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
 next_sentence(Word *word)
 {
     if (is_word(word) == true)
@@ -392,6 +434,14 @@ advance_word(Word *word, LanguageElement element, int n)
         else if (element == LE_CLAUSE && n < 0)
         {
             advance = prev_clause;
+        }
+        else if (element == LE_LINE && n > 0)
+        {
+            advance = next_line;
+        }
+        else if (element == LE_LINE && n < 0)
+        {
+            advance = prev_line;
         }
         else if (element == LE_SENTENCE && n > 0)
         {

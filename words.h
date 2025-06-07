@@ -22,6 +22,7 @@ typedef enum LanguageElement
 {
     LE_WORD,
     LE_CLAUSE,
+    LE_LINE,
     LE_SENTENCE
 } LanguageElement;
 
@@ -47,6 +48,8 @@ Word *next_word(Word *);
 Word *prev_word(Word *);
 Word *next_clause(Word *);
 Word *prev_clause(Word *);
+Word *next_line(Word *);
+Word *prev_line(Word *);
 Word *next_sentence(Word *);
 Word *prev_sentence(Word *);
 Word *first_word(Word *);

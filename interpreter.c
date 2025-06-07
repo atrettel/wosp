@@ -633,6 +633,13 @@ parse_expression_b(Token **token)
             SyntaxTree *b = parse_expression_c(token);
             a = insert_parent(TK_WITH_OP, number_token(op_token), string_token(op_token), a, b);
         }
+        else if (type == TK_ALONG_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_c(token);
+            a = insert_parent(TK_ALONG_OP, number_token(op_token), string_token(op_token), a, b);
+        }
         else
         {
             return a;
@@ -797,6 +804,10 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
             else if (type == TK_AMONG_OP)
             {
                 matches = op_among(left, right, n);
+            }
+            else if (type == TK_ALONG_OP)
+            {
+                matches = op_along(left, right, n);
             }
             else if (type == TK_WITH_OP)
             {
