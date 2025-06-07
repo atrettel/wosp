@@ -18,7 +18,10 @@ typedef enum TokenType
     TK_XOR_OP,   /* XOR */
     TK_ADJ_OP,   /* ADJ5 */
     TK_NEAR_OP,  /* NEAR5 */
+    TK_AMONG_OP, /* AMONG5 */
+    TK_ALONG_OP, /* ALONG5 */
     TK_WITH_OP,  /* WITH5 */
+    TK_SAME_OP,  /* SAME5 */
     TK_ERROR     /* This should not happen. */
 } TokenType;
 

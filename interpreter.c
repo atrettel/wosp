@@ -215,8 +215,8 @@ free_tokens(Token *list)
     }
 }
 
-static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "with"};
-static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_WITH_OP};
+static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "among",     "along",     "with",     "same"};
+static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_AMONG_OP, TK_ALONG_OP, TK_WITH_OP, TK_SAME_OP};
 
 TokenType
 find_operator_type(char *prefix)
@@ -301,9 +301,12 @@ identity_token_type(char *data, TokenType *type, int *n)
         *type = prefix_type;
         *n = 0;
     }
-    else if (((prefix_type == TK_ADJ_OP)  ||
-              (prefix_type == TK_NEAR_OP) ||
-              (prefix_type == TK_WITH_OP)) && (has_nondigits == false))
+    else if (((prefix_type == TK_ADJ_OP)   ||
+              (prefix_type == TK_NEAR_OP)  ||
+              (prefix_type == TK_WITH_OP)  ||
+              (prefix_type == TK_AMONG_OP) ||
+              (prefix_type == TK_ALONG_OP) ||
+              (prefix_type == TK_SAME_OP)) && (has_nondigits == false))
     {
         *type = prefix_type;
         if (k == 0)
@@ -395,13 +398,16 @@ lex_query(char *query)
 bool
 operator_token_type(TokenType type)
 {
-    if (type == TK_OR_OP   ||
-        type == TK_AND_OP  ||
-        type == TK_NOT_OP  ||
-        type == TK_XOR_OP  ||
-        type == TK_ADJ_OP  ||
-        type == TK_NEAR_OP ||
-        type == TK_WITH_OP)
+    if (type == TK_OR_OP    ||
+        type == TK_AND_OP   ||
+        type == TK_NOT_OP   ||
+        type == TK_XOR_OP   ||
+        type == TK_ADJ_OP   ||
+        type == TK_NEAR_OP  ||
+        type == TK_AMONG_OP ||
+        type == TK_ALONG_OP ||
+        type == TK_WITH_OP  ||
+        type == TK_SAME_OP)
     {
         return true;
     }
@@ -638,7 +644,21 @@ SyntaxTree *
 parse_expression_c(Token **token)
 {
     SyntaxTree *a = parse_expression_d(token);
-    return a;
+    while (true)
+    {
+        TokenType type = type_token(*token);
+        if (type == TK_AMONG_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_e(token);
+            a = insert_parent(TK_AMONG_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else
+        {
+            return a;
+        }
+    }
 }
 
 SyntaxTree *
@@ -773,6 +793,10 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
             else if (type == TK_NEAR_OP)
             {
                 matches = op_near(left, right, n);
+            }
+            else if (type == TK_AMONG_OP)
+            {
+                matches = op_among(left, right, n);
             }
             else if (type == TK_WITH_OP)
             {

@@ -9,8 +9,11 @@ Match *op_and(Match *, Match *);
 Match *op_not(Match *, Match *);
 Match *op_xor(Match *, Match *);
 
-Match *op_near(Match *, Match *, int);
 Match *op_adj(Match *, Match *, int);
+Match *op_near(Match *, Match *, int);
+Match *op_among(Match *, Match *, int);
+Match *op_along(Match *, Match *, int);
 Match *op_with(Match *, Match *, int);
+Match *op_same(Match *, Match *, int);
 
 #endif /* OPERATIONS_H */
