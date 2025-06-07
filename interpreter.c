@@ -574,13 +574,6 @@ SyntaxTree *
 parse_query(Token **token)
 {
     SyntaxTree *a = parse_expression_a(token);
-    return a;
-}
-
-SyntaxTree *
-parse_expression_a(Token **token)
-{
-    SyntaxTree *a = parse_expression_b(token);
     while (true)
     {
         TokenType type = type_token(*token);
@@ -611,6 +604,27 @@ parse_expression_a(Token **token)
             *token = next_token(*token);
             SyntaxTree *b = parse_expression_a(token);
             a = insert_parent(TK_XOR_OP, number_token(op_token), string_token(op_token), a, b);
+        }
+        else
+        {
+            return a;
+        }
+    }
+}
+
+SyntaxTree *
+parse_expression_a(Token **token)
+{
+    SyntaxTree *a = parse_expression_b(token);
+    while (true)
+    {
+        TokenType type = type_token(*token);
+        if (type == TK_SAME_OP)
+        {
+            Token *op_token = *token;
+            *token = next_token(*token);
+            SyntaxTree *b = parse_expression_b(token);
+            a = insert_parent(TK_SAME_OP, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
@@ -658,7 +672,7 @@ parse_expression_c(Token **token)
         {
             Token *op_token = *token;
             *token = next_token(*token);
-            SyntaxTree *b = parse_expression_e(token);
+            SyntaxTree *b = parse_expression_d(token);
             a = insert_parent(TK_AMONG_OP, number_token(op_token), string_token(op_token), a, b);
         }
         else
@@ -812,6 +826,10 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
             else if (type == TK_WITH_OP)
             {
                 matches = op_with(left, right, n);
+            }
+            else if (type == TK_SAME_OP)
+            {
+                matches = op_same(left, right, n);
             }
             else
             {

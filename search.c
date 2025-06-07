@@ -498,7 +498,10 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
 
         /* Clauses, lines, and sentences return the start of the next element.
          * Decrement to include only the desired element. */
-        if ((element == LE_CLAUSE || element == LE_LINE || element == LE_SENTENCE) && (next_word(outer_end_word) != NULL))
+        if ((element == LE_CLAUSE ||
+             element == LE_LINE   ||
+             element == LE_SENTENCE ||
+             element == LE_PARAGRAPH) && (next_word(outer_end_word) != NULL))
         {
             outer_end--;
         }

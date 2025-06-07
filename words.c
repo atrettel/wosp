@@ -339,7 +339,14 @@ next_sentence(Word *word)
         {
             current = next_word(current);
         }
-        return next_word(current);
+        if (has_next_word(current) == true)
+        {
+            return next_word(current);
+        }
+        else
+        {
+            return current;
+        }
     }
     else
     {
@@ -361,11 +368,57 @@ prev_sentence(Word *word)
         {
             if (has_prev_word(current) == false)
             {
-                return current;
+                return first_word(current);
             }
             current = prev_word(current);
         }
         return next_word(current);
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
+next_paragraph(Word *word)
+{
+    if (is_word(word) == true)
+    {
+        Word *current = word;
+        while (has_next_word(current) == true)
+        {
+            Word *next = next_word(current);
+            if ((sentence_ending_word(current) == true) && (line_word(current) != line_word(next)))
+            {
+                return next;
+            }
+            current = next;
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
+prev_paragraph(Word *word)
+{
+    if (is_word(word) == true)
+    {
+        Word *current = word;
+        while (has_prev_word(current) == true)
+        {
+            Word *prev = prev_word(current);
+            if ((sentence_ending_word(prev) == true) && (line_word(current) != line_word(prev_word(current))))
+            {
+                return current;
+            }
+            current = prev;
+        }
+        return current;
     }
     else
     {
@@ -450,6 +503,14 @@ advance_word(Word *word, LanguageElement element, int n)
         else if (element == LE_SENTENCE && n < 0)
         {
             advance = prev_sentence;
+        }
+        else if (element == LE_PARAGRAPH && n > 0)
+        {
+            advance = next_paragraph;
+        }
+        else if (element == LE_PARAGRAPH && n < 0)
+        {
+            advance = prev_paragraph;
         }
         assert(advance != NULL);
 

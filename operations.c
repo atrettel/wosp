@@ -138,3 +138,10 @@ op_with(Match *first_match, Match *second_match, int n)
     return proximity_search(first_match, second_match, LE_SENTENCE, -n, +n);
 }
 
+Match *
+op_same(Match *first_match, Match *second_match, int n)
+{
+    assert(n > 0);
+    return proximity_search(first_match, second_match, LE_PARAGRAPH, -n, +n);
+}
+
