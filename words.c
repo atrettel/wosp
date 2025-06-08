@@ -386,18 +386,16 @@ next_sentence(Word *word)
     if (is_word(word) == true)
     {
         Word *current = word;
-        while (sentence_ending_word(current) == false)
+        while (has_next_word(current) == true)
         {
-            current = next_word(current);
+            Word *next = next_word(current);
+            if (sentence_ending_word(current) == true)
+            {
+                return next;
+            }
+            current = next;
         }
-        if (has_next_word(current) == true)
-        {
-            return next_word(current);
-        }
-        else
-        {
-            return current;
-        }
+        return current;
     }
     else
     {
@@ -411,19 +409,20 @@ prev_sentence(Word *word)
     if (is_word(word) == true)
     {
         Word *current = word;
-        if (sentence_ending_word(current) == true)
+        if ((sentence_ending_word(current) == true) && (has_prev_word(current) == true))
         {
             current = prev_word(current);
         }
-        while (sentence_ending_word(current) == false)
+        while (has_prev_word(current) == true)
         {
-            if (has_prev_word(current) == false)
+            Word *prev = prev_word(current);
+            if (sentence_ending_word(current) == true)
             {
-                return first_word(current);
+                return next_word(current);
             }
-            current = prev_word(current);
+            current = prev;
         }
-        return next_word(current);
+        return current;
     }
     else
     {
