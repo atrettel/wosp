@@ -496,12 +496,13 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
         unsigned long outer_start = position_word(outer_start_word);
         unsigned long   outer_end =   position_word(outer_end_word);
 
-        /* Clauses, lines, and sentences return the start of the next element.
-         * Decrement to include only the desired element. */
+        /* Clauses, lines, sentences, and paragraphs return the start of the
+         * next element.  Decrement to include only the desired element, but
+         * only when it is not the end of the document. */
         if ((element == LE_CLAUSE ||
              element == LE_LINE   ||
              element == LE_SENTENCE ||
-             element == LE_PARAGRAPH) && (next_word(outer_end_word) != NULL))
+             element == LE_PARAGRAPH) && (has_next_word(outer_end_word) == true))
         {
             outer_end--;
         }
