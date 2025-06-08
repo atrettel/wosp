@@ -194,14 +194,54 @@ sentence_ending_word(Word *word)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
+        bool curr_cond = false;
+        if (len == 1)
+        {
+            curr_cond = is_ending_punctuation(data[len-1]);
+        }
+        else
+        {
+            curr_cond = (is_ending_punctuation(data[len-1]) ||
+                (
+                    is_ending_punctuation(data[len-2])
+                    &&
+                    (
+                        (data[len-1] == '"')
+                        ||
+                        (data[len-1] == '\'')
+                    )
+                )
+            );
+        }
         if (has_next_word(word) == false)
         {
-            return is_ending_punctuation(data[len-1]);
+            return curr_cond;
         }
         else
         {
             char *next_data = original_word(next_word(word));
-            if ((is_ending_punctuation(data[len-1]) == true) && (isupper(next_data[0])))
+            size_t next_len = strlen(next_data);
+            bool next_cond = false;
+            if (next_len == 1)
+            {
+                next_cond = isupper(next_data[0]);
+            }
+            else
+            {
+                next_cond = (isupper(next_data[0]) ||
+                    (
+                        isupper(next_data[1])
+                        &&
+                        (
+                            (next_data[0] == '"')
+                            ||
+                            (next_data[0] == '\'')
+                        )
+                    )
+                );
+            }
+
+            if ((curr_cond == true) && (next_cond == true))
             {
                 return true;
             }
