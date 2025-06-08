@@ -340,11 +340,16 @@ next_line(Word *word)
     {
         unsigned long line = line_word(word);
         Word *current = word;
-        while (line_word(current) == line)
+        while (has_next_word(current) == true)
         {
-            current = next_word(current);
+            Word *next = next_word(current);
+            if (line_word(current) != line)
+            {
+                return current;
+            }
+            current = next;
         }
-        return next_word(current);
+        return current;
     }
     else
     {
@@ -359,15 +364,15 @@ prev_line(Word *word)
     {
         unsigned long line = line_word(word);
         Word *current = word;
-        while (line_word(current) == line)
+        while (has_prev_word(current) == true)
         {
-            if (has_prev_word(current) == false)
+            if (line_word(current) != line)
             {
-                return current;
+                return next_word(current);
             }
             current = prev_word(current);
         }
-        return next_word(current);
+        return current;
     }
     else
     {
