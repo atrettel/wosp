@@ -17,7 +17,6 @@ typedef struct Word
     struct Word *prev;
 } Word;
 
-/* TODO: lines and paragraphs */
 typedef enum LanguageElement
 {
     LE_WORD,
