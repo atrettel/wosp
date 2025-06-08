@@ -16,4 +16,11 @@ Match *op_along(Match *, Match *, int);
 Match *op_with(Match *, Match *, int);
 Match *op_same(Match *, Match *, int);
 
+Match *op_not_adj(Match *, Match *, int);
+Match *op_not_near(Match *, Match *, int);
+Match *op_not_among(Match *, Match *, int);
+Match *op_not_along(Match *, Match *, int);
+Match *op_not_with(Match *, Match *, int);
+Match *op_not_same(Match *, Match *, int);
+
 #endif /* OPERATIONS_H */

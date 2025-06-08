@@ -145,3 +145,49 @@ op_same(Match *first_match, Match *second_match, int n)
     return proximity_search(first_match, second_match, LE_PARAGRAPH, -n, +n);
 }
 
+Match *
+op_not_prox(Match *first_match, Match *second_match, int n, Match *op_prox(Match *, Match *, int))
+{
+    Match *a = op_or(first_match, second_match);
+    Match *b = op_prox(first_match, second_match, n);
+    Match *c = op_not(a, b);
+    free_matches(a);
+    free_matches(b);
+    return c;
+}
+
+Match *
+op_not_adj(Match *first_match, Match *second_match, int n)
+{
+    return op_not_prox(first_match, second_match, n, op_adj);
+}
+
+Match *
+op_not_near(Match *first_match, Match *second_match, int n)
+{
+    return op_not_prox(first_match, second_match, n, op_near);
+}
+
+Match *
+op_not_among(Match *first_match, Match *second_match, int n)
+{
+    return op_not_prox(first_match, second_match, n, op_among);
+}
+
+Match *
+op_not_along(Match *first_match, Match *second_match, int n)
+{
+    return op_not_prox(first_match, second_match, n, op_along);
+}
+
+Match *
+op_not_with(Match *first_match, Match *second_match, int n)
+{
+    return op_not_prox(first_match, second_match, n, op_with);
+}
+
+Match *
+op_not_same(Match *first_match, Match *second_match, int n)
+{
+    return op_not_prox(first_match, second_match, n, op_same);
+}

@@ -10,19 +10,25 @@ typedef enum TokenType
 {                /* Example */
     TK_WILDCARD, /* w?rd$1 */
     TK_QUOTE,    /* " or ' */
-    TK_L_PAREN,  /* ( */
-    TK_R_PAREN,  /* ) */
-    TK_OR_OP,    /* OR */
-    TK_AND_OP,   /* AND */
-    TK_NOT_OP,   /* NOT */
-    TK_XOR_OP,   /* XOR */
-    TK_ADJ_OP,   /* ADJ5 */
-    TK_NEAR_OP,  /* NEAR5 */
-    TK_AMONG_OP, /* AMONG5 */
-    TK_ALONG_OP, /* ALONG5 */
-    TK_WITH_OP,  /* WITH5 */
-    TK_SAME_OP,  /* SAME5 */
-    TK_ERROR     /* This should not happen. */
+    TK_L_PAREN,
+    TK_R_PAREN,
+    TK_OR_OP,
+    TK_AND_OP,
+    TK_NOT_OP,
+    TK_XOR_OP,
+    TK_ADJ_OP,
+    TK_NEAR_OP,
+    TK_AMONG_OP,
+    TK_ALONG_OP,
+    TK_WITH_OP,
+    TK_SAME_OP,
+    TK_NOT_ADJ_OP,
+    TK_NOT_NEAR_OP,
+    TK_NOT_AMONG_OP,
+    TK_NOT_ALONG_OP,
+    TK_NOT_WITH_OP,
+    TK_NOT_SAME_OP,
+    TK_ERROR
 } TokenType;
 
 typedef struct Token
