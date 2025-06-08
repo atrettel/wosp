@@ -289,11 +289,16 @@ next_clause(Word *word)
     if (is_word(word) == true)
     {
         Word *current = word;
-        while (clause_ending_word(current) == false)
+        while (has_next_word(current) == true)
         {
-            current = next_word(current);
+            Word *next = next_word(current);
+            if (clause_ending_word(current) == true)
+            {
+                return next;
+            }
+            current = next;
         }
-        return next_word(current);
+        return current;
     }
     else
     {
@@ -307,19 +312,20 @@ prev_clause(Word *word)
     if (is_word(word) == true)
     {
         Word *current = word;
-        if (clause_ending_word(current) == true)
+        if ((clause_ending_word(current) == true) && (has_prev_word(current) == true))
         {
             current = prev_word(current);
         }
-        while (clause_ending_word(current) == false)
+        while (has_prev_word(current) == true)
         {
-            if (has_prev_word(current) == false)
+            Word *prev = prev_word(current);
+            if (clause_ending_word(current) == true)
             {
-                return current;
+                return next_word(current);
             }
-            current = prev_word(current);
+            current = prev;
         }
-        return next_word(current);
+        return current;
     }
     else
     {
