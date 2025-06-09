@@ -21,11 +21,11 @@ add_words_to_trie(TrieNode *trie, Word *list)
 }
 
 void
-read_source_words(Word **list)
+read_source_words(Word **list, FILE *stream)
 {
     unsigned long line = 1, column = 1, position = 1;
     int p = '\0';
-    int c = getchar();
+    int c = fgetc(stream);
     while (c != EOF)
     {
         size_t len = 0;
@@ -49,7 +49,7 @@ read_source_words(Word **list)
             }
             data[len-1] = (char) c;
             p = c;
-            c = getchar();
+            c = fgetc(stream);
         }
         if (len > 0)
         {
@@ -73,7 +73,7 @@ read_source_words(Word **list)
             column++;
         }
         p = c;
-        c = getchar();
+        c = fgetc(stream);
     }
     *list = first_word(*list);
 }
@@ -85,7 +85,7 @@ main(int argc, char *argv[])
     TrieNode *trie = NULL;
 
     init_trie(&trie);
-    read_source_words(&list);
+    read_source_words(&list, stdin);
     add_words_to_trie(trie, list);
 
     assert(argc > 1);
