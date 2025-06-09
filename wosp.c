@@ -156,7 +156,8 @@ main(int argc, char *argv[])
     if (n_errors == 0)
     {
         printf("Parse tokens into syntax tree\n");
-        SyntaxTree *tree = parse_query(&tokens);
+        Token *current = tokens;
+        SyntaxTree *tree = parse_query(&current);
         print_syntax_tree(tree);
         printf("\n");
         printf("Evaluate syntax tree\n");

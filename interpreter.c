@@ -610,7 +610,6 @@ free_syntax_tree(SyntaxTree *tree)
 {
     if (tree != NULL)
     {
-        free(string_syntax_tree(tree));
         free_syntax_tree(left_syntax_tree(tree));
         free_syntax_tree(right_syntax_tree(tree));
     }
