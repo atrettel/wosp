@@ -148,12 +148,43 @@ op_same(Match *first_match, Match *second_match, int n)
 Match *
 op_not_prox(Match *first_match, Match *second_match, int n, Match *op_prox(Match *, Match *, int))
 {
-    Match *a = op_or(first_match, second_match);
-    Match *b = op_prox(first_match, second_match, n);
-    Match *c = op_not(a, b);
-    free_matches(a);
-    free_matches(b);
-    return c;
+    Match *union_match = op_or(first_match, second_match);
+    Match *prox_match = op_prox(first_match, second_match, n);
+    Match *match = NULL;
+    Match *outer_match = union_match;
+    while (is_match(outer_match) == true)
+    {
+        size_t n_outer = number_of_words_in_match(outer_match);
+        bool found = false;
+        Match *inner_match = prox_match;
+        while (is_match(inner_match) == true)
+        {
+            size_t n_inner = number_of_words_in_match(inner_match);
+            for (size_t i = 0; i < n_outer; i++)
+            {
+                for (size_t j = 0; j < n_inner; j++)
+                {
+                    if (word_match(outer_match, i) == word_match(inner_match, j))
+                    {
+                        found = true;
+                    }
+                }
+            }
+            inner_match = next_match(inner_match);
+        }
+        if (found == false)
+        {
+            insert_match(&match, n_outer);
+            for (size_t i = 0; i < n_outer; i++)
+            {
+                set_match(match, i, word_match(outer_match, i));
+            }
+        }
+        outer_match = next_match(outer_match);
+    }
+    free_matches(union_match);
+    free_matches(prox_match);
+    return match;
 }
 
 Match *
