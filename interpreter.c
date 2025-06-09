@@ -293,21 +293,12 @@ identity_token_type(char *data, TokenType *type, int *n)
     long m = strtol(suffix, &endptr, 10);
 
     TokenType prefix_type = find_operator_type(prefix);
-    if (((prefix_type == TK_OR_OP)  ||
-         (prefix_type == TK_AND_OP) ||
-         (prefix_type == TK_NOT_OP) ||
-         (prefix_type == TK_XOR_OP)) && (k == 0))
+    if ((boolean_operator_token_type(prefix_type) == true) && (k == 0))
     {
         *type = prefix_type;
         *n = 0;
     }
-    else if (((prefix_type == TK_ADJ_OP)   || (prefix_type == TK_NOT_ADJ_OP)   ||
-              (prefix_type == TK_NEAR_OP)  || (prefix_type == TK_NOT_NEAR_OP)  ||
-              (prefix_type == TK_WITH_OP)  || (prefix_type == TK_NOT_WITH_OP)  ||
-              (prefix_type == TK_AMONG_OP) || (prefix_type == TK_NOT_AMONG_OP) ||
-              (prefix_type == TK_ALONG_OP) || (prefix_type == TK_NOT_ALONG_OP) ||
-              (prefix_type == TK_SAME_OP)  || (prefix_type == TK_NOT_SAME_OP)) &&
-              (has_nondigits == false))
+    else if ((proximity_operator_token_type(prefix_type) == true) && (has_nondigits == false))
     {
         *type = prefix_type;
         if (k == 0)
