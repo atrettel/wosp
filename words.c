@@ -178,7 +178,26 @@ clause_ending_word(Word *word)
         {
             char *data = original_word(word);
             size_t len = strlen(data);
-            return is_clause_punctuation(data[len-1]);
+            bool curr_cond = false;
+            if (len == 1)
+            {
+                curr_cond = is_clause_punctuation(data[len-1]);
+            }
+            else
+            {
+                curr_cond = (is_clause_punctuation(data[len-1]) ||
+                    (
+                        is_clause_punctuation(data[len-2])
+                        &&
+                        (
+                            (data[len-1] == '"')
+                            ||
+                            (data[len-1] == '\'')
+                        )
+                    )
+                );
+            }
+            return curr_cond;
         }
     }
     else
