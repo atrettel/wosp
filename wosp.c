@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "interpreter.h"
 #include "operations.h"
@@ -81,14 +82,66 @@ read_source_words(Word **list, FILE *stream)
 int
 main(int argc, char *argv[])
 {
-    Word *list = NULL;
     TrieNode *trie = NULL;
-
     init_trie(&trie);
-    read_source_words(&list, stdin);
-    add_words_to_trie(trie, list);
 
-    assert(argc > 1);
+    if (argc == 0)
+    {
+        fprintf(stderr, "No query given.\n");
+        return EXIT_FAILURE;
+    }
+
+    size_t n_files = (argc == 2) ? 1 : argc - 2;
+    printf("argc = %d, n_files = %lu\n", argc, n_files);
+    char **filenames = malloc(n_files * sizeof(char *));
+    Word **words = malloc(n_files * sizeof(Word *));
+    if (filenames == NULL || words == NULL)
+    {
+        return EXIT_FAILURE;
+    }
+    for (size_t i = 0; i < n_files; i++)
+    {
+        filenames[i] = NULL;
+        words[i] = NULL;
+    }
+    if (argc == 2)
+    {
+        filenames[0] = malloc(6 * sizeof(char));
+        if (filenames[0] == NULL)
+        {
+            return EXIT_FAILURE;
+        }
+        snprintf(filenames[0], 6, "stdin");
+    }
+    else
+    {
+        for (size_t i = 0; i < n_files; i++)
+        {
+            filenames[i] = malloc((strlen(argv[i+2])+1) * sizeof(char *));
+            if (filenames[i] == NULL)
+            {
+                return EXIT_FAILURE;
+            }
+            snprintf(filenames[i], strlen(argv[i+2])+1, "%s", argv[i+2]);
+        }
+    }
+    for (size_t i = 0; i < n_files; i++)
+    {
+        printf("Filename = %s\n", filenames[i]);
+        words[i] = NULL;
+        if (argc == 2)
+        {
+            read_source_words(&words[i], stdin);
+        }
+        else
+        {
+            FILE *f = fopen(filenames[i], "r");
+            read_source_words(&words[i], f);
+            fclose(f);
+        }
+        add_words_to_trie(trie, words[i]);
+    }
+
     Token *tokens = lex_query(argv[1]);
     unsigned int n_errors = count_errors_tokens(tokens, true);
 
@@ -127,6 +180,12 @@ main(int argc, char *argv[])
     free_tokens(tokens);
 
     free_trie(trie);
-    free_words(list);
+    for (size_t i = 0; i < n_files; i++)
+    {
+        free(filenames[i]);
+        free_words(words[i]);
+    }
+    free(filenames);
+    free(words);
     return EXIT_SUCCESS;
 }
