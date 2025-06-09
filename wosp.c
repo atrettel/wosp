@@ -162,6 +162,7 @@ main(int argc, char *argv[])
         printf("Evaluate syntax tree\n");
         bool error_flag = false;
         Match *matches = eval_syntax_tree(tree, trie, &error_flag);
+        free_syntax_tree(tree);
         if (error_flag == false)
         {
             print_matches(matches);
