@@ -399,9 +399,34 @@ lex_query(char *query)
 bool
 operator_token_type(TokenType type)
 {
-    if (type == TK_OR_OP    || type == TK_AND_OP       ||
-        type == TK_NOT_OP   || type == TK_XOR_OP       ||
-        type == TK_ADJ_OP   || type == TK_NOT_ADJ_OP   ||
+    if (  boolean_operator_token_type(type) == true ||
+        proximity_operator_token_type(type) == true)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
+boolean_operator_token_type(TokenType type)
+{
+    if (type == TK_OR_OP || type == TK_AND_OP || type == TK_NOT_OP || type == TK_XOR_OP)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
+proximity_operator_token_type(TokenType type)
+{
+    if (type == TK_ADJ_OP   || type == TK_NOT_ADJ_OP   ||
         type == TK_NEAR_OP  || type == TK_NOT_NEAR_OP  ||
         type == TK_AMONG_OP || type == TK_NOT_AMONG_OP ||
         type == TK_ALONG_OP || type == TK_NOT_ALONG_OP ||

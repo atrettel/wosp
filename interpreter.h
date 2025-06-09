@@ -55,6 +55,9 @@ bool has_prev_token(Token *);
 void free_tokens(Token *);
 
 Token *lex_query(char *);
+bool operator_token_type(TokenType);
+bool boolean_operator_token_type(TokenType);
+bool proximity_operator_token_type(TokenType);
 unsigned int count_errors_tokens(Token *, bool);
 
 typedef struct SyntaxTree
