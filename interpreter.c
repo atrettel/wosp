@@ -576,33 +576,12 @@ parse_query(Token **token)
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_AND_OP)
+        if (type == TK_AND_OP || type == TK_OR_OP || type == TK_NOT_OP || type == TK_XOR_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_expression_a(token);
-            a = insert_parent(TK_AND_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_OR_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_a(token);
-            a = insert_parent(TK_OR_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_a(token);
-            a = insert_parent(TK_NOT_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_XOR_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_a(token);
-            a = insert_parent(TK_XOR_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
@@ -618,19 +597,12 @@ parse_expression_a(Token **token)
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_SAME_OP)
+        if (type == TK_SAME_OP || type == TK_NOT_SAME_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_expression_b(token);
-            a = insert_parent(TK_SAME_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_SAME_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_b(token);
-            a = insert_parent(TK_NOT_SAME_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
@@ -646,33 +618,12 @@ parse_expression_b(Token **token)
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_WITH_OP)
+        if (type == TK_WITH_OP || type == TK_NOT_WITH_OP || type == TK_ALONG_OP || type == TK_NOT_ALONG_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_expression_c(token);
-            a = insert_parent(TK_WITH_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_WITH_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_c(token);
-            a = insert_parent(TK_NOT_WITH_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_ALONG_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_c(token);
-            a = insert_parent(TK_ALONG_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_ALONG_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_c(token);
-            a = insert_parent(TK_NOT_ALONG_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
@@ -688,19 +639,12 @@ parse_expression_c(Token **token)
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_AMONG_OP)
+        if (type == TK_AMONG_OP || type == TK_NOT_AMONG_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_expression_d(token);
-            a = insert_parent(TK_AMONG_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_AMONG_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_d(token);
-            a = insert_parent(TK_NOT_AMONG_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
@@ -716,19 +660,12 @@ parse_expression_d(Token **token)
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_NEAR_OP)
+        if (type == TK_NEAR_OP || type == TK_NOT_NEAR_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_expression_e(token);
-            a = insert_parent(TK_NEAR_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_NEAR_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_expression_e(token);
-            a = insert_parent(TK_NOT_NEAR_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
@@ -744,19 +681,12 @@ parse_expression_e(Token **token)
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_ADJ_OP)
+        if (type == TK_ADJ_OP || type == TK_NOT_ADJ_OP)
         {
             Token *op_token = *token;
             *token = next_token(*token);
             SyntaxTree *b = parse_atom(token);
-            a = insert_parent(TK_ADJ_OP, number_token(op_token), string_token(op_token), a, b);
-        }
-        else if (type == TK_NOT_ADJ_OP)
-        {
-            Token *op_token = *token;
-            *token = next_token(*token);
-            SyntaxTree *b = parse_atom(token);
-            a = insert_parent(TK_NOT_ADJ_OP, number_token(op_token), string_token(op_token), a, b);
+            a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
         {
