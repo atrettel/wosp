@@ -41,21 +41,21 @@ insert_token(Token **list, TokenType type, int n, char *string)
         else if (type == TK_WITH_OP)  { new_type = TK_NOT_WITH_OP;  }
         else if (type == TK_SAME_OP)  { new_type = TK_NOT_SAME_OP;  }
         type = new_type;
-        char *tmp = malloc((strlen(string)+4) * sizeof(char));
+        char *prev_string = string_token(*list);
+        char *tmp = malloc((strlen(prev_string)+strlen(string)+1) * sizeof(char));
         if (tmp == NULL)
         {
             exit(EXIT_FAILURE);
         }
-        char *prev_string = string_token(*list);
         for (size_t i = 0; i < strlen(prev_string); i++)
         {
             tmp[i] = prev_string[i];
         }
         for (size_t i = 0; i < strlen(string); i++)
         {
-            tmp[i+3] = string[i];
+            tmp[strlen(prev_string)+i] = string[i];
         }
-        tmp[strlen(string)+3] = '\0';
+        tmp[strlen(prev_string)+strlen(string)] = '\0';
         free(string);
         string = tmp;
         Token *prev_tkn = prev_token(*list);
