@@ -93,7 +93,7 @@ main(int argc, char *argv[])
 
     size_t n_files = (argc == 2) ? 1 : argc - 2;
     printf("argc = %d, n_files = %lu\n", argc, n_files);
-    char **filenames = malloc(n_files * sizeof(char *));
+    char **filenames = (char **) malloc(n_files * sizeof(char *));
     Word **words = malloc(n_files * sizeof(Word *));
     if (filenames == NULL || words == NULL)
     {
@@ -106,7 +106,7 @@ main(int argc, char *argv[])
     }
     if (argc == 2)
     {
-        filenames[0] = malloc(6 * sizeof(char));
+        filenames[0] = (char *) malloc(6 * sizeof(char));
         if (filenames[0] == NULL)
         {
             return EXIT_FAILURE;
@@ -117,7 +117,7 @@ main(int argc, char *argv[])
     {
         for (size_t i = 0; i < n_files; i++)
         {
-            filenames[i] = malloc((strlen(argv[i+2])+1) * sizeof(char *));
+            filenames[i] = (char *) malloc((strlen(argv[i+2])+1) * sizeof(char *));
             if (filenames[i] == NULL)
             {
                 return EXIT_FAILURE;
