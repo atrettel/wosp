@@ -757,7 +757,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
     }
     else
     {
-        Match *left  = eval_syntax_tree(left_syntax_tree(tree),  trie, error_flag);
+        Match *left  = eval_syntax_tree( left_syntax_tree(tree), trie, error_flag);
         Match *right = eval_syntax_tree(right_syntax_tree(tree), trie, error_flag);
         int n = number_syntax_tree(tree);
         if (*error_flag == false)
