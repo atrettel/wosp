@@ -31,6 +31,38 @@ insert_token(Token **list, TokenType type, int n, char *string)
         snprintf(tmp, sizeof(default_operation_string), "%s", default_operation_string);
         insert_token(list, default_operation_type, 0, tmp);
     }
+    else if ((proximity_operator_token_type(type) == true) && (prev_type == TK_NOT_OP))
+    {
+        TokenType new_type = TK_ERROR;
+        if      (type == TK_ADJ_OP)   { new_type = TK_NOT_ADJ_OP;   }
+        else if (type == TK_NEAR_OP)  { new_type = TK_NOT_NEAR_OP;  }
+        else if (type == TK_AMONG_OP) { new_type = TK_NOT_AMONG_OP; }
+        else if (type == TK_ALONG_OP) { new_type = TK_NOT_ALONG_OP; }
+        else if (type == TK_WITH_OP)  { new_type = TK_NOT_WITH_OP;  }
+        else if (type == TK_SAME_OP)  { new_type = TK_NOT_SAME_OP;  }
+        type = new_type;
+        char *tmp = malloc(sizeof(string)+3);
+        if (tmp == NULL)
+        {
+            exit(EXIT_FAILURE);
+        }
+        char *prev_string = string_token(*list);
+        for (size_t i = 0; i < strlen(prev_string); i++)
+        {
+            tmp[i] = prev_string[i];
+        }
+        for (size_t i = 0; i < strlen(string); i++)
+        {
+            tmp[i+3] = string[i];
+        }
+        tmp[strlen(string)+3] = '\0';
+        free(string);
+        string = tmp;
+        Token *prev_tkn = prev_token(*list);
+        free((*list)->string);
+        free(*list);
+        *list = prev_tkn;
+    }
     Token *current = (Token *) malloc(sizeof(Token));
     if (current == NULL)
     {
