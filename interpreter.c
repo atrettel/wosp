@@ -41,7 +41,7 @@ insert_token(Token **list, TokenType type, int n, char *string)
         else if (type == TK_WITH_OP)  { new_type = TK_NOT_WITH_OP;  }
         else if (type == TK_SAME_OP)  { new_type = TK_NOT_SAME_OP;  }
         type = new_type;
-        char *tmp = malloc(sizeof(string)+3);
+        char *tmp = malloc((strlen(string)+4) * sizeof(char));
         if (tmp == NULL)
         {
             exit(EXIT_FAILURE);
