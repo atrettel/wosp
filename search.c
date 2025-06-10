@@ -188,7 +188,6 @@ width_match(Match *match)
 void
 print_matches(Match *match)
 {
-    printf("%u matches\n", length_of_match_list(match));
     Match *current_match = match;
     while (is_match(current_match) == true)
     {

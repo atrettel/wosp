@@ -92,7 +92,6 @@ main(int argc, char *argv[])
     }
 
     size_t n_files = (argc == 2) ? 1 : argc - 2;
-    printf("argc = %d, n_files = %lu\n", argc, n_files);
     char **filenames = (char **) malloc(n_files * sizeof(char *));
     Word **words = malloc(n_files * sizeof(Word *));
     if (filenames == NULL || words == NULL)
@@ -127,7 +126,6 @@ main(int argc, char *argv[])
     }
     for (size_t i = 0; i < n_files; i++)
     {
-        printf("Filename = %s\n", filenames[i]);
         words[i] = NULL;
         if (argc == 2)
         {
@@ -145,34 +143,22 @@ main(int argc, char *argv[])
     Token *tokens = lex_query(argv[1]);
     unsigned int n_errors = count_errors_tokens(tokens, true);
 
-    printf("Lex query into tokens\n");
-    Token *current = tokens;
-    while (is_token(current) == true)
-    {
-        printf("%s - %d\n", string_token(current), type_token(current));
-        current = next_token(current);
-    }
-
     if (n_errors == 0)
     {
-        printf("Parse tokens into syntax tree\n");
         Token *current = tokens;
         SyntaxTree *tree = parse_query(&current);
-        print_syntax_tree(tree);
-        printf("\n");
-        printf("Evaluate syntax tree\n");
         bool error_flag = false;
         Match *matches = eval_syntax_tree(tree, trie, &error_flag);
         free_syntax_tree(tree);
         if (error_flag == false)
         {
             print_matches(matches);
-            free_matches(matches);
         }
         else
         {
             fprintf(stderr, "At least one syntax error present\n");
         }
+        free_matches(matches);
     }
     else
     {
