@@ -198,11 +198,15 @@ print_matches(Match *match)
         {
             end_word = NULL;
         }
-        printf("%lu:", line_word(start_word));
+        printf("%s:%lu:", filename_word(start_word), line_word(start_word));
         Word *current_word = start_word;
         while (current_word != end_word)
         {
-            printf(" %s", original_word(current_word));
+            if (current_word != start_word)
+            {
+                printf(" ");
+            }
+            printf("%s", original_word(current_word));
             current_word = next_word(current_word);
         }
         printf("\n");

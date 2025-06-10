@@ -72,7 +72,7 @@ reduce_word(char *original, WordOrigin origin)
 }
 
 void
-append_word(Word **list, char *data, unsigned long line,
+append_word(Word **list, char *data, char *filename, unsigned long line,
             unsigned long column, unsigned long position)
 {
     Word *current = (Word *) malloc(sizeof(Word));
@@ -82,6 +82,7 @@ append_word(Word **list, char *data, unsigned long line,
     }
     current->original = data;
     current->reduced = reduce_word(data, WO_SOURCE);
+    current->filename = filename;
     current->line = line;
     current->column = column;
     current->position = position;
@@ -104,6 +105,12 @@ char *
 reduced_word(Word *word)
 {
     return word->reduced;
+}
+
+char *
+filename_word(Word *word)
+{
+    return word->filename;
 }
 
 unsigned long

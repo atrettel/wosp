@@ -22,7 +22,7 @@ add_words_to_trie(TrieNode *trie, Word *list)
 }
 
 void
-read_source_words(Word **list, FILE *stream)
+read_source_words(Word **list, FILE *stream, char *filename)
 {
     unsigned long line = 1, column = 1, position = 1;
     int p = '\0';
@@ -61,7 +61,7 @@ read_source_words(Word **list, FILE *stream)
                 exit(EXIT_FAILURE);
             }
             data[len-1] = '\0';
-            append_word(list, data, line, column, position);
+            append_word(list, data, filename, line, column, position);
             position++;
         }
         if ((p != '\r' && c == '\n') || c == '\r')
@@ -131,12 +131,12 @@ main(int argc, char *argv[])
         words[i] = NULL;
         if (argc == 2)
         {
-            read_source_words(&words[i], stdin);
+            read_source_words(&words[i], stdin, filenames[i]);
         }
         else
         {
             FILE *f = fopen(filenames[i], "r");
-            read_source_words(&words[i], f);
+            read_source_words(&words[i], f, filenames[i]);
             fclose(f);
         }
         add_words_to_trie(trie, words[i]);

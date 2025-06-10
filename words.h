@@ -10,6 +10,7 @@ typedef struct Word
 {
     char *original;
     char *reduced; /* The lowercase word without any punctuation */
+    char *filename;
     unsigned long line; /* Line and column for locating word in input */
     unsigned long column;
     unsigned long position; /* Position for order in doubly-linked list */
@@ -33,9 +34,10 @@ typedef enum WordOrigin
 } WordOrigin;
 
 char *reduce_word(char *, WordOrigin);
-void append_word(Word **, char *, unsigned long, unsigned long, unsigned long);
+void append_word(Word **, char *, char *, unsigned long, unsigned long, unsigned long);
 char *original_word(Word *);
 char *reduced_word(Word *);
+char *filename_word(Word *);
 unsigned long line_word(Word *);
 unsigned long column_word(Word *);
 unsigned long position_word(Word *);
