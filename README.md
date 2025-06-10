@@ -5,23 +5,28 @@ by Andrew Trettel
 
 ## Usage
 
-    ./wosp "QUERY" < file.txt
+    wosp "QUERY" file1.txt file2.txt ...
 
 For example,
 
-    ./wosp "(assent ADJ5 (law\$1 OR act\$1)) OR (right\$1 ADJ5 people)" < declaration.txt
+    wosp "((assent OR process) ADJ5 (law\$1 OR act\$1)) OR (right\$1 AMONG (people OR person\$1))" declaration.txt constitution.txt
 
 
 ## Query language
 
 The query language is based on the query language used at the
 [USPTO](https://www.uspto.gov/patents/search/patent-public-search/operators).
+However, `wosp` extends the language with two additional proximity operators.
 
 Currently supported operators:
 
 - Boolean operators: `AND`, `OR`, `NOT`, and `XOR`.
 
-- Proximity operators: `ADJ`, `NEAR`, and `WITH`.
+- Proximity operators: `ADJ`, `NEAR`, `AMONG`, `ALONG`, `WITH`, `SAME`, `NOT
+  ADJ`, `NOT NEAR`, `NOT AMONG`, `NOT ALONG`, `NOT WITH`, and `NOT SAME`.
+
+Negated proximity operators work with and without space between `NOT` and the
+proximity operator (that is, `NOTADJ` is valid).
 
 
 ## How does it work?
