@@ -40,10 +40,10 @@ set_match(Match *match, size_t i, Word *word)
     assert(i < number_of_words_in_match(match));
     if (is_word(match->document) == false)
     {
-        match->document = first_word(word);
+        match->document = document_word(word);
     }
     else
-    assert(document_match(match) == first_word(word));
+    assert(document_match(match) == document_word(word));
     match->words[i] = word;
 }
 

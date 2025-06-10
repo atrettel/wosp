@@ -531,6 +531,12 @@ last_word(Word *word)
     }
 }
 
+Word *
+document_word(Word *word)
+{
+    return first_word(word);
+}
+
 /* This is a wrapper function to handle the ends of the input word list safely.
  * The primitive operations can return NULL values.  This is necessary to check
  * for the ends of the list.  This function cannot return NULL values. */

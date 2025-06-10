@@ -56,6 +56,7 @@ Word *next_paragraph(Word *);
 Word *prev_paragraph(Word *);
 Word *first_word(Word *);
 Word *last_word(Word *);
+Word *document_word(Word *);
 Word *advance_word(Word *, LanguageElement, int);
 void print_words(Word *);
 void free_words(Word *);
