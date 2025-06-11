@@ -134,6 +134,11 @@ main(int argc, char *argv[])
         else
         {
             FILE *f = fopen(filenames[i], "r");
+            if (f == NULL)
+            {
+                fprintf(stderr, "File '%s' does not exist\n", filenames[i]);
+                return EXIT_FAILURE;
+            }
             read_source_words(&words[i], f, filenames[i]);
             fclose(f);
         }
