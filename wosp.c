@@ -79,74 +79,76 @@ read_source_words(Word **list, FILE *stream, char *filename)
     *list = first_word(*list);
 }
 
-int
-main(int argc, char *argv[])
+size_t
+read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***words)
 {
-    TrieNode *trie = NULL;
-    init_trie(&trie);
-
     if (argc == 0)
     {
         fprintf(stderr, "No query given.\n");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     size_t n_files = (argc == 2) ? 1 : argc - 2;
-    char **filenames = (char **) malloc(n_files * sizeof(char *));
-    Word **words = malloc(n_files * sizeof(Word *));
-    if (filenames == NULL || words == NULL)
+    *filenames = (char **) malloc(n_files * sizeof(char *));
+    *words = (Word **) malloc(n_files * sizeof(Word *));
+    if (*filenames == NULL || *words == NULL)
     {
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
     for (size_t i = 0; i < n_files; i++)
     {
-        filenames[i] = NULL;
-        words[i] = NULL;
+        (*filenames)[i] = NULL;
+        (*words)[i] = NULL;
     }
     if (argc == 2)
     {
-        filenames[0] = (char *) malloc(6 * sizeof(char));
-        if (filenames[0] == NULL)
+        (*filenames)[0] = (char *) malloc(6 * sizeof(char));
+        if ((*filenames)[0] == NULL)
         {
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
-        snprintf(filenames[0], 6, "stdin");
+        snprintf((*filenames)[0], 6, "stdin");
     }
     else
     {
         for (size_t i = 0; i < n_files; i++)
         {
-            filenames[i] = (char *) malloc((strlen(argv[i+2])+1) * sizeof(char *));
-            if (filenames[i] == NULL)
+            (*filenames)[i] = (char *) malloc((strlen(argv[i+2])+1) * sizeof(char *));
+            if ((*filenames)[i] == NULL)
             {
-                return EXIT_FAILURE;
+                exit(EXIT_FAILURE);
             }
-            snprintf(filenames[i], strlen(argv[i+2])+1, "%s", argv[i+2]);
+            snprintf((*filenames)[i], strlen(argv[i+2])+1, "%s", argv[i+2]);
         }
     }
+    init_trie(trie);
     for (size_t i = 0; i < n_files; i++)
     {
-        words[i] = NULL;
+        (*words)[i] = NULL;
         if (argc == 2)
         {
-            read_source_words(&words[i], stdin, filenames[i]);
+            read_source_words(words[i], stdin, (*filenames)[i]);
         }
         else
         {
-            FILE *f = fopen(filenames[i], "r");
+            FILE *f = fopen((*filenames)[i], "r");
             if (f == NULL)
             {
-                fprintf(stderr, "File '%s' does not exist\n", filenames[i]);
-                return EXIT_FAILURE;
+                fprintf(stderr, "File '%s' does not exist\n", (*filenames)[i]);
+                exit(EXIT_FAILURE);
             }
-            read_source_words(&words[i], f, filenames[i]);
+            read_source_words(words[i], f, (*filenames)[i]);
             fclose(f);
         }
-        add_words_to_trie(trie, words[i]);
+        add_words_to_trie(*trie, (*words)[i]);
     }
 
-    interpret_query(argv[1], trie);
+    return n_files;
+}
 
+void
+free_data(size_t n_files, TrieNode *trie, char **filenames, Word **words)
+{
     free_trie(trie);
     for (size_t i = 0; i < n_files; i++)
     {
@@ -155,5 +157,18 @@ main(int argc, char *argv[])
     }
     free(filenames);
     free(words);
+}
+
+int
+main(int argc, char *argv[])
+{
+    TrieNode *trie = NULL;
+    char **filenames = NULL;
+    Word **words = NULL;
+
+    size_t n_files = read_data(argc, argv, &trie, &filenames, &words);
+    interpret_query(argv[1], trie);
+    free_data(n_files, trie, filenames, words);
+
     return EXIT_SUCCESS;
 }
