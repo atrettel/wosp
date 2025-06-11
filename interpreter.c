@@ -836,3 +836,32 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
     }
     return matches;
 }
+
+void
+interpret_query(char *query, TrieNode *trie)
+{
+    Token *tokens = lex_query(query);
+    unsigned int n_errors = count_errors_tokens(tokens, true);
+    if (n_errors == 0)
+    {
+        Token *current = tokens;
+        SyntaxTree *tree = parse_query(&current);
+        bool error_flag = false;
+        Match *matches = eval_syntax_tree(tree, trie, &error_flag);
+        free_syntax_tree(tree);
+        if (error_flag == false)
+        {
+            print_matches(matches);
+        }
+        else
+        {
+            fprintf(stderr, "At least one syntax error present\n");
+        }
+        free_matches(matches);
+    }
+    else
+    {
+        fprintf(stderr, "One of more errors in query\n");
+    }
+    free_tokens(tokens);
+}

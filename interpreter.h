@@ -97,5 +97,6 @@ SyntaxTree *parse_expression_e(Token **);
 SyntaxTree *parse_atom(Token **);
 
 Match *eval_syntax_tree(SyntaxTree *, TrieNode *, bool *);
+void interpret_query(char *, TrieNode *);
 
 #endif /* INTERPRETER_H */
