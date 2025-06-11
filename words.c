@@ -10,6 +10,19 @@
 #include "words.h"
 
 bool
+is_extended_wildcard_character(char c)
+{
+    if (c == '$' || c == '#')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
 is_ending_punctuation(char c)
 {
     if (c == '.' || c == '?' || c == '!')

@@ -354,7 +354,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
     }
     else
     {
-        if (c == extended_wildcard_character)
+        if (is_extended_wildcard_character(c) == true)
         {
             assert((i + 1 < strlen(original)));
             size_t n = (size_t) (original[i+1] - '0');

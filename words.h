@@ -4,6 +4,10 @@
 
 #include <stdbool.h>
 
+
+static const char wildcard_character = '?';
+bool is_extended_wildcard_character(char);
+bool is_clause_punctuation(char);
 bool is_ending_punctuation(char);
 
 typedef struct Word
