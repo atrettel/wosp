@@ -17,5 +17,7 @@ static const TokenType default_operator_type = TK_OR_OP;
 static const LanguageElement print_element = LE_LINE;
 static const int print_before = 1;
 static const int print_after = 1;
+static const bool print_filename = true;
+static const bool print_line_number = true;
 
 #endif /* CONFIG_H */

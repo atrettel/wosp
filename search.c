@@ -203,7 +203,14 @@ print_matches(Match *match)
         {
             end_word = NULL;
         }
-        printf("%s:%lu:", filename_word(start_word), line_word(start_word));
+        if (print_filename == true)
+        {
+            printf("%s:", filename_word(start_word));
+        }
+        if (print_line_number == true)
+        {
+            printf("%lu:", line_word(start_word));
+        }
         Word *current_word = start_word;
         while (current_word != end_word)
         {
