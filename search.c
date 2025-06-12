@@ -191,8 +191,14 @@ print_matches(Match *match)
     Match *current_match = match;
     while (is_match(current_match) == true)
     {
-        Word *start_word = advance_word(start_word_match(current_match), print_element, -print_width);
-        Word *end_word   = advance_word(  end_word_match(current_match), print_element, +print_width);
+        int start_n = -print_before;
+        int end_n   = +print_after;
+        if (print_element == LE_WORD)
+        {
+            start_n += 1;
+        }
+        Word *start_word = advance_word(start_word_match(current_match), print_element, start_n);
+        Word   *end_word = advance_word(  end_word_match(current_match), print_element,   end_n);
         if (has_next_word(end_word) == false)
         {
             end_word = NULL;
