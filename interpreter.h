@@ -54,6 +54,10 @@ bool has_next_token(Token *);
 bool has_prev_token(Token *);
 void free_tokens(Token *);
 
+TokenType find_operator_type(char *);
+const char *find_operator_prefix(TokenType);
+void identify_token_type(char *, TokenType, int);
+
 Token *lex_query(char *);
 bool operator_token_type(TokenType);
 bool boolean_operator_token_type(TokenType);

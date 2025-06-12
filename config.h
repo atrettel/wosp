@@ -11,8 +11,7 @@
 static const bool case_sensitive = false;
 
 /* Query options */
-static const TokenType default_operation_type = TK_OR_OP;
-static const char default_operation_string[] = "OR";
+static const TokenType default_operator_type = TK_OR_OP;
 
 /* Output options */
 static const LanguageElement print_element = LE_LINE;

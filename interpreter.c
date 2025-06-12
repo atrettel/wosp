@@ -23,13 +23,14 @@ insert_token(Token **list, TokenType type, int n, char *string)
         ((prev_type == TK_WILDCARD) || (prev_type == TK_QUOTE) || (prev_type == TK_R_PAREN))
         && (cumulative_quotes % 2 == 0))
     {
-        char *tmp = malloc(sizeof(default_operation_string));
+        const char *default_operator_string = find_operator_prefix(default_operator_type);
+        char *tmp = (char *) malloc((strlen(default_operator_string)+1) * sizeof(char));
         if (tmp == NULL)
         {
             exit(EXIT_FAILURE);
         }
-        snprintf(tmp, sizeof(default_operation_string), "%s", default_operation_string);
-        insert_token(list, default_operation_type, 0, tmp);
+        snprintf(tmp, strlen(default_operator_string) + 1, "%s", default_operator_string);
+        insert_token(list, default_operator_type, 0, tmp);
     }
     else if ((proximity_operator_token_type(type) == true) && (prev_type == TK_NOT_OP))
     {
