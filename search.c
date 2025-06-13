@@ -381,42 +381,49 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
                 {
                     m++;
                 }
-                char *tmp = (char *) malloc((m - i - 1) * sizeof(char));
-                if (tmp == NULL)
+                if ((m - i - 1) == 0)
                 {
-                    exit(EXIT_FAILURE);
+                    expand_word(trie, original, i+1, match);
                 }
-                for (size_t k = 0; k < (m - i - 1); k++)
+                else
                 {
-                    tmp[k] = original[i+k+1];
-                }
-                tmp[m-i-1] = '\0';
-                char *endptr;
-                size_t n = (size_t) strtol(tmp, &endptr, 10);
-                free(tmp);
-                for (size_t j = 0; j <= n; j++)
-                {
-                    size_t len = j + strlen(original) - 1;
-                    char *modified = malloc(len * sizeof(char));
-                    if (modified == NULL)
+                    char *tmp = (char *) malloc((m - i - 1) * sizeof(char));
+                    if (tmp == NULL)
                     {
                         exit(EXIT_FAILURE);
                     }
-                    for (size_t k = 0; k < i; k++)
+                    for (size_t k = 0; k < (m - i - 1); k++)
                     {
-                        modified[k] = original[k];
+                        tmp[k] = original[i+k+1];
                     }
-                    for (size_t k = 0; k < j; k++)
+                    tmp[m-i-1] = '\0';
+                    char *endptr;
+                    size_t n = (size_t) strtol(tmp, &endptr, 10);
+                    free(tmp);
+                    for (size_t j = 0; j <= n; j++)
                     {
-                        modified[i+k] = wildcard_character;
+                        size_t len = j + strlen(original) - 1;
+                        char *modified = malloc(len * sizeof(char));
+                        if (modified == NULL)
+                        {
+                            exit(EXIT_FAILURE);
+                        }
+                        for (size_t k = 0; k < i; k++)
+                        {
+                            modified[k] = original[k];
+                        }
+                        for (size_t k = 0; k < j; k++)
+                        {
+                            modified[i+k] = wildcard_character;
+                        }
+                        for (size_t k = 0; k < (len - i - j); k++)
+                        {
+                            modified[i+j+k] = original[k+m];
+                        }
+                        modified[len-1] = '\0';
+                        expand_word(trie, modified, i, match);
+                        free(modified);
                     }
-                    for (size_t k = 0; k < (len - i - j); k++)
-                    {
-                        modified[i+j+k] = original[k+m];
-                    }
-                    modified[len-1] = '\0';
-                    expand_word(trie, modified, i, match);
-                    free(modified);
                 }
             }
         }
