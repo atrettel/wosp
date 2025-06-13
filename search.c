@@ -1,5 +1,6 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -369,33 +370,54 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
     {
         if (is_extended_wildcard_character(c) == true)
         {
-            assert((i + 1 < strlen(original)));
-            size_t n = (size_t) (original[i+1] - '0');
-            assert(n > 0);
-            assert(n < 10);
-            for (size_t j = 0; j <= n; j++)
+            if ((i + 1) == strlen(original))
             {
-                size_t len = j + strlen(original) - 1;
-                char *modified = malloc(len * sizeof(char));
-                if (modified == NULL)
+                expand_word(trie, original, i+1, match);
+            }
+            else
+            {
+                size_t m = i + 1;
+                while (isdigit(original[m]))
+                {
+                    m++;
+                }
+                char *tmp = (char *) malloc((m - i - 1) * sizeof(char));
+                if (tmp == NULL)
                 {
                     exit(EXIT_FAILURE);
                 }
-                for (size_t k = 0; k < i; k++)
+                for (size_t k = 0; k < (m - i - 1); k++)
                 {
-                    modified[k] = original[k];
+                    tmp[k] = original[i+k+1];
                 }
-                for (size_t k = 0; k < j; k++)
+                tmp[m-i-1] = '\0';
+                char *endptr;
+                size_t n = (size_t) strtol(tmp, &endptr, 10);
+                free(tmp);
+                for (size_t j = 0; j <= n; j++)
                 {
-                    modified[i+k] = wildcard_character;
+                    size_t len = j + strlen(original) - 1;
+                    char *modified = malloc(len * sizeof(char));
+                    if (modified == NULL)
+                    {
+                        exit(EXIT_FAILURE);
+                    }
+                    for (size_t k = 0; k < i; k++)
+                    {
+                        modified[k] = original[k];
+                    }
+                    for (size_t k = 0; k < j; k++)
+                    {
+                        modified[i+k] = wildcard_character;
+                    }
+                    for (size_t k = 0; k < (len - i - j); k++)
+                    {
+                        modified[i+j+k] = original[k+m];
+                    }
+                    modified[len-1] = '\0';
+                    expand_word(trie, modified, i, match);
+                    free(modified);
                 }
-                for (size_t k = 0; k < (len - i - j); k++)
-                {
-                    modified[i+j+k] = original[i+k+2];
-                }
-                modified[len-1] = '\0';
-                expand_word(trie, modified, i, match);
-                free(modified);
             }
         }
         else
