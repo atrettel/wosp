@@ -56,7 +56,7 @@ void free_tokens(Token *);
 
 TokenType find_operator_type(char *);
 const char *find_operator_prefix(TokenType);
-void identify_token_type(char *, TokenType, int);
+void identify_token_type(char *, TokenType *, int *);
 
 Token *lex_query(char *);
 bool operator_token_type(TokenType);
