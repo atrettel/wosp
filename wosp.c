@@ -127,7 +127,7 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
         (*words)[i] = NULL;
         if (argc == 2)
         {
-            read_source_words(words[i], stdin, (*filenames)[i]);
+            read_source_words(&((*words)[i]), stdin, (*filenames)[i]);
         }
         else
         {
@@ -137,7 +137,7 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
                 fprintf(stderr, "File '%s' does not exist\n", (*filenames)[i]);
                 exit(EXIT_FAILURE);
             }
-            read_source_words(words[i], f, (*filenames)[i]);
+            read_source_words(&((*words)[i]), f, (*filenames)[i]);
             fclose(f);
         }
         add_words_to_trie(*trie, (*words)[i]);
