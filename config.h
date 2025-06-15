@@ -20,4 +20,7 @@ static const int print_after = 1;
 static const bool print_filename = true;
 static const bool print_line_number = true;
 
+/* Debug options */
+static const bool debug_syntax_tree = true;
+
 #endif /* CONFIG_H */

@@ -847,6 +847,11 @@ interpret_query(char *query, TrieNode *trie)
     {
         Token *current = tokens;
         SyntaxTree *tree = parse_query(&current);
+        if (debug_syntax_tree == true)
+        {
+            print_syntax_tree(tree);
+            printf("\n");
+        }
         bool error_flag = false;
         Match *matches = eval_syntax_tree(tree, trie, &error_flag);
         free_syntax_tree(tree);
