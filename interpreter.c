@@ -594,7 +594,14 @@ print_syntax_tree(SyntaxTree *tree)
         {
             printf("(");
             print_syntax_tree(left_syntax_tree(tree));
-            printf(" %s", find_operator_prefix(type));
+            if (type == TK_ERROR)
+            {
+                printf(" error");
+            }
+            else
+            {
+                printf(" %s", find_operator_prefix(type));
+            }
             if (number_syntax_tree(tree) != 0)
             {
                 printf("%d", number_syntax_tree(tree));
