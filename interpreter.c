@@ -732,16 +732,37 @@ parse_expression_d(Token **token)
 SyntaxTree *
 parse_expression_e(Token **token)
 {
+    bool in_quote = (type_token(*token) == TK_QUOTE) ? true : false;
+    if (in_quote == true)
+    {
+        *token = next_token(*token);
+    }
     SyntaxTree *a = parse_atom(token);
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_ADJ_OP || type == TK_NOT_ADJ_OP)
+        if ((type == TK_ADJ_OP || type == TK_NOT_ADJ_OP) && (in_quote == false))
         {
             Token *op_token = *token;
             *token = next_token(*token);
+            if (type_token(*token) == TK_QUOTE)
+            {
+                in_quote = (in_quote == true) ? false : true;
+                *token = next_token(*token);
+            }
             SyntaxTree *b = parse_atom(token);
             a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
+        }
+        else if (type == TK_WILDCARD && in_quote == true)
+        {
+            SyntaxTree *b = insert_parent(TK_WILDCARD, 0, string_token(*token), NULL, NULL);
+            a = insert_parent(TK_ADJ_OP, 1, NULL, a, b);
+            *token = next_token(*token);
+        }
+        else if (type == TK_QUOTE)
+        {
+            in_quote = (in_quote == true) ? false : true;
+            *token = next_token(*token);
         }
         else
         {
@@ -766,23 +787,6 @@ parse_atom(Token **token)
         SyntaxTree *a = parse_query(token);
         assert(type_token(*token) == TK_R_PAREN);
         if (type_token(*token) == TK_R_PAREN)
-        {
-            *token = next_token(*token);
-        }
-        return a;
-    }
-    else if (type == TK_QUOTE)
-    {
-        *token = next_token(*token);
-        SyntaxTree *a = parse_atom(token);
-        while (type_token(*token) == TK_WILDCARD)
-        {
-            SyntaxTree *b = insert_parent(TK_WILDCARD, 0, string_token(*token), NULL, NULL);
-            a = insert_parent(TK_ADJ_OP, 1, NULL, a, b);
-            *token = next_token(*token);
-        }
-        assert(type_token(*token) == TK_QUOTE);
-        if (type_token(*token) == TK_QUOTE)
         {
             *token = next_token(*token);
         }
