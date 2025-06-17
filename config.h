@@ -3,6 +3,7 @@
 #define CONFIG_H
 
 #include <stdbool.h>
+#include <limits.h>
 
 #include "interpreter.h"
 #include "words.h"
@@ -20,6 +21,7 @@ static const int print_before = 1;
 static const int print_after = 1;
 static const bool print_filename = true;
 static const bool print_line_number = true;
+static const unsigned int print_maximum = UINT_MAX;
 
 /* Debug options */
 static const bool debug_syntax_tree = true;

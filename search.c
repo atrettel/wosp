@@ -190,7 +190,8 @@ void
 print_matches(Match *match)
 {
     Match *current_match = match;
-    while (is_match(current_match) == true)
+    unsigned int output_count = 0;
+    while (is_match(current_match) == true && output_count < print_maximum)
     {
         int start_n = -print_before;
         int end_n   = +print_after;
@@ -224,6 +225,7 @@ print_matches(Match *match)
         }
         printf("\n");
         current_match = next_match(current_match);
+        output_count++;
     }
 }
 
