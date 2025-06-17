@@ -859,7 +859,7 @@ interpret_query(char *query, TrieNode *trie)
     {
         Token *current = tokens;
         SyntaxTree *tree = parse_query(&current);
-        if (debug_syntax_tree == true)
+        if (print_syntax_tree == true)
         {
             print_syntax_tree(stdout, tree, true);
         }
