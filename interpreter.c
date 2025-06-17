@@ -482,7 +482,7 @@ count_errors_tokens(Token *list, bool print_errors)
             n++;
             if (print_errors)
             {
-                fprintf(stderr, "(%u) error in token '%s'\n", n, string_token(current));
+                fprintf(stderr, "%s: (%u) Error in token '%s'\n", program_name, n, string_token(current));
             }
         }
         else if (type == TK_QUOTE)
@@ -502,7 +502,7 @@ count_errors_tokens(Token *list, bool print_errors)
             n++;
             if (print_errors)
             {
-                fprintf(stderr, "(%u) sequential operators at tokens '%s' and '%s'\n", n, string_token(prev_token(current)), string_token(current));
+                fprintf(stderr, "%s: (%u) Sequential operators at tokens '%s' and '%s'\n", program_name, n, string_token(prev_token(current)), string_token(current));
             }
         }
         else if (prev_type == TK_WILDCARD && type == TK_WILDCARD && (n_quotes % 2 == 0))
@@ -512,7 +512,7 @@ count_errors_tokens(Token *list, bool print_errors)
             n++;
             if (print_errors)
             {
-                fprintf(stderr, "(%u) sequential wildcards at tokens '%s' and '%s'\n", n, string_token(prev_token(current)), string_token(current));
+                fprintf(stderr, "%s: (%u) Sequential wildcards at tokens '%s' and '%s'\n", program_name, n, string_token(prev_token(current)), string_token(current));
             }
         }
         prev_type = type;
@@ -524,7 +524,7 @@ count_errors_tokens(Token *list, bool print_errors)
         n++;
         if (print_errors)
         {
-            fprintf(stderr, "(%u) unbalanced quotation marks present\n", n);
+            fprintf(stderr, "%s: (%u) Unbalanced quotation marks present\n", program_name, n);
         }
     }
     if (n_l_parens != n_r_parens)
@@ -532,7 +532,7 @@ count_errors_tokens(Token *list, bool print_errors)
         n++;
         if (print_errors)
         {
-            fprintf(stderr, "(%u) unbalanced parentheses present\n", n);
+            fprintf(stderr, "%s: (%u) Unbalanced parentheses present\n", program_name, n);
         }
     }
 
@@ -808,7 +808,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
     if (type == TK_ERROR)
     {
         *error_flag = true;
-        fprintf(stderr, "Fatal syntax error in token %s\n", string_syntax_tree(tree));
+        fprintf(stderr, "%s: Syntax error in token '%s'\n", program_name, string_syntax_tree(tree));
     }
     else if (type == TK_WILDCARD)
     {
@@ -840,7 +840,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool *error_flag)
             else
             {
                 *error_flag = true;
-                fprintf(stderr, "Unidentified operator in token %s\n", string_syntax_tree(tree));
+                fprintf(stderr, "%s: Unidentified operator in token '%s'\n", program_name, string_syntax_tree(tree));
             }
         }
         free_matches(left);
@@ -865,7 +865,6 @@ interpret_query(char *query, TrieNode *trie)
         }
         bool error_flag = false;
         Match *matches = eval_syntax_tree(tree, trie, &error_flag);
-        free_syntax_tree(tree);
         if (error_flag == false)
         {
             if (print_type == OT_DOCUMENTS)
@@ -879,13 +878,16 @@ interpret_query(char *query, TrieNode *trie)
         }
         else
         {
-            fprintf(stderr, "At least one syntax error present\n");
+            print_syntax_tree(tree);
+            printf("\n");
+            fprintf(stderr, "%s: One or more syntax errors found during evaluation\n", program_name);
         }
+        free_syntax_tree(tree);
         free_matches(matches);
     }
     else
     {
-        fprintf(stderr, "One of more errors in query\n");
+        fprintf(stderr, "%s: One of more syntax errors found after tokenization\n", program_name);
     }
     free_tokens(tokens);
 }

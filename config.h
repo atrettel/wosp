@@ -22,6 +22,7 @@ typedef enum OutputType
     OT_MATCHES
 } OutputType;
 
+static const char program_name[] = "wosp";
 static const LanguageElement print_element = LE_LINE;
 static const int print_before = 1;
 static const int print_after = 1;

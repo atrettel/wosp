@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
 #include "interpreter.h"
 #include "operations.h"
 #include "search.h"
@@ -82,9 +83,9 @@ read_source_words(Word **list, FILE *stream, char *filename)
 size_t
 read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***words)
 {
-    if (argc == 0)
+    if (argc == 1)
     {
-        fprintf(stderr, "No query given.\n");
+        fprintf(stderr, "%s: No query given\n", program_name);
         exit(EXIT_FAILURE);
     }
 
@@ -134,7 +135,7 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
             FILE *f = fopen((*filenames)[i], "r");
             if (f == NULL)
             {
-                fprintf(stderr, "File '%s' does not exist\n", (*filenames)[i]);
+                fprintf(stderr, "%s: File '%s' does not exist\n", program_name, (*filenames)[i]);
                 exit(EXIT_FAILURE);
             }
             read_source_words(&((*words)[i]), f, (*filenames)[i]);
