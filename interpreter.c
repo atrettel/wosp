@@ -581,34 +581,35 @@ insert_parent(TokenType type, int n, char *string, SyntaxTree *left, SyntaxTree 
 }
 
 void
-print_syntax_tree(SyntaxTree *tree)
+print_syntax_tree(FILE *stream, SyntaxTree *tree, bool terminal)
 {
     if (tree != NULL)
     {
         TokenType type = type_syntax_tree(tree);
         if (type == TK_WILDCARD)
         {
-            printf("%s", string_syntax_tree(tree));
+            fprintf(stream, "%s", string_syntax_tree(tree));
+        }
+        else if (type == TK_ERROR)
+        {
+            fprintf(stream, "error");
         }
         else
         {
-            printf("(");
-            print_syntax_tree(left_syntax_tree(tree));
-            if (type == TK_ERROR)
-            {
-                printf(" error");
-            }
-            else
-            {
-                printf(" %s", find_operator_prefix(type));
-            }
+            fprintf(stream, "(");
+            print_syntax_tree(stream, left_syntax_tree(tree), false);
+            fprintf(stream, " %s", find_operator_prefix(type));
             if (number_syntax_tree(tree) != 0)
             {
-                printf("%d", number_syntax_tree(tree));
+                fprintf(stream, "%d", number_syntax_tree(tree));
             }
-            printf(" ");
-            print_syntax_tree(right_syntax_tree(tree));
-            printf(")");
+            fprintf(stream, " ");
+            print_syntax_tree(stream, right_syntax_tree(tree), false);
+            fprintf(stream, ")");
+        }
+        if (terminal == true)
+        {
+            fprintf(stream, "\n");
         }
     }
 }
@@ -860,8 +861,7 @@ interpret_query(char *query, TrieNode *trie)
         SyntaxTree *tree = parse_query(&current);
         if (debug_syntax_tree == true)
         {
-            print_syntax_tree(tree);
-            printf("\n");
+            print_syntax_tree(stdout, tree, true);
         }
         bool error_flag = false;
         Match *matches = eval_syntax_tree(tree, trie, &error_flag);
@@ -878,8 +878,7 @@ interpret_query(char *query, TrieNode *trie)
         }
         else
         {
-            print_syntax_tree(tree);
-            printf("\n");
+            print_syntax_tree(stderr, tree, true);
             fprintf(stderr, "%s: One or more syntax errors found during evaluation\n", program_name);
         }
         free_syntax_tree(tree);

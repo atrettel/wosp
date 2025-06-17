@@ -3,6 +3,7 @@
 #define INTERPRETER_H
 
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "search.h"
 
@@ -80,7 +81,7 @@ SyntaxTree *left_syntax_tree(SyntaxTree *);
 SyntaxTree *right_syntax_tree(SyntaxTree *);
 
 SyntaxTree *insert_parent(TokenType, int, char *, SyntaxTree *, SyntaxTree *);
-void print_syntax_tree(SyntaxTree *);
+void print_syntax_tree(FILE *, SyntaxTree *, bool);
 void free_syntax_tree(SyntaxTree *);
 
 /*
