@@ -32,6 +32,6 @@ static const unsigned int print_maximum = UINT_MAX;
 static const OutputType print_type = OT_MATCHES;
 
 /* Debug options */
-static const bool print_syntax_tree = true;
+static const bool output_syntax_tree = false;
 
 #endif /* CONFIG_H */
