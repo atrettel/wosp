@@ -559,7 +559,8 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
             {
                 unsigned long inner_start = position_word(start_word_match(inner_match));
                 unsigned long   inner_end = position_word(  end_word_match(inner_match));
-                if ((inner_start >= outer_start) && (inner_end <= outer_end))
+                if (((inner_start >= outer_start) && (inner_end <= outer_end)   && (inclusive_proximity == false)) ||
+                    ((inner_start <= outer_end)   && (inner_end >= outer_start) && (inclusive_proximity == true )))
                 {
                     /* We have a match.  Let's add it. */
                     size_t n_outer = number_of_words_in_match(outer_match);

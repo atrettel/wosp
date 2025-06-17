@@ -9,6 +9,7 @@
 
 /* Search options */
 static const bool case_sensitive = false;
+static const bool inclusive_proximity = true;
 
 /* Query options */
 static const TokenType default_operator_type = TK_OR_OP;
