@@ -17,6 +17,7 @@ void insert_document(DocumentNode **, Word *document);
 DocumentNode *next_document(DocumentNode *);
 bool has_document(DocumentNode *, Word *);
 bool is_document(DocumentNode *);
+char *filename_document(DocumentNode *);
 void free_document_list(DocumentNode *);
 
 /* A match is a continuous set of words matching a set of constraints.  Each
@@ -46,6 +47,7 @@ unsigned int start_position_match(Match *);
 unsigned int end_position_match(Match *);
 unsigned int width_match(Match *);
 void print_matches(Match *);
+void print_documents_in_matches(Match *);
 void concatenate_matches(Match *, Match **);
 void free_matches(Match *);
 

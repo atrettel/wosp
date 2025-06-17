@@ -230,6 +230,21 @@ print_matches(Match *match)
 }
 
 void
+print_documents_in_matches(Match *match)
+{
+    unsigned int output_count = 0;
+    DocumentNode *documents = document_list_match_list(match);
+    DocumentNode *current = documents;
+    while (is_document(current) == true && output_count < print_maximum)
+    {
+        printf("%s\n", filename_document(current));
+        current = next_document(current);
+        output_count++;
+    }
+    free_document_list(documents);
+}
+
+void
 concatenate_matches(Match *src, Match **dest)
 {
     Match *current = src;
@@ -509,6 +524,12 @@ is_document(DocumentNode *list)
     {
         return true;
     }
+}
+
+char *
+filename_document(DocumentNode *document)
+{
+    return filename_word(document->document);
 }
 
 void

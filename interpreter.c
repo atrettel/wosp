@@ -868,7 +868,14 @@ interpret_query(char *query, TrieNode *trie)
         free_syntax_tree(tree);
         if (error_flag == false)
         {
-            print_matches(matches);
+            if (print_type == OT_DOCUMENTS)
+            {
+                print_documents_in_matches(matches);
+            }
+            if (print_type == OT_MATCHES)
+            {
+                print_matches(matches);
+            }
         }
         else
         {
