@@ -101,7 +101,7 @@ SyntaxTree *parse_expression_d(Token **);
 SyntaxTree *parse_expression_e(Token **);
 SyntaxTree *parse_atom(Token **);
 
-Match *eval_syntax_tree(SyntaxTree *, TrieNode *, bool, bool *);
-void interpret_query(char *, TrieNode *, bool);
+Match *eval_syntax_tree(SyntaxTree *, TrieNode *, bool, bool, bool *);
+void interpret_query(char *, TrieNode *, bool, bool);
 
 #endif /* INTERPRETER_H */

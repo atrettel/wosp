@@ -104,52 +104,52 @@ op_xor(Match *first_match, Match *second_match)
 }
 
 Match *
-op_adj(Match *first_match, Match *second_match, int n)
+op_adj(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, LE_WORD, 1, n);
+    return proximity_search(first_match, second_match, LE_WORD, 1, n, inclusive_proximity);
 }
 
 Match *
-op_near(Match *first_match, Match *second_match, int n)
+op_near(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, LE_WORD, -n, +n);
+    return proximity_search(first_match, second_match, LE_WORD, -n, +n, inclusive_proximity);
 }
 
 Match *
-op_among(Match *first_match, Match *second_match, int n)
+op_among(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, LE_CLAUSE, -n, +n);
+    return proximity_search(first_match, second_match, LE_CLAUSE, -n, +n, inclusive_proximity);
 }
 
 Match *
-op_along(Match *first_match, Match *second_match, int n)
+op_along(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, LE_LINE, -n, +n);
+    return proximity_search(first_match, second_match, LE_LINE, -n, +n, inclusive_proximity);
 }
 
 Match *
-op_with(Match *first_match, Match *second_match, int n)
+op_with(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, LE_SENTENCE, -n, +n);
+    return proximity_search(first_match, second_match, LE_SENTENCE, -n, +n, inclusive_proximity);
 }
 
 Match *
-op_same(Match *first_match, Match *second_match, int n)
+op_same(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
     assert(n > 0);
-    return proximity_search(first_match, second_match, LE_PARAGRAPH, -n, +n);
+    return proximity_search(first_match, second_match, LE_PARAGRAPH, -n, +n, inclusive_proximity);
 }
 
 Match *
-op_not_prox(Match *first_match, Match *second_match, int n, Match *op_prox(Match *, Match *, int))
+op_not_prox(Match *first_match, Match *second_match, int n, Match *op_prox(Match *, Match *, int, bool), bool inclusive_proximity)
 {
     Match *union_match = op_or(first_match, second_match);
-    Match *prox_match = op_prox(first_match, second_match, n);
+    Match *prox_match = op_prox(first_match, second_match, n, inclusive_proximity);
     Match *match = NULL;
     Match *outer_match = union_match;
     while (is_match(outer_match) == true)
@@ -188,37 +188,37 @@ op_not_prox(Match *first_match, Match *second_match, int n, Match *op_prox(Match
 }
 
 Match *
-op_not_adj(Match *first_match, Match *second_match, int n)
+op_not_adj(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
-    return op_not_prox(first_match, second_match, n, op_adj);
+    return op_not_prox(first_match, second_match, n, op_adj, inclusive_proximity);
 }
 
 Match *
-op_not_near(Match *first_match, Match *second_match, int n)
+op_not_near(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
-    return op_not_prox(first_match, second_match, n, op_near);
+    return op_not_prox(first_match, second_match, n, op_near, inclusive_proximity);
 }
 
 Match *
-op_not_among(Match *first_match, Match *second_match, int n)
+op_not_among(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
-    return op_not_prox(first_match, second_match, n, op_among);
+    return op_not_prox(first_match, second_match, n, op_among, inclusive_proximity);
 }
 
 Match *
-op_not_along(Match *first_match, Match *second_match, int n)
+op_not_along(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
-    return op_not_prox(first_match, second_match, n, op_along);
+    return op_not_prox(first_match, second_match, n, op_along, inclusive_proximity);
 }
 
 Match *
-op_not_with(Match *first_match, Match *second_match, int n)
+op_not_with(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
-    return op_not_prox(first_match, second_match, n, op_with);
+    return op_not_prox(first_match, second_match, n, op_with, inclusive_proximity);
 }
 
 Match *
-op_not_same(Match *first_match, Match *second_match, int n)
+op_not_same(Match *first_match, Match *second_match, int n, bool inclusive_proximity)
 {
-    return op_not_prox(first_match, second_match, n, op_same);
+    return op_not_prox(first_match, second_match, n, op_same, inclusive_proximity);
 }

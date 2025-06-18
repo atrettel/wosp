@@ -167,10 +167,12 @@ main(int argc, char *argv[])
     char **filenames = NULL;
     Word **words = NULL;
 
+    /* Search options */
     bool case_sensitive = false;
+    bool inclusive_proximity = true;
 
     size_t n_files = read_data(argc, argv, &trie, &filenames, &words, case_sensitive);
-    interpret_query(argv[1], trie, case_sensitive);
+    interpret_query(argv[1], trie, case_sensitive, inclusive_proximity);
     free_data(n_files, trie, filenames, words);
 
     return EXIT_SUCCESS;

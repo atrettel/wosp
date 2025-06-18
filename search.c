@@ -553,7 +553,7 @@ wildcard_search(TrieNode *trie, char *original, bool case_sensitive)
 }
 
 Match *
-proximity_search(Match *first_match, Match *second_match, LanguageElement element, int start, int end)
+proximity_search(Match *first_match, Match *second_match, LanguageElement element, int start, int end, bool inclusive_proximity)
 {
     Match *match = NULL;
     Match *outer_match = first_match;

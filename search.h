@@ -75,6 +75,6 @@ void expand_word(TrieNode *, char *, size_t, Match **, bool);
 void free_trie(TrieNode *);
 
 Match *wildcard_search(TrieNode *, char *, bool);
-Match *proximity_search(Match *, Match *, LanguageElement, int, int);
+Match *proximity_search(Match *, Match *, LanguageElement, int, int, bool);
 
 #endif /* SEARCH_H */
