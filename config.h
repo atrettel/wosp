@@ -9,7 +9,6 @@
 #include "words.h"
 
 /* Search options */
-static const bool case_sensitive = false;
 static const bool inclusive_proximity = true;
 
 /* Query options */

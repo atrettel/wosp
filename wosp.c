@@ -23,7 +23,7 @@ add_words_to_trie(TrieNode *trie, Word *list)
 }
 
 void
-read_source_words(Word **list, FILE *stream, char *filename)
+read_source_words(Word **list, FILE *stream, char *filename, bool case_sensitive)
 {
     unsigned long line = 1, column = 1, position = 1;
     int p = '\0';
@@ -62,7 +62,7 @@ read_source_words(Word **list, FILE *stream, char *filename)
                 exit(EXIT_FAILURE);
             }
             data[len-1] = '\0';
-            append_word(list, data, filename, line, column, position);
+            append_word(list, data, filename, line, column, position, case_sensitive);
             position++;
         }
         if ((p != '\r' && c == '\n') || c == '\r')
@@ -81,7 +81,7 @@ read_source_words(Word **list, FILE *stream, char *filename)
 }
 
 size_t
-read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***words)
+read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***words, bool case_sensitive)
 {
     if (argc == 1)
     {
@@ -128,7 +128,7 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
         (*words)[i] = NULL;
         if (argc == 2)
         {
-            read_source_words(&((*words)[i]), stdin, (*filenames)[i]);
+            read_source_words(&((*words)[i]), stdin, (*filenames)[i], case_sensitive);
         }
         else
         {
@@ -138,7 +138,7 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
                 fprintf(stderr, "%s: File '%s' does not exist\n", program_name, (*filenames)[i]);
                 exit(EXIT_FAILURE);
             }
-            read_source_words(&((*words)[i]), f, (*filenames)[i]);
+            read_source_words(&((*words)[i]), f, (*filenames)[i], case_sensitive);
             fclose(f);
         }
         add_words_to_trie(*trie, (*words)[i]);
@@ -167,8 +167,10 @@ main(int argc, char *argv[])
     char **filenames = NULL;
     Word **words = NULL;
 
-    size_t n_files = read_data(argc, argv, &trie, &filenames, &words);
-    interpret_query(argv[1], trie);
+    bool case_sensitive = false;
+
+    size_t n_files = read_data(argc, argv, &trie, &filenames, &words, case_sensitive);
+    interpret_query(argv[1], trie, case_sensitive);
     free_data(n_files, trie, filenames, words);
 
     return EXIT_SUCCESS;

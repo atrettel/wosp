@@ -374,12 +374,12 @@ backtrack_trie(TrieNode *trie, char *reduced, size_t i, Match **match)
 }
 
 void
-expand_word(TrieNode *trie, char *original, size_t i, Match **match)
+expand_word(TrieNode *trie, char *original, size_t i, Match **match, bool case_sensitive)
 {
     char c = original[i];
     if (i == strlen(original))
     {
-        char *reduced = reduce_word(original, WO_QUERY);
+        char *reduced = reduce_word(original, WO_QUERY, case_sensitive);
         backtrack_trie(trie, reduced, 0, match);
         free(reduced);
     }
@@ -389,7 +389,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
         {
             if ((i + 1) == strlen(original))
             {
-                expand_word(trie, original, i+1, match);
+                expand_word(trie, original, i+1, match, case_sensitive);
             }
             else
             {
@@ -400,7 +400,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
                 }
                 if ((m - i - 1) == 0)
                 {
-                    expand_word(trie, original, i+1, match);
+                    expand_word(trie, original, i+1, match, case_sensitive);
                 }
                 else
                 {
@@ -438,7 +438,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
                             modified[i+j+k] = original[k+m];
                         }
                         modified[len-1] = '\0';
-                        expand_word(trie, modified, i, match);
+                        expand_word(trie, modified, i, match, case_sensitive);
                         free(modified);
                     }
                 }
@@ -446,7 +446,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match)
         }
         else
         {
-            expand_word(trie, original, i+1, match);
+            expand_word(trie, original, i+1, match, case_sensitive);
         }
     }
 }
@@ -545,10 +545,10 @@ free_document_list(DocumentNode *list)
 }
 
 Match *
-wildcard_search(TrieNode *trie, char *original)
+wildcard_search(TrieNode *trie, char *original, bool case_sensitive)
 {
     Match *match = NULL;
-    expand_word(trie, original, 0, &match);
+    expand_word(trie, original, 0, &match, case_sensitive);
     return match;
 }
 

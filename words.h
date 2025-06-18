@@ -37,8 +37,8 @@ typedef enum WordOrigin
     WO_QUERY
 } WordOrigin;
 
-char *reduce_word(char *, WordOrigin);
-void append_word(Word **, char *, char *, unsigned long, unsigned long, unsigned long);
+char *reduce_word(char *, WordOrigin, bool);
+void append_word(Word **, char *, char *, unsigned long, unsigned long, unsigned long, bool);
 char *original_word(Word *);
 char *reduced_word(Word *);
 char *filename_word(Word *);

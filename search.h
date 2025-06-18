@@ -71,10 +71,10 @@ void init_trie(TrieNode **);
 void insert_trie(TrieNode *, Word *, size_t);
 bool has_word_trie(TrieNode *, char *);
 void backtrack_trie(TrieNode *, char *, size_t, Match **);
-void expand_word(TrieNode *, char *, size_t, Match **);
+void expand_word(TrieNode *, char *, size_t, Match **, bool);
 void free_trie(TrieNode *);
 
-Match *wildcard_search(TrieNode *, char *);
+Match *wildcard_search(TrieNode *, char *, bool);
 Match *proximity_search(Match *, Match *, LanguageElement, int, int);
 
 #endif /* SEARCH_H */
