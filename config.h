@@ -6,19 +6,10 @@
 #include <limits.h>
 
 #include "interpreter.h"
+#include "output.h"
 #include "words.h"
 
-/* Query options */
-static const TokenType default_operator_type = TK_OR_OP;
-
 /* Output options */
-typedef enum OutputType
-{
-    OT_DOCUMENTS,
-    OT_MATCHES
-} OutputType;
-
-static const char program_name[] = "wosp";
 static const LanguageElement print_element = LE_LINE;
 static const int print_before = 1;
 static const int print_after = 1;
@@ -27,7 +18,9 @@ static const bool print_line_number = true;
 static const unsigned int print_maximum = UINT_MAX;
 static const OutputType print_type = OT_MATCHES;
 
-/* Debug options */
+/* Additional options */
+static const char program_name[] = "wosp";
 static const bool output_syntax_tree = false;
+static const TokenType default_operator_type = TK_OR_OP;
 
 #endif /* CONFIG_H */

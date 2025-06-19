@@ -7,4 +7,10 @@
 void print_matches(Match *);
 void print_documents_in_matches(Match *);
 
+typedef enum OutputType
+{
+    OT_DOCUMENTS,
+    OT_MATCHES
+} OutputType;
+
 #endif /* OUTPUT_H */
