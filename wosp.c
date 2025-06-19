@@ -8,6 +8,7 @@
 #include "config.h"
 #include "interpreter.h"
 #include "operations.h"
+#include "output.h"
 #include "search.h"
 #include "words.h"
 
@@ -171,8 +172,11 @@ main(int argc, char *argv[])
     bool case_sensitive = false;
     bool inclusive_proximity = true;
 
+    /* Output options */
+    OutputOptions output_options = init_output_options();
+
     size_t n_files = read_data(argc, argv, &trie, &filenames, &words, case_sensitive);
-    interpret_query(argv[1], trie, case_sensitive, inclusive_proximity);
+    interpret_query(argv[1], trie, case_sensitive, inclusive_proximity, output_options);
     free_data(n_files, trie, filenames, words);
 
     return EXIT_SUCCESS;

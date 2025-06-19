@@ -852,7 +852,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool case_sensitive, bool inc
 }
 
 void
-interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive_proximity)
+interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive_proximity, OutputOptions options)
 {
     Token *tokens = lex_query(query);
     unsigned int n_errors = count_errors_tokens(tokens, true);
@@ -868,13 +868,13 @@ interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive
         Match *matches = eval_syntax_tree(tree, trie, case_sensitive, inclusive_proximity, &error_flag);
         if (error_flag == false)
         {
-            if (print_type == OT_DOCUMENTS)
+            if (type_output_options(options) == OT_DOCUMENTS)
             {
-                print_documents_in_matches(matches);
+                print_documents_in_matches(matches, options);
             }
-            if (print_type == OT_MATCHES)
+            if (type_output_options(options) == OT_MATCHES)
             {
-                print_matches(matches);
+                print_matches(matches, options);
             }
         }
         else

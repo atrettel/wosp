@@ -10,15 +10,64 @@
 #include "search.h"
 #include "words.h"
 
+OutputOptions init_output_options(void)
+{
+    OutputOptions options;
+    options.element = LE_LINE;
+    options.before = 1;
+    options.after = 1;
+    options.filename = true;
+    options.line_number = true;
+    options.maximum = UINT_MAX;
+    options.type = OT_MATCHES;
+    return options;
+}
+
+LanguageElement element_output_options(OutputOptions options)
+{
+    return options.element;
+}
+
+int before_output_options(OutputOptions options)
+{
+    return options.before;
+}
+
+int after_output_options(OutputOptions options)
+{
+    return options.after;
+}
+
+bool filename_output_options(OutputOptions options)
+{
+    return options.filename;
+}
+
+bool line_number_output_options(OutputOptions options)
+{
+    return options.line_number;
+}
+
+unsigned int maximum_output_options(OutputOptions options)
+{
+    return options.maximum;
+}
+
+OutputType type_output_options(OutputOptions options)
+{
+    return options.type;
+}
+
 void
-print_matches(Match *match)
+print_matches(Match *match, OutputOptions options)
 {
     Match *current_match = match;
     unsigned int output_count = 0;
-    while (is_match(current_match) == true && output_count < print_maximum)
+    while (is_match(current_match) == true && output_count < maximum_output_options(options))
     {
-        int start_n = -print_before;
-        int end_n   = +print_after;
+        LanguageElement print_element = element_output_options(options);
+        int start_n = -before_output_options(options);
+        int end_n   = +after_output_options(options);
         if (print_element == LE_WORD)
         {
             start_n += 1;
@@ -29,11 +78,11 @@ print_matches(Match *match)
         {
             end_word = NULL;
         }
-        if (print_filename == true)
+        if (filename_output_options(options) == true)
         {
             printf("%s:", filename_word(start_word));
         }
-        if (print_line_number == true)
+        if (line_number_output_options(options) == true)
         {
             printf("%lu:", line_word(start_word));
         }
@@ -54,12 +103,12 @@ print_matches(Match *match)
 }
 
 void
-print_documents_in_matches(Match *match)
+print_documents_in_matches(Match *match, OutputOptions options)
 {
     unsigned int output_count = 0;
     DocumentNode *documents = document_list_match_list(match);
     DocumentNode *current = documents;
-    while (is_document(current) == true && output_count < print_maximum)
+    while (is_document(current) == true && output_count < maximum_output_options(options))
     {
         printf("%s\n", filename_document(current));
         current = next_document(current);
