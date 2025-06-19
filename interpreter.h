@@ -8,6 +8,9 @@
 #include "output.h"
 #include "search.h"
 
+static const char program_name[] = "wosp";
+static const bool debug_syntax_tree = false;
+
 typedef enum TokenType
 {                /* Example */
     TK_WILDCARD, /* w?rd$1 */

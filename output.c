@@ -1,12 +1,13 @@
 /* Copyright (C) 2025 Andrew Trettel */
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "config.h"
+#include "output.h"
 #include "search.h"
 #include "words.h"
 

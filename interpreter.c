@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "config.h"
 #include "interpreter.h"
 #include "operations.h"
 #include "output.h"
@@ -860,7 +859,7 @@ interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive
     {
         Token *current = tokens;
         SyntaxTree *tree = parse_query(&current);
-        if (output_syntax_tree == true)
+        if (debug_syntax_tree == true)
         {
             print_syntax_tree(stdout, tree, true);
         }

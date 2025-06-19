@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "config.h"
 #include "words.h"
 
 bool
