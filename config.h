@@ -12,6 +12,5 @@
 /* Additional options */
 static const char program_name[] = "wosp";
 static const bool output_syntax_tree = false;
-static const TokenType default_operator_type = TK_OR_OP;
 
 #endif /* CONFIG_H */

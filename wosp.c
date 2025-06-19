@@ -175,8 +175,11 @@ main(int argc, char *argv[])
     /* Output options */
     OutputOptions output_options = init_output_options();
 
+    /* Additional options */
+    TokenType default_operator_type = TK_OR_OP;
+
     size_t n_files = read_data(argc, argv, &trie, &filenames, &words, case_sensitive);
-    interpret_query(argv[1], trie, case_sensitive, inclusive_proximity, output_options);
+    interpret_query(argv[1], trie, case_sensitive, inclusive_proximity, default_operator_type, output_options);
     free_data(n_files, trie, filenames, words);
 
     return EXIT_SUCCESS;

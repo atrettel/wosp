@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 void
-insert_token(Token **list, TokenType type, int n, char *string)
+insert_token(Token **list, TokenType type, int n, char *string, TokenType default_operator_type)
 {
     unsigned int cumulative_quotes = (type == TK_QUOTE) ? 1 : 0;
     if (is_token(*list) == true)
@@ -31,7 +31,7 @@ insert_token(Token **list, TokenType type, int n, char *string)
             exit(EXIT_FAILURE);
         }
         snprintf(tmp, strlen(default_operator_string) + 1, "%s", default_operator_string);
-        insert_token(list, default_operator_type, 0, tmp);
+        insert_token(list, default_operator_type, 0, tmp, default_operator_type);
     }
     else if ((proximity_operator_token_type(type) == true) && (prev_type == TK_NOT_OP))
     {
@@ -355,7 +355,7 @@ identify_token_type(char *data, TokenType *type, int *n)
 }
 
 Token *
-lex_query(char *query)
+lex_query(char *query, TokenType default_operator_type)
 {
     Token *tokens = NULL;
     size_t i = 0;
@@ -384,7 +384,7 @@ lex_query(char *query)
             {
                 type = TK_QUOTE;
             }
-            insert_token(&tokens, type, 0, tmp);
+            insert_token(&tokens, type, 0, tmp, default_operator_type);
             i++;
         }
         size_t len = 1;
@@ -407,7 +407,7 @@ lex_query(char *query)
             TokenType type = TK_ERROR;
             int n = -1;
             identify_token_type(data, &type, &n);
-            insert_token(&tokens, type, n, data);
+            insert_token(&tokens, type, n, data, default_operator_type);
         }
         else
         {
@@ -852,9 +852,9 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, bool case_sensitive, bool inc
 }
 
 void
-interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive_proximity, OutputOptions options)
+interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive_proximity, TokenType default_operator_type, OutputOptions options)
 {
-    Token *tokens = lex_query(query);
+    Token *tokens = lex_query(query, default_operator_type);
     unsigned int n_errors = count_errors_tokens(tokens, true);
     if (n_errors == 0)
     {
