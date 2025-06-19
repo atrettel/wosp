@@ -7,6 +7,7 @@
 #include "config.h"
 #include "interpreter.h"
 #include "operations.h"
+#include "output.h"
 
 #include <stdio.h>
 
