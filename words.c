@@ -611,6 +611,14 @@ advance_word(Word *word, LanguageElement element, int n)
         {
             advance = prev_paragraph;
         }
+        else if (element == LE_PAGE && n > 0)
+        {
+            advance = next_page;
+        }
+        else if (element == LE_PAGE && n < 0)
+        {
+            advance = prev_page;
+        }
         assert(advance != NULL);
 
         size_t m = abs(n);

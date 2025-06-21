@@ -28,7 +28,8 @@ typedef enum LanguageElement
     LE_CLAUSE,
     LE_LINE,
     LE_SENTENCE,
-    LE_PARAGRAPH
+    LE_PARAGRAPH,
+    LE_PAGE
 } LanguageElement;
 
 typedef enum WordOrigin
