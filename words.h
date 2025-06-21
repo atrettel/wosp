@@ -52,6 +52,7 @@ bool has_next_word(Word *);
 bool has_prev_word(Word *);
 bool clause_ending_word(Word *);
 bool sentence_ending_word(Word *);
+bool paragraph_ending_word(Word *);
 Word *next_boolean_element(Word *, bool boolean_word(Word *));
 Word *prev_boolean_element(Word *, bool boolean_word(Word *));
 Word *next_numbered_element(Word *, unsigned long element_word(Word *));
