@@ -303,6 +303,56 @@ sentence_ending_word(Word *word)
 }
 
 Word *
+next_boolean_element(Word *word, bool element_ending_word(Word *))
+{
+    if (is_word(word) == true)
+    {
+        Word *current = word;
+        while (has_next_word(current) == true)
+        {
+            Word *next = next_word(current);
+            if (element_ending_word(current) == true)
+            {
+                return next;
+            }
+            current = next;
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
+prev_boolean_element(Word *word, bool element_ending_word(Word *))
+{
+    if (is_word(word) == true)
+    {
+        Word *current = word;
+        if ((element_ending_word(current) == true) && (has_prev_word(current) == true))
+        {
+            current = prev_word(current);
+        }
+        while (has_prev_word(current) == true)
+        {
+            Word *prev = prev_word(current);
+            if (element_ending_word(current) == true)
+            {
+                return next_word(current);
+            }
+            current = prev;
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
 next_numbered_element(Word *word, unsigned long element_word(Word *))
 {
     if (is_word(word) == true)
@@ -378,51 +428,13 @@ prev_word(Word *word)
 Word *
 next_clause(Word *word)
 {
-    if (is_word(word) == true)
-    {
-        Word *current = word;
-        while (has_next_word(current) == true)
-        {
-            Word *next = next_word(current);
-            if (clause_ending_word(current) == true)
-            {
-                return next;
-            }
-            current = next;
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return next_boolean_element(word, clause_ending_word);
 }
 
 Word *
 prev_clause(Word *word)
 {
-    if (is_word(word) == true)
-    {
-        Word *current = word;
-        if ((clause_ending_word(current) == true) && (has_prev_word(current) == true))
-        {
-            current = prev_word(current);
-        }
-        while (has_prev_word(current) == true)
-        {
-            Word *prev = prev_word(current);
-            if (clause_ending_word(current) == true)
-            {
-                return next_word(current);
-            }
-            current = prev;
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return prev_boolean_element(word, clause_ending_word);
 }
 
 Word *
@@ -440,51 +452,13 @@ prev_line(Word *word)
 Word *
 next_sentence(Word *word)
 {
-    if (is_word(word) == true)
-    {
-        Word *current = word;
-        while (has_next_word(current) == true)
-        {
-            Word *next = next_word(current);
-            if (sentence_ending_word(current) == true)
-            {
-                return next;
-            }
-            current = next;
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return next_boolean_element(word, sentence_ending_word);
 }
 
 Word *
 prev_sentence(Word *word)
 {
-    if (is_word(word) == true)
-    {
-        Word *current = word;
-        if ((sentence_ending_word(current) == true) && (has_prev_word(current) == true))
-        {
-            current = prev_word(current);
-        }
-        while (has_prev_word(current) == true)
-        {
-            Word *prev = prev_word(current);
-            if (sentence_ending_word(current) == true)
-            {
-                return next_word(current);
-            }
-            current = prev;
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return prev_boolean_element(word, sentence_ending_word);
 }
 
 Word *
