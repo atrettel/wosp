@@ -303,6 +303,53 @@ sentence_ending_word(Word *word)
 }
 
 Word *
+next_numbered_element(Word *word, unsigned long element_word(Word *))
+{
+    if (is_word(word) == true)
+    {
+        unsigned long element = element_word(word);
+        Word *current = word;
+        while (has_next_word(current) == true)
+        {
+            Word *next = next_word(current);
+            if (element_word(current) != element)
+            {
+                return current;
+            }
+            current = next;
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
+prev_numbered_element(Word *word, unsigned long element_word(Word *))
+{
+    if (is_word(word) == true)
+    {
+        unsigned long element = element_word(word);
+        Word *current = word;
+        while (has_prev_word(current) == true)
+        {
+            if (element_word(current) != element)
+            {
+                return next_word(current);
+            }
+            current = prev_word(current);
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
 next_word(Word *word)
 {
     if (is_word(word) == true)
@@ -381,48 +428,13 @@ prev_clause(Word *word)
 Word *
 next_line(Word *word)
 {
-    if (is_word(word) == true)
-    {
-        unsigned long line = line_word(word);
-        Word *current = word;
-        while (has_next_word(current) == true)
-        {
-            Word *next = next_word(current);
-            if (line_word(current) != line)
-            {
-                return current;
-            }
-            current = next;
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return next_numbered_element(word, line_word);
 }
 
 Word *
 prev_line(Word *word)
 {
-    if (is_word(word) == true)
-    {
-        unsigned long line = line_word(word);
-        Word *current = word;
-        while (has_prev_word(current) == true)
-        {
-            if (line_word(current) != line)
-            {
-                return next_word(current);
-            }
-            current = prev_word(current);
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return prev_numbered_element(word, line_word);
 }
 
 Word *
@@ -519,6 +531,18 @@ prev_paragraph(Word *word)
     {
         return NULL;
     }
+}
+
+Word *
+next_page(Word *word)
+{
+    return next_numbered_element(word, page_word);
+}
+
+Word *
+prev_page(Word *word)
+{
+    return prev_numbered_element(word, page_word);
 }
 
 Word *
