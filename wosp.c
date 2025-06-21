@@ -62,7 +62,7 @@ read_source_words(Word **list, FILE *stream, char *filename, bool case_sensitive
                 exit(EXIT_FAILURE);
             }
             data[len-1] = '\0';
-            append_word(list, data, filename, line, column, position, case_sensitive);
+            append_word(list, data, filename, line, column, position, 1, case_sensitive);
             position++;
         }
         if ((p != '\r' && c == '\n') || c == '\r')

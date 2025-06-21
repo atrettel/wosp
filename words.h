@@ -17,6 +17,7 @@ typedef struct Word
     unsigned long line; /* Line and column for locating word in input */
     unsigned long column;
     unsigned long position; /* Position for order in doubly-linked list */
+    unsigned long page;
     struct Word *next;
     struct Word *prev;
 } Word;
@@ -37,13 +38,14 @@ typedef enum WordOrigin
 } WordOrigin;
 
 char *reduce_word(char *, WordOrigin, bool);
-void append_word(Word **, char *, char *, unsigned long, unsigned long, unsigned long, bool);
+void append_word(Word **, char *, char *, unsigned long, unsigned long, unsigned long, unsigned long, bool);
 char *original_word(Word *);
 char *reduced_word(Word *);
 char *filename_word(Word *);
 unsigned long line_word(Word *);
 unsigned long column_word(Word *);
 unsigned long position_word(Word *);
+unsigned long page_word(Word *);
 bool is_word(Word *);
 bool has_next_word(Word *);
 bool has_prev_word(Word *);

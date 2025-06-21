@@ -85,7 +85,7 @@ reduce_word(char *original, WordOrigin origin, bool case_sensitive)
 
 void
 append_word(Word **list, char *data, char *filename, unsigned long line,
-            unsigned long column, unsigned long position, bool case_sensitive)
+            unsigned long column, unsigned long position, unsigned long page, bool case_sensitive)
 {
     Word *current = (Word *) malloc(sizeof(Word));
     if (current == NULL)
@@ -98,6 +98,7 @@ append_word(Word **list, char *data, char *filename, unsigned long line,
     current->line = line;
     current->column = column;
     current->position = position;
+    current->page = page;
     current->next = NULL;
     current->prev = *list;
     if (is_word(*list) == true)
@@ -141,6 +142,12 @@ unsigned long
 position_word(Word *word)
 {
     return word->position;
+}
+
+unsigned long
+page_word(Word *word)
+{
+    return word->page;
 }
 
 bool
