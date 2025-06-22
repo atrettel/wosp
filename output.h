@@ -7,6 +7,7 @@
 typedef enum OutputType
 {
     OT_DOCUMENTS,
+    OT_EXCERPTS,
     OT_MATCHES
 } OutputType;
 
@@ -34,7 +35,15 @@ bool count_matches_output_options(OutputOptions);
 unsigned int maximum_output_options(OutputOptions);
 OutputType type_output_options(OutputOptions);
 
+typedef enum ExcerptStatus
+{
+    ES_EXCLUDE,
+    ES_INCLUDE,
+    ES_MATCH,
+} ExcerptStatus;
+
 void print_matches(Match *, OutputOptions);
 void print_documents_in_matches(Match *, OutputOptions);
+void print_excerpts(Match *, OutputOptions);
 
 #endif /* OUTPUT_H */

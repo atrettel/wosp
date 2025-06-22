@@ -871,9 +871,13 @@ interpret_query(char *query, TrieNode *trie, bool case_sensitive, bool inclusive
             {
                 print_documents_in_matches(matches, options);
             }
-            if (type_output_options(options) == OT_MATCHES)
+            else if (type_output_options(options) == OT_MATCHES)
             {
                 print_matches(matches, options);
+            }
+            else if (type_output_options(options) == OT_EXCERPTS)
+            {
+                print_excerpts(matches, options);
             }
         }
         else

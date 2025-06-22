@@ -148,3 +148,107 @@ print_documents_in_matches(Match *match, OutputOptions options)
     }
     free_document_list(documents);
 }
+
+void
+print_excerpts(Match *match, OutputOptions options)
+{
+    unsigned int output_count = 0;
+    DocumentNode *documents = document_list_match_list(match);
+    DocumentNode *current_document = documents;
+    while (is_document(current_document) == true && output_count < maximum_output_options(options))
+    {
+        Word *words = first_word(document_document(current_document));
+        size_t n_words = (size_t) position_word(last_word(words));
+
+        ExcerptStatus *word_print = (ExcerptStatus *) malloc(n_words * sizeof(ExcerptStatus));
+        if (word_print == NULL)
+        {
+            exit(EXIT_FAILURE);
+        }
+        for (size_t i = 0; i < n_words; i++)
+        {
+            word_print[i] = ES_EXCLUDE;
+        }
+        Match *current_match = match;
+        while (is_match(current_match) == true)
+        {
+            if (document_match(current_match) == document_document(current_document))
+            {
+                size_t n_match = number_of_words_in_match(current_match);
+                for (size_t i = 0; i < n_match; i++)
+                {
+                    Word *current_word = word_match(current_match, i);
+                    word_print[(size_t) position_word(current_word) - 1] = ES_MATCH;
+                }
+            }
+            current_match = next_match(current_match);
+        }
+
+        Word *current_word = words;
+        for (size_t i = 0; i < n_words; i++)
+        {
+            if (word_print[i] == ES_MATCH)
+            {
+                Word *start_word = advance_word(current_word, element_output_options(options), -before_output_options(options));
+                Word *end_word   = advance_word(current_word, element_output_options(options),  +after_output_options(options));
+                size_t i_start = (size_t) position_word(start_word) - 1;
+                size_t i_end   = (size_t) position_word(end_word)   - 1;
+                for (size_t j = i_start; j < i_end; j++)
+                {
+                    if (word_print[j] == ES_EXCLUDE)
+                    {
+                        word_print[j] = ES_INCLUDE;
+                    }
+                }
+            }
+            current_word = next_word(current_word);
+        }
+
+        current_word = words;
+        Word *start_word = words;
+        bool prev_print = false;
+        while (is_word(current_word) == true)
+        {
+            size_t i = (size_t) position_word(current_word) - 1;
+            if (word_print[i] == ES_EXCLUDE)
+            {
+                if (prev_print == true)
+                {
+                    printf("\n");
+                    output_count++;
+                }
+                prev_print = false;
+            }
+            else
+            {
+                if (prev_print == false)
+                {
+                    if (filename_output_options(options) == true)
+                    {
+                        printf("%s:", filename_word(current_word));
+                    }
+                    if (page_number_output_options(options) == true)
+                    {
+                        printf("%lu:", page_word(current_word));
+                    }
+                    if (line_number_output_options(options) == true)
+                    {
+                        printf("%lu:", line_word(current_word));
+                    }
+                    start_word = current_word;
+                    prev_print = true;
+                }
+                if (current_word != start_word)
+                {
+                    printf(" ");
+                }
+                printf("%s", original_word(current_word));
+            }
+            current_word = next_word(current_word);
+        }
+
+        free(word_print);
+        current_document = next_document(current_document);
+    }
+    free_document_list(documents);
+}
