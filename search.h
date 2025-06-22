@@ -14,6 +14,7 @@ typedef struct DocumentNode
 } DocumentNode;
 
 void insert_document(DocumentNode **, Word *document);
+Word *document_document(DocumentNode *);
 DocumentNode *next_document(DocumentNode *);
 bool has_document(DocumentNode *, Word *);
 bool is_document(DocumentNode *);

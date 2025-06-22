@@ -426,6 +426,19 @@ insert_document(DocumentNode **list, Word *document)
     }
 }
 
+Word *
+document_document(DocumentNode *list)
+{
+    if (is_document(list) == true)
+    {
+        return list->document;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
 DocumentNode *
 next_document(DocumentNode *list)
 {

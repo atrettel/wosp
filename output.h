@@ -18,6 +18,7 @@ typedef struct OutputOptions
     bool filename;
     bool line_number;
     bool page_number;
+    bool count_matches;
     unsigned int maximum;
     OutputType type;
 } OutputOptions;
@@ -29,6 +30,7 @@ int after_output_options(OutputOptions);
 bool filename_output_options(OutputOptions);
 bool line_number_output_options(OutputOptions);
 bool page_number_output_options(OutputOptions);
+bool count_matches_output_options(OutputOptions);
 unsigned int maximum_output_options(OutputOptions);
 OutputType type_output_options(OutputOptions);
 

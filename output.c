@@ -20,6 +20,7 @@ OutputOptions init_output_options(void)
     options.filename = true;
     options.line_number = true;
     options.page_number = false;
+    options.count_matches = false;
     options.maximum = UINT_MAX;
     options.type = OT_MATCHES;
     return options;
@@ -53,6 +54,11 @@ bool line_number_output_options(OutputOptions options)
 bool page_number_output_options(OutputOptions options)
 {
     return options.page_number;
+}
+
+bool count_matches_output_options(OutputOptions options)
+{
+    return options.count_matches;
 }
 
 unsigned int maximum_output_options(OutputOptions options)
@@ -121,7 +127,22 @@ print_documents_in_matches(Match *match, OutputOptions options)
     DocumentNode *current = documents;
     while (is_document(current) == true && output_count < maximum_output_options(options))
     {
-        printf("%s\n", filename_document(current));
+        printf("%s", filename_document(current));
+        if (count_matches_output_options(options) == true)
+        {
+            unsigned long count = 0;
+            Match *current_match = match;
+            while (is_match(current_match) == true)
+            {
+                if (document_match(current_match) == document_document(current))
+                {
+                    count++;
+                }
+                current_match = next_match(current_match);
+            }
+            printf(":%lu", count);
+        }
+        printf("\n");
         current = next_document(current);
         output_count++;
     }
