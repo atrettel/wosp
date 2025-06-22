@@ -19,6 +19,7 @@ OutputOptions init_output_options(void)
     options.after = 1;
     options.filename = true;
     options.line_number = true;
+    options.page_number = false;
     options.maximum = UINT_MAX;
     options.type = OT_MATCHES;
     return options;
@@ -47,6 +48,11 @@ bool filename_output_options(OutputOptions options)
 bool line_number_output_options(OutputOptions options)
 {
     return options.line_number;
+}
+
+bool page_number_output_options(OutputOptions options)
+{
+    return options.page_number;
 }
 
 unsigned int maximum_output_options(OutputOptions options)
@@ -82,6 +88,10 @@ print_matches(Match *match, OutputOptions options)
         if (filename_output_options(options) == true)
         {
             printf("%s:", filename_word(start_word));
+        }
+        if (page_number_output_options(options) == true)
+        {
+            printf("%lu:", page_word(start_word));
         }
         if (line_number_output_options(options) == true)
         {
