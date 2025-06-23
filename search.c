@@ -345,7 +345,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, bool case_s
                 }
                 else
                 {
-                    char *tmp = (char *) malloc((m - i - 1) * sizeof(char));
+                    char *tmp = (char *) malloc((m - i) * sizeof(char));
                     if (tmp == NULL)
                     {
                         exit(EXIT_FAILURE);
