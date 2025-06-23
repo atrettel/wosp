@@ -207,6 +207,7 @@ print_excerpts(Match *match, OutputOptions options)
         current_word = words;
         Word *start_word = words;
         bool prev_print = false;
+        unsigned int excerpt_count = 0;
         while (is_word(current_word) == true)
         {
             size_t i = (size_t) position_word(current_word) - 1;
@@ -214,39 +215,60 @@ print_excerpts(Match *match, OutputOptions options)
             {
                 if (prev_print == true)
                 {
-                    printf("\n");
+                    if (count_matches_output_options(options) == true)
+                    {
+                        excerpt_count++;
+                    }
+                    else
+                    {
+                        printf("\n");
+                    }
                     output_count++;
                 }
                 prev_print = false;
             }
             else
             {
-                if (prev_print == false)
+                if (count_matches_output_options(options) == true)
                 {
-                    if (filename_output_options(options) == true)
+                    if (prev_print == false)
                     {
-                        printf("%s:", filename_word(current_word));
+                        prev_print = true;
                     }
-                    if (page_number_output_options(options) == true)
-                    {
-                        printf("%lu:", page_word(current_word));
-                    }
-                    if (line_number_output_options(options) == true)
-                    {
-                        printf("%lu:", line_word(current_word));
-                    }
-                    start_word = current_word;
-                    prev_print = true;
                 }
-                if (current_word != start_word)
+                else
                 {
-                    printf(" ");
+                    if (prev_print == false)
+                    {
+                        if (filename_output_options(options) == true)
+                        {
+                            printf("%s:", filename_word(current_word));
+                        }
+                        if (page_number_output_options(options) == true)
+                        {
+                            printf("%lu:", page_word(current_word));
+                        }
+                        if (line_number_output_options(options) == true)
+                        {
+                            printf("%lu:", line_word(current_word));
+                        }
+                        start_word = current_word;
+                        prev_print = true;
+                    }
+                    if (current_word != start_word)
+                    {
+                        printf(" ");
+                    }
+                    printf("%s", original_word(current_word));
                 }
-                printf("%s", original_word(current_word));
             }
             current_word = next_word(current_word);
         }
 
+        if (count_matches_output_options(options) == true)
+        {
+            printf("%s:%u\n", filename_document(current_document), excerpt_count);
+        }
         free(word_print);
         current_document = next_document(current_document);
     }
