@@ -193,8 +193,11 @@ is_word(Word *word)
 bool
 has_next_word(Word *word)
 {
-    if ((is_word(          word)  == false) ||
-        (is_word(next_word(word)) == false))
+    if (is_end_field(word) == true)
+    {
+        return false;
+    }
+    else if (is_end_field(next_word(word)) == true)
     {
         return false;
     }
@@ -207,8 +210,11 @@ has_next_word(Word *word)
 bool
 has_prev_word(Word *word)
 {
-    if ((is_word(          word)  == false) ||
-        (is_word(prev_word(word)) == false))
+    if (is_end_field(word) == true)
+    {
+        return false;
+    }
+    else if (is_end_field(prev_word(word)) == true)
     {
         return false;
     }
