@@ -251,6 +251,9 @@ free_tokens(Token *list)
 static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "among",     "along",     "with",     "same",      "notadj",      "notnear",      "notamong",      "notalong",      "notwith",      "notsame"};
 static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_AMONG_OP, TK_ALONG_OP, TK_WITH_OP, TK_SAME_OP, TK_NOT_ADJ_OP, TK_NOT_NEAR_OP, TK_NOT_AMONG_OP, TK_NOT_ALONG_OP, TK_NOT_WITH_OP, TK_NOT_SAME_OP};
 
+static const char  *alias_prefixes[] = {    "but",   "within",    "notwithin"};
+static const TokenType alias_types[] = {TK_NOT_OP, TK_NEAR_OP, TK_NOT_NEAR_OP};
+
 TokenType
 find_operator_type(char *prefix)
 {
@@ -263,6 +266,19 @@ find_operator_type(char *prefix)
         {
             type = operator_types[i];
             break;
+        }
+    }
+    if (type == TK_ERROR)
+    {
+        n = sizeof(alias_types) / sizeof(alias_types[0]);
+        for (size_t i = 0; i < n; i++)
+        {
+            if ((strncmp(prefix, alias_prefixes[i], strlen(prefix)) == 0)
+             && (strlen(prefix) == strlen(alias_prefixes[i])))
+            {
+                type = alias_types[i];
+                break;
+            }
         }
     }
     return type;
