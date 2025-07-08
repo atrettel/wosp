@@ -617,6 +617,42 @@ last_word(Word *word)
 }
 
 Word *
+field_first_word(Word *word)
+{
+    if (is_end_field(word) == false)
+    {
+        Word *current = word;
+        while (field_has_prev_word(current) == true)
+        {
+            current = prev_word(current);
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
+field_last_word(Word *word)
+{
+    if (is_end_field(word) == false)
+    {
+        Word *current = word;
+        while (field_has_next_word(current) == true)
+        {
+            current = next_word(current);
+        }
+        return current;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+Word *
 document_word(Word *word)
 {
     return first_word(word);
@@ -686,7 +722,7 @@ advance_word(Word *word, LanguageElement element, int n)
         for (size_t i = 0; i < m; i++)
         {
             Word *next = advance(current);
-            if (is_word(next) == true)
+            if (is_end_field(next) == false)
             {
                 current = next;
             }
@@ -694,11 +730,11 @@ advance_word(Word *word, LanguageElement element, int n)
             {
                 if (n > 0)
                 {
-                    current = last_word(current);
+                    current = field_last_word(current);
                 }
                 else
                 {
-                    current = first_word(current);
+                    current = field_first_word(current);
                 }
             }
         }

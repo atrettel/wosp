@@ -79,6 +79,8 @@ Word *next_page(Word *);
 Word *prev_page(Word *);
 Word *first_word(Word *);
 Word *last_word(Word *);
+Word *field_first_word(Word *);
+Word *field_last_word(Word *);
 Word *document_word(Word *);
 Word *advance_word(Word *, LanguageElement, int);
 void print_words(Word *);
