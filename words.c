@@ -99,6 +99,7 @@ append_word(Word **list, char *data, char *filename, unsigned long line,
     current->column = column;
     current->position = position;
     current->page = page;
+    current->field = full_text_field;
     current->next = NULL;
     current->prev = *list;
     if (is_word(*list) == true)
@@ -148,6 +149,19 @@ unsigned long
 page_word(Word *word)
 {
     return word->page;
+}
+
+unsigned long
+field_word(Word *word)
+{
+    if (word == NULL)
+    {
+        return end_field;
+    }
+    else
+    {
+        return word->field;
+    }
 }
 
 bool

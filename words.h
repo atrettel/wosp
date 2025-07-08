@@ -5,6 +5,9 @@
 #include <stdbool.h>
 
 static const char wildcard_character = '?';
+static const unsigned long end_field = 0;
+static const unsigned long full_text_field = 1;
+
 bool is_extended_wildcard_character(char);
 bool is_clause_punctuation(char);
 bool is_ending_punctuation(char);
@@ -18,6 +21,7 @@ typedef struct Word
     unsigned long column;
     unsigned long position; /* Position for order in doubly-linked list */
     unsigned long page;
+    unsigned long field;
     struct Word *next;
     struct Word *prev;
 } Word;
@@ -47,6 +51,7 @@ unsigned long line_word(Word *);
 unsigned long column_word(Word *);
 unsigned long position_word(Word *);
 unsigned long page_word(Word *);
+unsigned long field_word(Word *);
 bool is_word(Word *);
 bool has_next_word(Word *);
 bool has_prev_word(Word *);
