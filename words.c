@@ -178,7 +178,7 @@ is_end_field(Word *word)
 }
 
 bool
-has_next_word(Word *word)
+list_has_next_word(Word *word)
 {
     if (is_end_field(word) == true)
     {
@@ -195,7 +195,7 @@ has_next_word(Word *word)
 }
 
 bool
-has_prev_word(Word *word)
+list_has_prev_word(Word *word)
 {
     if (is_end_field(word) == true)
     {
@@ -312,7 +312,7 @@ sentence_ending_word(Word *word)
                 )
             );
         }
-        if (has_next_word(word) == false)
+        if (field_has_next_word(word) == false)
         {
             return curr_cond;
         }
@@ -362,7 +362,7 @@ paragraph_ending_word(Word *word)
     if (is_end_field(word) == false)
     {
         bool sentence_cond = sentence_ending_word(word);
-        if (has_next_word(word) == false)
+        if (field_has_next_word(word) == false)
         {
             return sentence_cond;
         }
@@ -413,7 +413,7 @@ prev_boolean_element(Word *word, bool element_ending_word(Word *))
     if (is_end_field(word) == false)
     {
         Word *current = word;
-        if ((element_ending_word(current) == true) && (has_prev_word(current) == true))
+        if ((element_ending_word(current) == true) && (field_has_prev_word(current) == true))
         {
             current = prev_word(current);
         }
@@ -588,13 +588,13 @@ extreme_word(Word *word, bool has_another_word(Word *), Word *direction_word(Wor
 Word *
 list_first_word(Word *word)
 {
-    return extreme_word(word, has_prev_word, prev_word);
+    return extreme_word(word, list_has_prev_word, prev_word);
 }
 
 Word *
 list_last_word(Word *word)
 {
-    return extreme_word(word, has_next_word, next_word);
+    return extreme_word(word, list_has_next_word, next_word);
 }
 
 Word *

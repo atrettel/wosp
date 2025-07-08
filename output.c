@@ -87,7 +87,7 @@ print_matches(Match *match, OutputOptions options)
         }
         Word *start_word = advance_word(start_word_match(current_match), print_element, start_n);
         Word   *end_word = advance_word(  end_word_match(current_match), print_element,   end_n);
-        if (has_next_word(end_word) == false)
+        if (field_has_next_word(end_word) == false)
         {
             end_word = NULL;
         }

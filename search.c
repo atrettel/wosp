@@ -524,7 +524,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
              element == LE_LINE      ||
              element == LE_SENTENCE  ||
              element == LE_PARAGRAPH ||
-             element == LE_PAGE) && (has_next_word(outer_end_word) == true))
+             element == LE_PAGE) && (field_has_next_word(outer_end_word) == true))
         {
             outer_end--;
         }
