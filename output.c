@@ -157,8 +157,8 @@ print_excerpts(Match *match, OutputOptions options)
     DocumentNode *current_document = documents;
     while (is_document(current_document) == true && output_count < maximum_output_options(options))
     {
-        Word *words = first_word(document_document(current_document));
-        size_t n_words = (size_t) position_word(last_word(words));
+        Word *words = list_first_word(document_document(current_document));
+        size_t n_words = (size_t) position_word(list_last_word(words));
 
         ExcerptStatus *word_print = (ExcerptStatus *) malloc(n_words * sizeof(ExcerptStatus));
         if (word_print == NULL)

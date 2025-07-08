@@ -77,7 +77,7 @@ read_source_words(Word **list, FILE *stream, char *filename, bool case_sensitive
         p = c;
         c = fgetc(stream);
     }
-    *list = first_word(*list);
+    *list = list_first_word(*list);
 }
 
 size_t

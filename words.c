@@ -586,13 +586,13 @@ extreme_word(Word *word, bool has_another_word(Word *), Word *direction_word(Wor
 }
 
 Word *
-first_word(Word *word)
+list_first_word(Word *word)
 {
     return extreme_word(word, has_prev_word, prev_word);
 }
 
 Word *
-last_word(Word *word)
+list_last_word(Word *word)
 {
     return extreme_word(word, has_next_word, next_word);
 }
@@ -612,7 +612,7 @@ field_last_word(Word *word)
 Word *
 document_word(Word *word)
 {
-    return first_word(word);
+    return list_first_word(word);
 }
 
 /* This is a wrapper function to handle the ends of the input word list safely.
