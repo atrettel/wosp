@@ -178,19 +178,6 @@ is_end_field(Word *word)
 }
 
 bool
-is_word(Word *word)
-{
-    if (word == NULL)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-bool
 has_next_word(Word *word)
 {
     if (is_end_field(word) == true)

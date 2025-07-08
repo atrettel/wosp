@@ -53,7 +53,6 @@ unsigned long position_word(Word *);
 unsigned long page_word(Word *);
 unsigned long field_word(Word *);
 bool is_end_field(Word *);
-bool is_word(Word *);
 bool has_next_word(Word *);
 bool has_prev_word(Word *);
 bool field_has_next_word(Word *);
