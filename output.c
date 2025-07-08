@@ -208,7 +208,7 @@ print_excerpts(Match *match, OutputOptions options)
         Word *start_word = words;
         bool prev_print = false;
         unsigned int excerpt_count = 0;
-        while (is_word(current_word) == true)
+        while (is_end_field(current_word) == false)
         {
             size_t i = (size_t) position_word(current_word) - 1;
             if (word_print[i] == ES_EXCLUDE)

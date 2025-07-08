@@ -165,6 +165,19 @@ field_word(Word *word)
 }
 
 bool
+is_end_field(Word *word)
+{
+    if (field_word(word) == end_field)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
 is_word(Word *word)
 {
     if (word == NULL)

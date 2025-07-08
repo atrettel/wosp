@@ -38,11 +38,10 @@ set_match(Match *match, size_t i, Word *word)
 {
     assert(i >= 0);
     assert(i < number_of_words_in_match(match));
-    if (is_word(match->document) == false)
+    if (match->document == NULL)
     {
         match->document = document_word(word);
     }
-    else
     assert(document_match(match) == document_word(word));
     match->words[i] = word;
 }
@@ -89,7 +88,7 @@ word_match(Match *match, size_t i)
 Word *
 document_match(Match *match)
 {
-    assert(is_word(match->document) == true);
+    assert(match->document != NULL);
     return match->document;
 }
 
