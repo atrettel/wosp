@@ -583,7 +583,7 @@ prev_page(Word *word)
 Word *
 first_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         Word *current = word;
         while (has_prev_word(current) == true)
@@ -601,7 +601,7 @@ first_word(Word *word)
 Word *
 last_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         Word *current = word;
         while (has_next_word(current) == true)
