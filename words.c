@@ -102,7 +102,7 @@ append_word(Word **list, char *data, char *filename, unsigned long line,
     current->field = full_text_field;
     current->next = NULL;
     current->prev = *list;
-    if (is_word(*list) == true)
+    if ((*list) != NULL)
     {
         (*list)->next = current;
     }
