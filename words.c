@@ -227,7 +227,7 @@ has_prev_word(Word *word)
 bool
 clause_ending_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         if (sentence_ending_word(word) == true)
         {
@@ -268,7 +268,7 @@ clause_ending_word(Word *word)
 bool
 sentence_ending_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         char *data = original_word(word);
         size_t len = strlen(data);
@@ -338,7 +338,7 @@ sentence_ending_word(Word *word)
 bool
 paragraph_ending_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         bool sentence_cond = sentence_ending_word(word);
         if (has_next_word(word) == false)
