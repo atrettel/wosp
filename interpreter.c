@@ -258,7 +258,8 @@ find_operator_type(char *prefix)
     size_t n = sizeof(operator_types) / sizeof(operator_types[0]);
     for (size_t i = 0; i < n; i++)
     {
-        if (strncmp(prefix, operator_prefixes[i], strlen(prefix)) == 0)
+        if ((strncmp(prefix, operator_prefixes[i], strlen(prefix)) == 0)
+         && (strlen(prefix) == strlen(operator_prefixes[i])))
         {
             type = operator_types[i];
             break;
