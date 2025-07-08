@@ -581,14 +581,14 @@ prev_page(Word *word)
 }
 
 Word *
-first_word(Word *word)
+extreme_word(Word *word, bool has_another_word(Word *), Word *direction_word(Word *))
 {
     if (is_end_field(word) == false)
     {
         Word *current = word;
-        while (has_prev_word(current) == true)
+        while (has_another_word(current) == true)
         {
-            current = prev_word(current);
+            current = direction_word(current);
         }
         return current;
     }
@@ -596,60 +596,30 @@ first_word(Word *word)
     {
         return NULL;
     }
+}
+
+Word *
+first_word(Word *word)
+{
+    return extreme_word(word, has_prev_word, prev_word);
 }
 
 Word *
 last_word(Word *word)
 {
-    if (is_end_field(word) == false)
-    {
-        Word *current = word;
-        while (has_next_word(current) == true)
-        {
-            current = next_word(current);
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return extreme_word(word, has_next_word, next_word);
 }
 
 Word *
 field_first_word(Word *word)
 {
-    if (is_end_field(word) == false)
-    {
-        Word *current = word;
-        while (field_has_prev_word(current) == true)
-        {
-            current = prev_word(current);
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return extreme_word(word, field_has_prev_word, prev_word);
 }
 
 Word *
 field_last_word(Word *word)
 {
-    if (is_end_field(word) == false)
-    {
-        Word *current = word;
-        while (field_has_next_word(current) == true)
-        {
-            current = next_word(current);
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
+    return extreme_word(word, field_has_next_word, next_word);
 }
 
 Word *
