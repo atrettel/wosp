@@ -716,7 +716,7 @@ void
 print_words(Word *list)
 {
     Word *current = list;
-    while (is_word(current) == true)
+    while (is_end_field(current) == false)
     {
         printf("%10zu: '%s' ('%s')", position_word(current), original_word(current), reduced_word(current));
         if (sentence_ending_word(current) == true)
@@ -732,7 +732,7 @@ void
 free_words(Word *list)
 {
     Word *current = list;
-    while (is_word(current) == true)
+    while (is_end_field(current) == false)
     {
         Word *next = next_word(current);
         free(current->original);
