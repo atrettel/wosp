@@ -497,26 +497,26 @@ prev_numbered_element(Word *word, unsigned long element_word(Word *))
 Word *
 next_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == true)
     {
-        return word->next;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return word->next;
     }
 }
 
 Word *
 prev_word(Word *word)
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == true)
     {
-        return word->prev;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return word->prev;
     }
 }
 
