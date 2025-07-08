@@ -56,6 +56,8 @@ bool is_end_field(Word *);
 bool is_word(Word *);
 bool has_next_word(Word *);
 bool has_prev_word(Word *);
+bool field_has_next_word(Word *);
+bool field_has_prev_word(Word *);
 bool clause_ending_word(Word *);
 bool sentence_ending_word(Word *);
 bool paragraph_ending_word(Word *);

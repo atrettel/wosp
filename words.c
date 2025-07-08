@@ -225,6 +225,40 @@ has_prev_word(Word *word)
 }
 
 bool
+field_has_next_word(Word *word)
+{
+    if (is_end_field(word) == true)
+    {
+        return false;
+    }
+    else if (field_word(word) == field_word(next_word(word)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
+field_has_prev_word(Word *word)
+{
+    if (is_end_field(word) == true)
+    {
+        return false;
+    }
+    else if (field_word(word) == field_word(prev_word(word)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
 clause_ending_word(Word *word)
 {
     if (is_end_field(word) == false)
@@ -366,10 +400,10 @@ paragraph_ending_word(Word *word)
 Word *
 next_boolean_element(Word *word, bool element_ending_word(Word *))
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         Word *current = word;
-        while (has_next_word(current) == true)
+        while (field_has_next_word(current) == true)
         {
             Word *next = next_word(current);
             if (element_ending_word(current) == true)
@@ -389,14 +423,14 @@ next_boolean_element(Word *word, bool element_ending_word(Word *))
 Word *
 prev_boolean_element(Word *word, bool element_ending_word(Word *))
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         Word *current = word;
         if ((element_ending_word(current) == true) && (has_prev_word(current) == true))
         {
             current = prev_word(current);
         }
-        while (has_prev_word(current) == true)
+        while (field_has_prev_word(current) == true)
         {
             Word *prev = prev_word(current);
             if (element_ending_word(current) == true)
@@ -416,11 +450,11 @@ prev_boolean_element(Word *word, bool element_ending_word(Word *))
 Word *
 next_numbered_element(Word *word, unsigned long element_word(Word *))
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         unsigned long element = element_word(word);
         Word *current = word;
-        while (has_next_word(current) == true)
+        while (field_has_next_word(current) == true)
         {
             Word *next = next_word(current);
             if (element_word(current) != element)
@@ -440,11 +474,11 @@ next_numbered_element(Word *word, unsigned long element_word(Word *))
 Word *
 prev_numbered_element(Word *word, unsigned long element_word(Word *))
 {
-    if (is_word(word) == true)
+    if (is_end_field(word) == false)
     {
         unsigned long element = element_word(word);
         Word *current = word;
-        while (has_prev_word(current) == true)
+        while (field_has_prev_word(current) == true)
         {
             if (element_word(current) != element)
             {
