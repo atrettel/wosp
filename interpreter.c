@@ -64,6 +64,10 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
         free(*list);
         *list = prev_tkn;
     }
+    else if ((cumulative_quotes % 2 == 1) && (type != TK_QUOTE))
+    {
+        type = TK_WILDCARD;
+    }
     Token *current = (Token *) malloc(sizeof(Token));
     if (current == NULL)
     {
