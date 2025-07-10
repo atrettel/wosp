@@ -48,7 +48,7 @@ is_clause_punctuation(char c)
 }
 
 char *
-reduce_word(char *original, WordOrigin origin, bool case_sensitive)
+reduce_word(char *original, WordOrigin origin)
 {
     size_t len = 0, j = 0;
     for (size_t i = 0; i < strlen(original); i++)
@@ -68,14 +68,7 @@ reduce_word(char *original, WordOrigin origin, bool case_sensitive)
     {
         if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == WO_QUERY)))
         {
-            if (case_sensitive == true)
-            {
-                reduced[j] = original[i];
-            }
-            else
-            {
-                reduced[j] = tolower(original[i]);
-            }
+            reduced[j] = original[i];
             j++;
         }
     }
@@ -85,7 +78,7 @@ reduce_word(char *original, WordOrigin origin, bool case_sensitive)
 
 void
 append_word(Word **list, char *data, char *filename, unsigned long line,
-            unsigned long column, unsigned long position, unsigned long page, bool case_sensitive)
+            unsigned long column, unsigned long position, unsigned long page)
 {
     Word *current = (Word *) malloc(sizeof(Word));
     if (current == NULL)
@@ -93,7 +86,7 @@ append_word(Word **list, char *data, char *filename, unsigned long line,
         exit(EXIT_FAILURE);
     }
     current->original = data;
-    current->reduced = reduce_word(data, WO_SOURCE, case_sensitive);
+    current->reduced = reduce_word(data, WO_SOURCE);
     current->filename = filename;
     current->line = line;
     current->column = column;

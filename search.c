@@ -319,7 +319,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, bool case_s
     char c = original[i];
     if (i == strlen(original))
     {
-        char *reduced = reduce_word(original, WO_QUERY, case_sensitive);
+        char *reduced = reduce_word(original, WO_QUERY);
         backtrack_trie(trie, reduced, 0, match);
         free(reduced);
     }
