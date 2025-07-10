@@ -360,7 +360,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                     for (size_t j = 0; j <= n; j++)
                     {
                         size_t len = j + strlen(original) - 1;
-                        char *modified = malloc(len * sizeof(char));
+                        char *modified = (char *) malloc(len * sizeof(char));
                         if (modified == NULL)
                         {
                             exit(EXIT_FAILURE);
@@ -386,7 +386,31 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
         }
         else
         {
-            expand_word(trie, original, i+1, match, case_mode);
+            if (!isalpha(c) || (case_mode == CM_SENSITIVE))
+            {
+                expand_word(trie, original, i+1, match, case_mode);
+            }
+            else
+            {
+                size_t len = strlen(original) + 1;
+                char *modified = (char *) malloc(len * sizeof(char));
+                if (modified == NULL)
+                {
+                    exit(EXIT_FAILURE);
+                }
+                snprintf(modified, len, "%s", original);
+                if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_LOWERCASE))
+                {
+                    modified[i] = tolower(c);
+                    expand_word(trie, modified, i+1, match, case_mode);
+                }
+                if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_UPPERCASE))
+                {
+                    modified[i] = toupper(c);
+                    expand_word(trie, modified, i+1, match, case_mode);
+                }
+                free(modified);
+            }
         }
     }
 }
