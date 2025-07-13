@@ -88,6 +88,9 @@ SyntaxTree *insert_parent(TokenType, int, char *, SyntaxTree *, SyntaxTree *);
 void print_syntax_tree(FILE *, SyntaxTree *, bool);
 void free_syntax_tree(SyntaxTree *);
 
+bool type_in_list(TokenType, TokenType *, size_t);
+SyntaxTree *parse_types(Token **, TokenType *, size_t, SyntaxTree *parse_next(Token **));
+
 SyntaxTree *parse_query(Token **);
 SyntaxTree *parse_expression_a(Token **);
 SyntaxTree *parse_expression_b(Token **);

@@ -646,18 +646,32 @@ free_syntax_tree(SyntaxTree *tree)
     free(tree);
 }
 
-SyntaxTree *
-parse_query(Token **token)
+bool
+type_in_list(TokenType type, TokenType *list, size_t n)
 {
-    SyntaxTree *a = parse_expression_a(token);
+    bool result = false;
+    for (size_t i = 0; i < n; i++)
+    {
+        if (list[i] == type)
+        {
+            result = true;
+        }
+    }
+    return result;
+}
+
+SyntaxTree *
+parse_types(Token ** token, TokenType *list, size_t n, SyntaxTree *parse_next(Token **))
+{
+    SyntaxTree *a = parse_next(token);
     while (true)
     {
         TokenType type = type_token(*token);
-        if (type == TK_AND_OP || type == TK_OR_OP || type == TK_NOT_OP || type == TK_XOR_OP)
+        if (type_in_list(type, list, n) == true)
         {
             Token *op_token = *token;
             *token = next_token(*token);
-            SyntaxTree *b = parse_expression_a(token);
+            SyntaxTree *b = parse_next(token);
             a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else
@@ -665,6 +679,14 @@ parse_query(Token **token)
             return a;
         }
     }
+}
+
+
+SyntaxTree *
+parse_query(Token **token)
+{
+    TokenType list[] = {TK_AND_OP,  TK_OR_OP, TK_NOT_OP, TK_XOR_OP};
+    return parse_types(token, list, 4, parse_expression_a);
 }
 
 SyntaxTree *
