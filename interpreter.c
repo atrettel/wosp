@@ -686,39 +686,39 @@ SyntaxTree *
 parse_query(Token **token)
 {
     TokenType list[] = {TK_AND_OP, TK_OR_OP, TK_NOT_OP, TK_XOR_OP};
-    return parse_types(token, list, 4, parse_expression_a);
+    return parse_types(token, list, 4, parse_paragraph_prox_op);
 }
 
 SyntaxTree *
-parse_expression_a(Token **token)
+parse_paragraph_prox_op(Token **token)
 {
     TokenType list[] = {TK_SAME_OP, TK_NOT_SAME_OP};
-    return parse_types(token, list, 2, parse_expression_b);
+    return parse_types(token, list, 2, parse_sentence_prox_op);
 }
 
 SyntaxTree *
-parse_expression_b(Token **token)
+parse_sentence_prox_op(Token **token)
 {
     TokenType list[] = {TK_WITH_OP, TK_NOT_WITH_OP, TK_ALONG_OP, TK_NOT_ALONG_OP};
-    return parse_types(token, list, 4, parse_expression_c);
+    return parse_types(token, list, 4, parse_clause_prox_op);
 }
 
 SyntaxTree *
-parse_expression_c(Token **token)
+parse_clause_prox_op(Token **token)
 {
     TokenType list[] = {TK_AMONG_OP, TK_NOT_AMONG_OP};
-    return parse_types(token, list, 2, parse_expression_d);
+    return parse_types(token, list, 2, parse_word_prox_op);
 }
 
 SyntaxTree *
-parse_expression_d(Token **token)
+parse_word_prox_op(Token **token)
 {
     TokenType list[] = {TK_NEAR_OP, TK_NOT_NEAR_OP};
-    return parse_types(token, list, 2, parse_expression_e);
+    return parse_types(token, list, 2, parse_adj_op);
 }
 
 SyntaxTree *
-parse_expression_e(Token **token)
+parse_adj_op(Token **token)
 {
     bool in_quote = (type_token(*token) == TK_QUOTE) ? true : false;
     if (in_quote == true)

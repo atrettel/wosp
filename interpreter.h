@@ -92,11 +92,11 @@ bool type_in_list(TokenType, TokenType *, size_t);
 SyntaxTree *parse_types(Token **, TokenType *, size_t, SyntaxTree *parse_next(Token **));
 
 SyntaxTree *parse_query(Token **);
-SyntaxTree *parse_expression_a(Token **);
-SyntaxTree *parse_expression_b(Token **);
-SyntaxTree *parse_expression_c(Token **);
-SyntaxTree *parse_expression_d(Token **);
-SyntaxTree *parse_expression_e(Token **);
+SyntaxTree *parse_paragraph_prox_op(Token **);
+SyntaxTree *parse_sentence_prox_op(Token **);
+SyntaxTree *parse_clause_prox_op(Token **);
+SyntaxTree *parse_word_prox_op(Token **);
+SyntaxTree *parse_adj_op(Token **);
 SyntaxTree *parse_atom(Token **);
 
 Match *eval_syntax_tree(SyntaxTree *, TrieNode *, CaseMode, bool, bool *);
