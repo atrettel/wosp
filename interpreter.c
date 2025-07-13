@@ -681,12 +681,31 @@ parse_types(Token ** token, TokenType *list, size_t n, SyntaxTree *parse_next(To
     }
 }
 
-
 SyntaxTree *
 parse_query(Token **token)
 {
-    TokenType list[] = {TK_AND_OP, TK_OR_OP, TK_NOT_OP, TK_XOR_OP};
-    return parse_types(token, list, 4, parse_paragraph_prox_op);
+    return parse_disjunction_op(token);
+}
+
+SyntaxTree *
+parse_disjunction_op(Token **token)
+{
+    TokenType list[] = {TK_OR_OP, TK_XOR_OP};
+    return parse_types(token, list, 2, parse_conjunction_op);
+}
+
+SyntaxTree *
+parse_conjunction_op(Token **token)
+{
+    TokenType list[] = {TK_AND_OP};
+    return parse_types(token, list, 1, parse_negation_op);
+}
+
+SyntaxTree *
+parse_negation_op(Token **token)
+{
+    TokenType list[] = {TK_NOT_OP};
+    return parse_types(token, list, 1, parse_paragraph_prox_op);
 }
 
 SyntaxTree *

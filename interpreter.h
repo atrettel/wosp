@@ -92,6 +92,9 @@ bool type_in_list(TokenType, TokenType *, size_t);
 SyntaxTree *parse_types(Token **, TokenType *, size_t, SyntaxTree *parse_next(Token **));
 
 SyntaxTree *parse_query(Token **);
+SyntaxTree *parse_disjunction_op(Token **);
+SyntaxTree *parse_conjunction_op(Token **);
+SyntaxTree *parse_negation_op(Token **);
 SyntaxTree *parse_paragraph_prox_op(Token **);
 SyntaxTree *parse_sentence_prox_op(Token **);
 SyntaxTree *parse_clause_prox_op(Token **);
