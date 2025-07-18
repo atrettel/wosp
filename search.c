@@ -415,6 +415,30 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
     }
 }
 
+size_t
+height_trie(TrieNode *trie)
+{
+    if (trie == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        size_t max_edge_height = 0;
+        TrieEdge *edge = trie->edges;
+        while (edge != NULL)
+        {
+            size_t edge_height = height_trie(edge->node);
+            if (edge_height > max_edge_height)
+            {
+                max_edge_height = edge_height;
+            }
+            edge = edge->next;
+        }
+        return max_edge_height + 1;
+    }
+}
+
 void
 free_trie(TrieNode *trie)
 {

@@ -79,6 +79,7 @@ void insert_trie(TrieNode *, Word *, size_t);
 bool has_word_trie(TrieNode *, char *);
 void backtrack_trie(TrieNode *, char *, size_t, Match **);
 void expand_word(TrieNode *, char *, size_t, Match **, CaseMode);
+size_t height_trie(TrieNode *); /* Length of longest word + 1 */
 void free_trie(TrieNode *);
 
 Match *wildcard_search(TrieNode *, char *, CaseMode);
