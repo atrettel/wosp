@@ -9,7 +9,7 @@
 #include "words.h"
 
 bool
-is_extended_wildcard_character(char c)
+is_truncation_character(char c)
 {
     if (c == '$' || c == '#')
     {

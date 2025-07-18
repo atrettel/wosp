@@ -8,7 +8,7 @@ static const char wildcard_character = '?';
 static const unsigned long end_field = 0;
 static const unsigned long full_text_field = 1;
 
-bool is_extended_wildcard_character(char);
+bool is_truncation_character(char);
 bool is_clause_punctuation(char);
 bool is_ending_punctuation(char);
 

@@ -325,7 +325,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
     }
     else
     {
-        if (is_extended_wildcard_character(c) == true)
+        if (is_truncation_character(c) == true)
         {
             if ((i + 1) == strlen(original))
             {
