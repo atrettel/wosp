@@ -327,65 +327,58 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
     {
         if (is_truncation_character(c) == true)
         {
-            if ((i + 1) == strlen(original))
+            size_t m = i + 1; /* End position of digits */
+            size_t n = 0; /* Maximum number of wildcard characters */
+            bool has_digits = false;
+            while ((m != strlen(original)) && (isdigit(original[m])))
             {
-                expand_word(trie, original, i+1, match, case_mode);
+                m++;
+            }
+            if ((m - i - 1) == 0)
+            {
+                has_digits = false;
+                n = height_trie(trie) - 1;
             }
             else
             {
-                size_t m = i + 1; /* End position of digits */
-                size_t n = 0; /* Maximum number of wildcard characters */
-                bool has_digits = false;
-                while (isdigit(original[m]))
+                has_digits = true;
+                char *tmp = (char *) malloc((m - i) * sizeof(char));
+                if (tmp == NULL)
                 {
-                    m++;
+                    exit(EXIT_FAILURE);
                 }
-                if ((m - i - 1) == 0)
+                for (size_t k = 0; k < (m - i - 1); k++)
                 {
-                    has_digits = false;
-                    n = height_trie(trie) - 1;
+                    tmp[k] = original[i+k+1];
                 }
-                else
+                tmp[m-i-1] = '\0';
+                char *endptr;
+                n = (size_t) strtol(tmp, &endptr, 10);
+                free(tmp);
+            }
+            for (size_t j = 0; j <= n; j++)
+            {
+                size_t len = j + strlen(original) - ((has_digits == true) ?  1 : 0);
+                char *modified = (char *) malloc(len * sizeof(char));
+                if (modified == NULL)
                 {
-                    has_digits = true;
-                    char *tmp = (char *) malloc((m - i) * sizeof(char));
-                    if (tmp == NULL)
-                    {
-                        exit(EXIT_FAILURE);
-                    }
-                    for (size_t k = 0; k < (m - i - 1); k++)
-                    {
-                        tmp[k] = original[i+k+1];
-                    }
-                    tmp[m-i-1] = '\0';
-                    char *endptr;
-                    n = (size_t) strtol(tmp, &endptr, 10);
-                    free(tmp);
+                    exit(EXIT_FAILURE);
                 }
-                for (size_t j = 0; j <= n; j++)
+                for (size_t k = 0; k < i; k++)
                 {
-                    size_t len = j + strlen(original) - ((has_digits == true) ?  1 : 0);
-                    char *modified = (char *) malloc(len * sizeof(char));
-                    if (modified == NULL)
-                    {
-                        exit(EXIT_FAILURE);
-                    }
-                    for (size_t k = 0; k < i; k++)
-                    {
-                        modified[k] = original[k];
-                    }
-                    for (size_t k = 0; k < j; k++)
-                    {
-                        modified[i+k] = wildcard_character;
-                    }
-                    for (size_t k = 0; k < (len - i - j); k++)
-                    {
-                        modified[i+j+k] = original[k+m];
-                    }
-                    modified[len-1] = '\0';
-                    expand_word(trie, modified, i, match, case_mode);
-                    free(modified);
+                    modified[k] = original[k];
                 }
+                for (size_t k = 0; k < j; k++)
+                {
+                    modified[i+k] = wildcard_character;
+                }
+                for (size_t k = 0; k < (len - i - j); k++)
+                {
+                    modified[i+j+k] = original[k+m];
+                }
+                modified[len-1] = '\0';
+                expand_word(trie, modified, i, match, case_mode);
+                free(modified);
             }
         }
         else
