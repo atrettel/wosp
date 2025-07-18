@@ -316,13 +316,15 @@ sentence_ending_word(Word *word)
             bool next_cond = false;
             if (next_len == 1)
             {
-                next_cond = isupper(next_data[0]);
+                next_cond = (isupper(next_data[0]) || isdigit(next_data[0]));
             }
             else
             {
-                next_cond = (isupper(next_data[0]) ||
+                next_cond = (
+                    (isupper(next_data[0]) || isdigit(next_data[0]))
+                    ||
                     (
-                        isupper(next_data[1])
+                        (isupper(next_data[1]) || isdigit(next_data[1]))
                         &&
                         (
                             (next_data[0] == '"')
