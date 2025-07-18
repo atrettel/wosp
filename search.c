@@ -338,9 +338,10 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 {
                     m++;
                 }
+                size_t n = 0;
                 if ((m - i - 1) == 0)
                 {
-                    expand_word(trie, original, i+1, match, case_mode);
+                    n = height_trie(trie);
                 }
                 else
                 {
@@ -355,32 +356,32 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                     }
                     tmp[m-i-1] = '\0';
                     char *endptr;
-                    size_t n = (size_t) strtol(tmp, &endptr, 10);
+                    n = (size_t) strtol(tmp, &endptr, 10);
                     free(tmp);
-                    for (size_t j = 0; j <= n; j++)
+                }
+                for (size_t j = 0; j <= n; j++)
+                {
+                    size_t len = j + strlen(original) - 1;
+                    char *modified = (char *) malloc(len * sizeof(char));
+                    if (modified == NULL)
                     {
-                        size_t len = j + strlen(original) - 1;
-                        char *modified = (char *) malloc(len * sizeof(char));
-                        if (modified == NULL)
-                        {
-                            exit(EXIT_FAILURE);
-                        }
-                        for (size_t k = 0; k < i; k++)
-                        {
-                            modified[k] = original[k];
-                        }
-                        for (size_t k = 0; k < j; k++)
-                        {
-                            modified[i+k] = wildcard_character;
-                        }
-                        for (size_t k = 0; k < (len - i - j); k++)
-                        {
-                            modified[i+j+k] = original[k+m];
-                        }
-                        modified[len-1] = '\0';
-                        expand_word(trie, modified, i, match, case_mode);
-                        free(modified);
+                        exit(EXIT_FAILURE);
                     }
+                    for (size_t k = 0; k < i; k++)
+                    {
+                        modified[k] = original[k];
+                    }
+                    for (size_t k = 0; k < j; k++)
+                    {
+                        modified[i+k] = wildcard_character;
+                    }
+                    for (size_t k = 0; k < (len - i - j); k++)
+                    {
+                        modified[i+j+k] = original[k+m];
+                    }
+                    modified[len-1] = '\0';
+                    expand_word(trie, modified, i, match, case_mode);
+                    free(modified);
                 }
             }
         }
