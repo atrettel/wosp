@@ -333,18 +333,21 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
             }
             else
             {
-                size_t m = i + 1;
+                size_t m = i + 1; /* End position of digits */
+                size_t n = 0; /* Maximum number of wildcard characters */
+                bool has_digits = false;
                 while (isdigit(original[m]))
                 {
                     m++;
                 }
-                size_t n = 0;
                 if ((m - i - 1) == 0)
                 {
-                    n = height_trie(trie);
+                    has_digits = false;
+                    n = height_trie(trie) - 1;
                 }
                 else
                 {
+                    has_digits = true;
                     char *tmp = (char *) malloc((m - i) * sizeof(char));
                     if (tmp == NULL)
                     {
@@ -361,7 +364,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 }
                 for (size_t j = 0; j <= n; j++)
                 {
-                    size_t len = j + strlen(original) - 1;
+                    size_t len = j + strlen(original) - ((has_digits == true) ?  1 : 0);
                     char *modified = (char *) malloc(len * sizeof(char));
                     if (modified == NULL)
                     {
