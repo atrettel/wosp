@@ -428,6 +428,19 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 expand_word(trie, modified, i+2, match, case_mode, edit_dist-1);
                 free(modified);
                 /* Deletion */
+                len = strlen(original);
+                modified = (char *) malloc(len * sizeof(char));
+                for (size_t j = 0; j < i; j++)
+                {
+                    modified[j] = original[j];
+                }
+                for (size_t j = i; j < len; j++)
+                {
+                    modified[j] = original[j+1];
+                }
+                modified[len-1] = '\0';
+                expand_word(trie, modified, i, match, case_mode, edit_dist-1);
+                free(modified);
                 /* Substitution */
                 len = strlen(original) + 1;
                 modified = (char *) malloc(len * sizeof(char));
