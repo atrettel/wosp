@@ -314,7 +314,7 @@ backtrack_trie(TrieNode *trie, char *reduced, size_t i, Match **match)
 }
 
 void
-expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode case_mode)
+expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode case_mode, unsigned int edit_dist)
 {
     char c = original[i];
     if (i == strlen(original))
@@ -377,7 +377,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                     modified[i+j+k] = original[k+m];
                 }
                 modified[len-1] = '\0';
-                expand_word(trie, modified, i, match, case_mode);
+                expand_word(trie, modified, i, match, case_mode, edit_dist);
                 free(modified);
             }
         }
@@ -385,7 +385,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
         {
             if (!isalpha(c) || (case_mode == CM_SENSITIVE))
             {
-                expand_word(trie, original, i+1, match, case_mode);
+                expand_word(trie, original, i+1, match, case_mode, edit_dist);
             }
             else
             {
@@ -399,14 +399,33 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_LOWERCASE))
                 {
                     modified[i] = tolower(c);
-                    expand_word(trie, modified, i+1, match, case_mode);
+                    expand_word(trie, modified, i+1, match, case_mode, edit_dist);
                 }
                 if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_UPPERCASE))
                 {
                     modified[i] = toupper(c);
-                    expand_word(trie, modified, i+1, match, case_mode);
+                    expand_word(trie, modified, i+1, match, case_mode, edit_dist);
                 }
                 free(modified);
+            }
+            if (edit_dist > 0)
+            {
+                size_t len;
+                char *modified;
+                /* Insertion */
+                /* Deletion */
+                /* Substitution */
+                len = strlen(original) + 1;
+                modified = (char *) malloc(len * sizeof(char));
+                if (modified == NULL)
+                {
+                    exit(EXIT_FAILURE);
+                }
+                snprintf(modified, len, "%s", original);
+                modified[i] = wildcard_character;
+                expand_word(trie, modified, i+1, match, case_mode, edit_dist-1);
+                free(modified);
+                /* Transposition */
             }
         }
     }
@@ -543,10 +562,10 @@ free_document_list(DocumentNode *list)
 }
 
 Match *
-wildcard_search(TrieNode *trie, char *original, CaseMode case_mode)
+wildcard_search(TrieNode *trie, char *original, CaseMode case_mode, unsigned int edit_dist)
 {
     Match *match = NULL;
-    expand_word(trie, original, 0, &match, case_mode);
+    expand_word(trie, original, 0, &match, case_mode, edit_dist);
     return match;
 }
 

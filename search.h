@@ -78,11 +78,11 @@ void init_trie(TrieNode **);
 void insert_trie(TrieNode *, Word *, size_t);
 bool has_word_trie(TrieNode *, char *);
 void backtrack_trie(TrieNode *, char *, size_t, Match **);
-void expand_word(TrieNode *, char *, size_t, Match **, CaseMode);
+void expand_word(TrieNode *, char *, size_t, Match **, CaseMode, unsigned int);
 size_t height_trie(TrieNode *); /* Length of longest word + 1 */
 void free_trie(TrieNode *);
 
-Match *wildcard_search(TrieNode *, char *, CaseMode);
+Match *wildcard_search(TrieNode *, char *, CaseMode, unsigned int);
 Match *proximity_search(Match *, Match *, LanguageElement, int, int, bool);
 
 #endif /* SEARCH_H */

@@ -808,7 +808,7 @@ parse_atom(Token **token)
 }
 
 Match *
-eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, bool inclusive_proximity, bool *error_flag)
+eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned int edit_dist, bool inclusive_proximity, bool *error_flag)
 {
     Match *matches = NULL;
     TokenType type = type_syntax_tree(tree);
@@ -819,12 +819,12 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, bool incl
     }
     else if (type == TK_WILDCARD)
     {
-        matches = wildcard_search(trie, string_syntax_tree(tree), case_mode);
+        matches = wildcard_search(trie, string_syntax_tree(tree), case_mode, edit_dist);
     }
     else
     {
-        Match *left  = eval_syntax_tree( left_syntax_tree(tree), trie, case_mode, inclusive_proximity, error_flag);
-        Match *right = eval_syntax_tree(right_syntax_tree(tree), trie, case_mode, inclusive_proximity, error_flag);
+        Match *left  = eval_syntax_tree( left_syntax_tree(tree), trie, case_mode, edit_dist, inclusive_proximity, error_flag);
+        Match *right = eval_syntax_tree(right_syntax_tree(tree), trie, case_mode, edit_dist, inclusive_proximity, error_flag);
         int n = number_syntax_tree(tree);
         if (*error_flag == false)
         {
@@ -857,7 +857,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, bool incl
 }
 
 void
-interpret_query(char *query, TrieNode *trie, CaseMode case_mode, bool inclusive_proximity, TokenType default_operator_type, OutputOptions options)
+interpret_query(char *query, TrieNode *trie, CaseMode case_mode, unsigned int edit_dist, bool inclusive_proximity, TokenType default_operator_type, OutputOptions options)
 {
     Token *tokens = lex_query(query, default_operator_type);
     unsigned int n_errors = count_errors_tokens(tokens, true);
@@ -870,7 +870,7 @@ interpret_query(char *query, TrieNode *trie, CaseMode case_mode, bool inclusive_
             print_syntax_tree(stdout, tree, true);
         }
         bool error_flag = false;
-        Match *matches = eval_syntax_tree(tree, trie, case_mode, inclusive_proximity, &error_flag);
+        Match *matches = eval_syntax_tree(tree, trie, case_mode, edit_dist, inclusive_proximity, &error_flag);
         if (error_flag == false)
         {
             if (type_output_options(options) == OT_DOCUMENTS)
