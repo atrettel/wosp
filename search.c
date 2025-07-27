@@ -427,6 +427,20 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 modified[len-1] = '\0';
                 expand_word(trie, modified, i+2, match, case_mode, edit_dist-1);
                 free(modified);
+                /* Final insertion */
+                if (i + 1 == strlen(original))
+                {
+                    len = strlen(original) + 2;
+                    modified = (char *) malloc(len * sizeof(char));
+                    for (size_t j = 0; j < strlen(original); j++)
+                    {
+                        modified[j] = original[j];
+                    }
+                    modified[len-2] = wildcard_character;
+                    modified[len-1] = '\0';
+                    expand_word(trie, modified, i+2, match, case_mode, edit_dist-1);
+                    free(modified);
+                }
                 /* Deletion */
                 len = strlen(original);
                 modified = (char *) malloc(len * sizeof(char));
