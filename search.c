@@ -426,6 +426,20 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 expand_word(trie, modified, i+1, match, case_mode, edit_dist-1);
                 free(modified);
                 /* Transposition */
+                if (i + 1 < strlen(original))
+                {
+                    len = strlen(original) + 1;
+                    modified = (char *) malloc(len * sizeof(char));
+                    if (modified == NULL)
+                    {
+                        exit(EXIT_FAILURE);
+                    }
+                    snprintf(modified, len, "%s", original);
+                    modified[i]   = original[i+1];
+                    modified[i+1] = original[i];
+                    expand_word(trie, modified, i+1, match, case_mode, edit_dist-1);
+                    free(modified);
+                }
             }
         }
     }
