@@ -46,3 +46,7 @@ queries to search for specific concepts in a text document.
 -------------------------------------------------------------------------------
 
 Copyright (C) 2025 Andrew Trettel
+
+See `LICENSE.md` for license details.
+
+SPDX-License-Identifier: GPL-3.0-or-later

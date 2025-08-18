@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Copyright (C) 2025 Andrew Trettel */
 #ifndef SEARCH_H
 #define SEARCH_H
