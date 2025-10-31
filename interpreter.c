@@ -546,7 +546,9 @@ count_errors_tokens(Token *list, bool print_errors)
         {
             n_r_parens++;
         }
-        else if (operator_token_type(prev_type) && operator_token_type(type))
+        else if (operator_token_type(prev_type) &&
+                      operator_token_type(type) &&
+              (search_operator_token_type(type) == false))
         {
             n++;
             if (print_errors)
