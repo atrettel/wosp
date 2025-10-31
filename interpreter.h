@@ -34,6 +34,10 @@ typedef enum TokenType
     TK_NOT_ALONG_OP,
     TK_NOT_WITH_OP,
     TK_NOT_SAME_OP,
+    TK_ICASE_OP,
+    TK_SCASE_OP,
+    TK_LCASE_OP,
+    TK_UCASE_OP,
     TK_ERROR
 } TokenType;
 
@@ -68,6 +72,7 @@ Token *lex_query(char *, TokenType);
 bool operator_token_type(TokenType);
 bool boolean_operator_token_type(TokenType);
 bool proximity_operator_token_type(TokenType);
+bool search_operator_token_type(TokenType);
 unsigned int count_errors_tokens(Token *, bool);
 
 typedef struct SyntaxTree
@@ -101,6 +106,7 @@ SyntaxTree *parse_sentence_prox_op(Token **);
 SyntaxTree *parse_clause_prox_op(Token **);
 SyntaxTree *parse_word_prox_op(Token **);
 SyntaxTree *parse_adj_op(Token **);
+SyntaxTree *parse_search_op(Token **);
 SyntaxTree *parse_atom(Token **);
 
 Match *eval_syntax_tree(SyntaxTree *, TrieNode *, CaseMode, unsigned int, bool, bool *);

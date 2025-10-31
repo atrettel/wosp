@@ -253,8 +253,8 @@ free_tokens(Token *list)
     }
 }
 
-static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "among",     "along",     "with",     "same",      "notadj",      "notnear",      "notamong",      "notalong",      "notwith",      "notsame"};
-static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_AMONG_OP, TK_ALONG_OP, TK_WITH_OP, TK_SAME_OP, TK_NOT_ADJ_OP, TK_NOT_NEAR_OP, TK_NOT_AMONG_OP, TK_NOT_ALONG_OP, TK_NOT_WITH_OP, TK_NOT_SAME_OP};
+static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "among",     "along",     "with",     "same",      "notadj",      "notnear",      "notamong",      "notalong",      "notwith",      "notsame",     "icase",     "scase",     "lcase",     "ucase"};
+static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_AMONG_OP, TK_ALONG_OP, TK_WITH_OP, TK_SAME_OP, TK_NOT_ADJ_OP, TK_NOT_NEAR_OP, TK_NOT_AMONG_OP, TK_NOT_ALONG_OP, TK_NOT_WITH_OP, TK_NOT_SAME_OP, TK_ICASE_OP, TK_SCASE_OP, TK_LCASE_OP, TK_UCASE_OP};
 
 static const char  *alias_prefixes[] = {  "around",    "notaround"};
 static const TokenType alias_types[] = {TK_NEAR_OP, TK_NOT_NEAR_OP};
@@ -365,6 +365,19 @@ identify_token_type(char *data, TokenType *type, int *n)
             *n = (int) m;
         }
     }
+    else if ((search_operator_token_type(prefix_type) == true) && (has_nondigits == false))
+    {
+        *type = prefix_type;
+        if (k == 0)
+        {
+            *n = 0;
+        }
+        else
+        {
+            *n = (int) m;
+        }
+        assert(*n >= 0);
+    }
     else
     {
         *type = TK_WILDCARD;
@@ -446,7 +459,8 @@ bool
 operator_token_type(TokenType type)
 {
     if (  boolean_operator_token_type(type) == true ||
-        proximity_operator_token_type(type) == true)
+        proximity_operator_token_type(type) == true ||
+           search_operator_token_type(type) == true)
     {
         return true;
     }
@@ -478,6 +492,19 @@ proximity_operator_token_type(TokenType type)
         type == TK_ALONG_OP || type == TK_NOT_ALONG_OP ||
         type == TK_WITH_OP  || type == TK_NOT_WITH_OP  ||
         type == TK_SAME_OP  || type == TK_NOT_SAME_OP)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+bool
+search_operator_token_type(TokenType type)
+{
+    if (type == TK_ICASE_OP || type == TK_SCASE_OP ||
+        type == TK_LCASE_OP || type == TK_UCASE_OP)
     {
         return true;
     }
@@ -745,7 +772,7 @@ parse_adj_op(Token **token)
     {
         *token = next_token(*token);
     }
-    SyntaxTree *a = parse_atom(token);
+    SyntaxTree *a = parse_search_op(token);
     while (true)
     {
         TokenType type = type_token(*token);
@@ -758,7 +785,7 @@ parse_adj_op(Token **token)
                 in_quote = (in_quote == true) ? false : true;
                 *token = next_token(*token);
             }
-            SyntaxTree *b = parse_atom(token);
+            SyntaxTree *b = parse_search_op(token);
             a = insert_parent(type, number_token(op_token), string_token(op_token), a, b);
         }
         else if (type == TK_WILDCARD && in_quote == true)
@@ -776,6 +803,23 @@ parse_adj_op(Token **token)
         {
             return a;
         }
+    }
+}
+
+SyntaxTree *
+parse_search_op(Token **token)
+{
+    TokenType type = type_token(*token);
+    if (search_operator_token_type(type) == true)
+    {
+        Token *op_token = *token;
+        *token = next_token(*token);
+        SyntaxTree *a = parse_atom(token);
+        return insert_parent(type, number_token(op_token), string_token(op_token), a, NULL);
+    }
+    else
+    {
+        return parse_atom(token);
     }
 }
 
@@ -821,6 +865,16 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned 
     else if (type == TK_WILDCARD)
     {
         matches = wildcard_search(trie, string_syntax_tree(tree), case_mode, edit_dist);
+    }
+    else if (search_operator_token_type(type) == true)
+    {
+        CaseMode case_mode_tmp = case_mode;
+        if      (type == TK_ICASE_OP) {case_mode_tmp = CM_INSENSITIVE;}
+        else if (type == TK_SCASE_OP) {case_mode_tmp = CM_SENSITIVE;}
+        else if (type == TK_LCASE_OP) {case_mode_tmp = CM_LOWERCASE;}
+        else if (type == TK_UCASE_OP) {case_mode_tmp = CM_UPPERCASE;}
+        unsigned int edit_dist_tmp = (unsigned int) number_syntax_tree(tree);
+        matches  = eval_syntax_tree(left_syntax_tree(tree), trie, case_mode_tmp, edit_dist_tmp, inclusive_proximity, error_flag);
     }
     else
     {
