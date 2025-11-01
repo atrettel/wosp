@@ -645,6 +645,18 @@ print_syntax_tree(FILE *stream, SyntaxTree *tree, bool terminal)
         {
             fprintf(stream, "error");
         }
+        else if (search_operator_token_type(type) == true)
+        {
+            fprintf(stream, "(");
+            fprintf(stream, "%s", find_operator_prefix(type));
+            if (number_syntax_tree(tree) != 0)
+            {
+                fprintf(stream, "%d", number_syntax_tree(tree));
+            }
+            fprintf(stream, " ");
+            print_syntax_tree(stream, left_syntax_tree(tree), false);
+            fprintf(stream, ")");
+        }
         else
         {
             fprintf(stream, "(");
