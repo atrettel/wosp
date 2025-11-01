@@ -13,7 +13,8 @@ typedef enum CaseMode
     CM_INSENSITIVE, /* mixed case is allowed */
     CM_SENSITIVE, /* search with the given case of each character */
     CM_LOWERCASE,
-    CM_UPPERCASE
+    CM_UPPERCASE,
+    CM_TITLE_CASE
 } CaseMode;
 
 typedef struct DocumentNode

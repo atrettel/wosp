@@ -253,8 +253,8 @@ free_tokens(Token *list)
     }
 }
 
-static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "among",     "along",     "with",     "same",      "notadj",      "notnear",      "notamong",      "notalong",      "notwith",      "notsame",     "icase",     "scase",     "lcase",     "ucase"};
-static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_AMONG_OP, TK_ALONG_OP, TK_WITH_OP, TK_SAME_OP, TK_NOT_ADJ_OP, TK_NOT_NEAR_OP, TK_NOT_AMONG_OP, TK_NOT_ALONG_OP, TK_NOT_WITH_OP, TK_NOT_SAME_OP, TK_ICASE_OP, TK_SCASE_OP, TK_LCASE_OP, TK_UCASE_OP};
+static const char  *operator_prefixes[] = {    "or",     "and",     "not",     "xor",     "adj",     "near",     "among",     "along",     "with",     "same",      "notadj",      "notnear",      "notamong",      "notalong",      "notwith",      "notsame",     "icase",     "scase",     "lcase",     "ucase",     "tcase"};
+static const TokenType operator_types[] = {TK_OR_OP, TK_AND_OP, TK_NOT_OP, TK_XOR_OP, TK_ADJ_OP, TK_NEAR_OP, TK_AMONG_OP, TK_ALONG_OP, TK_WITH_OP, TK_SAME_OP, TK_NOT_ADJ_OP, TK_NOT_NEAR_OP, TK_NOT_AMONG_OP, TK_NOT_ALONG_OP, TK_NOT_WITH_OP, TK_NOT_SAME_OP, TK_ICASE_OP, TK_SCASE_OP, TK_LCASE_OP, TK_UCASE_OP, TK_TCASE_OP};
 
 static const char  *alias_prefixes[] = {  "around",    "notaround"};
 static const TokenType alias_types[] = {TK_NEAR_OP, TK_NOT_NEAR_OP};
@@ -504,7 +504,8 @@ bool
 search_operator_token_type(TokenType type)
 {
     if (type == TK_ICASE_OP || type == TK_SCASE_OP ||
-        type == TK_LCASE_OP || type == TK_UCASE_OP)
+        type == TK_LCASE_OP || type == TK_UCASE_OP ||
+        type == TK_TCASE_OP)
     {
         return true;
     }
@@ -887,6 +888,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned 
         else if (type == TK_SCASE_OP) {case_mode_tmp = CM_SENSITIVE;}
         else if (type == TK_LCASE_OP) {case_mode_tmp = CM_LOWERCASE;}
         else if (type == TK_UCASE_OP) {case_mode_tmp = CM_UPPERCASE;}
+        else if (type == TK_TCASE_OP) {case_mode_tmp = CM_TITLE_CASE;}
         unsigned int edit_dist_tmp = (unsigned int) number_syntax_tree(tree);
         matches  = eval_syntax_tree(left_syntax_tree(tree), trie, case_mode_tmp, edit_dist_tmp, inclusive_proximity, error_flag);
     }

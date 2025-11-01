@@ -38,6 +38,7 @@ typedef enum TokenType
     TK_SCASE_OP,
     TK_LCASE_OP,
     TK_UCASE_OP,
+    TK_TCASE_OP,
     TK_ERROR
 } TokenType;
 

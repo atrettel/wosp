@@ -397,12 +397,12 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                     exit(EXIT_FAILURE);
                 }
                 snprintf(modified, len, "%s", original);
-                if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_LOWERCASE))
+                if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_LOWERCASE) || ((case_mode == CM_TITLE_CASE) && (i > 0)))
                 {
                     modified[i] = tolower(c);
                     expand_word(trie, modified, i+1, match, case_mode, edit_dist);
                 }
-                if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_UPPERCASE))
+                if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_UPPERCASE) || ((case_mode == CM_TITLE_CASE) && (i == 0)))
                 {
                     modified[i] = toupper(c);
                     expand_word(trie, modified, i+1, match, case_mode, edit_dist);
