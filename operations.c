@@ -8,7 +8,7 @@
 #include "search.h"
 #include "words.h"
 
-Match *
+static Match *
 op_boolean(Match *first_match, Match *second_match, bool condition(DocumentNode *, DocumentNode *, Word *))
 {
     Match *match = NULL;
@@ -43,7 +43,7 @@ op_or(Match *first_match, Match *second_match)
     return match;
 }
 
-bool
+static bool
 cond_and(DocumentNode *first, DocumentNode *second, Word *document)
 {
     if ((has_document(first, document) == true) && (has_document(second, document) == true))
@@ -62,7 +62,7 @@ op_and(Match *first_match, Match *second_match)
     return op_boolean(first_match, second_match, cond_and);
 }
 
-bool
+static bool
 cond_not(DocumentNode *first, DocumentNode *second, Word *document)
 {
     if ((has_document(first, document) == true) && (has_document(second, document) == false))
@@ -81,7 +81,7 @@ op_not(Match *first_match, Match *second_match)
     return op_boolean(first_match, second_match, cond_not);
 }
 
-bool
+static bool
 cond_xor(DocumentNode *first, DocumentNode *second, Word *document)
 {
     if ((has_document(first, document) == true) && (has_document(second, document) == false))
@@ -146,7 +146,7 @@ op_same(Match *first_match, Match *second_match, int n, bool inclusive_proximity
     return proximity_search(first_match, second_match, LE_PARAGRAPH, -n, +n, inclusive_proximity);
 }
 
-Match *
+static Match *
 op_not_prox(Match *first_match, Match *second_match, int n, Match *op_prox(Match *, Match *, int, bool), bool inclusive_proximity)
 {
     Match *union_match = op_or(first_match, second_match);

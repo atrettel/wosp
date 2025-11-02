@@ -563,7 +563,7 @@ prev_page(Word *word)
     return prev_numbered_element(word, page_word);
 }
 
-Word *
+static Word *
 extreme_word(Word *word, bool has_another_word(Word *), Word *direction_word(Word *))
 {
     if (is_end_field(word) == false)
