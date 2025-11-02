@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "interpreter.h"
+#include "misc.h"
 #include "operations.h"
 #include "output.h"
 

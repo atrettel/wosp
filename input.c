@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include "input.h"
-#include "interpreter.h"
+#include "misc.h"
 #include "search.h"
 #include "words.h"
 
