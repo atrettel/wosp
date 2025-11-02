@@ -9,7 +9,7 @@ CPFLAGS = -nv
 
 project = wosp
 
-OBJ = interpreter.o operations.o output.o search.o words.o
+OBJ = input.o interpreter.o operations.o output.o search.o words.o
 
 $(project): $(project).c $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
