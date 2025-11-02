@@ -23,7 +23,7 @@ OutputOptions init_output_options(void)
     options.page_number = false;
     options.count_matches = false;
     options.maximum = UINT_MAX;
-    options.type = OT_MATCHES;
+    options.type = OT_EXCERPTS;
     return options;
 }
 
