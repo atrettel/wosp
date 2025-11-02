@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /* Copyright (C) 2025 Andrew Trettel */
-#include <assert.h>
-#include <ctype.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "input.h"
 #include "interpreter.h"
+#include "output.h"
 #include "search.h"
 #include "words.h"
 
