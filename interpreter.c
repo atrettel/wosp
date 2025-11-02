@@ -907,22 +907,22 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned 
         int n = number_syntax_tree(tree);
         if (*error_flag == false)
         {
-            if      (type == TK_OR_OP)        { matches = op_or(       left, right   ); }
-            else if (type == TK_AND_OP)       { matches = op_and(      left, right   ); }
-            else if (type == TK_NOT_OP)       { matches = op_not(      left, right   ); }
-            else if (type == TK_XOR_OP)       { matches = op_xor(      left, right   ); }
-            else if (type == TK_ADJ_OP)       { matches = op_adj(      left, right, n, inclusive_proximity); }
-            else if (type == TK_NEAR_OP)      { matches = op_near(     left, right, n, inclusive_proximity); }
-            else if (type == TK_AMONG_OP)     { matches = op_among(    left, right, n, inclusive_proximity); }
-            else if (type == TK_ALONG_OP)     { matches = op_along(    left, right, n, inclusive_proximity); }
-            else if (type == TK_WITH_OP)      { matches = op_with(     left, right, n, inclusive_proximity); }
-            else if (type == TK_SAME_OP)      { matches = op_same(     left, right, n, inclusive_proximity); }
-            else if (type == TK_NOT_ADJ_OP)   { matches = op_not_adj(  left, right, n, inclusive_proximity); }
-            else if (type == TK_NOT_NEAR_OP)  { matches = op_not_near( left, right, n, inclusive_proximity); }
-            else if (type == TK_NOT_AMONG_OP) { matches = op_not_among(left, right, n, inclusive_proximity); }
-            else if (type == TK_NOT_ALONG_OP) { matches = op_not_along(left, right, n, inclusive_proximity); }
-            else if (type == TK_NOT_WITH_OP)  { matches = op_not_with( left, right, n, inclusive_proximity); }
-            else if (type == TK_NOT_SAME_OP)  { matches = op_not_same( left, right, n, inclusive_proximity); }
+            if      (type == TK_OR_OP)        {matches = op_or(       left, right   );}
+            else if (type == TK_AND_OP)       {matches = op_and(      left, right   );}
+            else if (type == TK_NOT_OP)       {matches = op_not(      left, right   );}
+            else if (type == TK_XOR_OP)       {matches = op_xor(      left, right   );}
+            else if (type == TK_ADJ_OP)       {matches = op_adj(      left, right, n, inclusive_proximity);}
+            else if (type == TK_NEAR_OP)      {matches = op_near(     left, right, n, inclusive_proximity);}
+            else if (type == TK_AMONG_OP)     {matches = op_among(    left, right, n, inclusive_proximity);}
+            else if (type == TK_ALONG_OP)     {matches = op_along(    left, right, n, inclusive_proximity);}
+            else if (type == TK_WITH_OP)      {matches = op_with(     left, right, n, inclusive_proximity);}
+            else if (type == TK_SAME_OP)      {matches = op_same(     left, right, n, inclusive_proximity);}
+            else if (type == TK_NOT_ADJ_OP)   {matches = op_not_adj(  left, right, n, inclusive_proximity);}
+            else if (type == TK_NOT_NEAR_OP)  {matches = op_not_near( left, right, n, inclusive_proximity);}
+            else if (type == TK_NOT_AMONG_OP) {matches = op_not_among(left, right, n, inclusive_proximity);}
+            else if (type == TK_NOT_ALONG_OP) {matches = op_not_along(left, right, n, inclusive_proximity);}
+            else if (type == TK_NOT_WITH_OP)  {matches = op_not_with( left, right, n, inclusive_proximity);}
+            else if (type == TK_NOT_SAME_OP)  {matches = op_not_same( left, right, n, inclusive_proximity);}
             else
             {
                 *error_flag = true;
