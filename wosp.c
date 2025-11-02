@@ -122,7 +122,7 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
     {
         for (size_t i = 0; i < n_files; i++)
         {
-            (*filenames)[i] = (char *) malloc((strlen(argv[i+2])+1) * sizeof(char *));
+            (*filenames)[i] = (char *) malloc((strlen(argv[i+2])+1) * sizeof(char));
             if ((*filenames)[i] == NULL)
             {
                 exit(EXIT_FAILURE);
