@@ -40,15 +40,22 @@ read_source_words(Word **list, FILE *stream, char *filename)
             if (data == NULL)
             {
                 data = (char *) malloc(len * sizeof(char));
+                if (data == NULL)
+                {
+                    exit(EXIT_FAILURE);
+                }
             }
             else
             {
-                data = (char *) realloc(data, len);
-
-            }
-            if (data == NULL)
-            {
-                exit(EXIT_FAILURE);
+                char *tmp = (char *) realloc(data, len);
+                if (tmp == NULL)
+                {
+                    exit(EXIT_FAILURE);
+                }
+                else
+                {
+                    data = tmp;
+                }
             }
             data[len-1] = (char) c;
             p = c;
