@@ -17,6 +17,12 @@ typedef enum CaseMode
     CM_TITLE_CASE
 } CaseMode;
 
+typedef enum ProximityMode
+{
+    PM_INCLUSIVE,
+    PM_EXCLUSIVE
+} ProximityMode;
+
 typedef struct DocumentNode
 {
     Word *document;
@@ -85,6 +91,6 @@ size_t height_trie(TrieNode *); /* Length of longest word + 1 */
 void free_trie(TrieNode *);
 
 Match *wildcard_search(TrieNode *, char *, CaseMode, unsigned int);
-Match *proximity_search(Match *, Match *, LanguageElement, int, int, bool);
+Match *proximity_search(Match *, Match *, LanguageElement, int, int, ProximityMode);
 
 #endif /* SEARCH_H */

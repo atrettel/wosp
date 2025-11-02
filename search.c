@@ -629,7 +629,7 @@ wildcard_search(TrieNode *trie, char *original, CaseMode case_mode, unsigned int
 }
 
 Match *
-proximity_search(Match *first_match, Match *second_match, LanguageElement element, int start, int end, bool inclusive_proximity)
+proximity_search(Match *first_match, Match *second_match, LanguageElement element, int start, int end, ProximityMode proximity_mode)
 {
     Match *match = NULL;
     Match *outer_match = first_match;
@@ -659,8 +659,8 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
             {
                 unsigned long inner_start = position_word(start_word_match(inner_match));
                 unsigned long   inner_end = position_word(  end_word_match(inner_match));
-                if (((inner_start >= outer_start) && (inner_end <= outer_end)   && (inclusive_proximity == false)) ||
-                    ((inner_start <= outer_end)   && (inner_end >= outer_start) && (inclusive_proximity == true )))
+                if (((inner_start >= outer_start) && (inner_end <= outer_end)   && (proximity_mode == PM_EXCLUSIVE)) ||
+                    ((inner_start <= outer_end)   && (inner_end >= outer_start) && (proximity_mode == PM_INCLUSIVE)))
                 {
                     /* We have a match.  Let's add it. */
                     size_t n_outer = number_of_words_in_match(outer_match);

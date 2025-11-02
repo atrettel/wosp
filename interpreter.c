@@ -876,7 +876,7 @@ parse_atom(Token **token)
 }
 
 Match *
-eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned int edit_dist, bool inclusive_proximity, bool *error_flag)
+eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned int edit_dist, ProximityMode proximity_mode, bool *error_flag)
 {
     Match *matches = NULL;
     TokenType type = type_syntax_tree(tree);
@@ -898,12 +898,12 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned 
         else if (type == TK_UCASE_OP) {case_mode_tmp = CM_UPPERCASE;}
         else if (type == TK_TCASE_OP) {case_mode_tmp = CM_TITLE_CASE;}
         unsigned int edit_dist_tmp = (unsigned int) number_syntax_tree(tree);
-        matches  = eval_syntax_tree(left_syntax_tree(tree), trie, case_mode_tmp, edit_dist_tmp, inclusive_proximity, error_flag);
+        matches  = eval_syntax_tree(left_syntax_tree(tree), trie, case_mode_tmp, edit_dist_tmp, proximity_mode, error_flag);
     }
     else
     {
-        Match *left  = eval_syntax_tree( left_syntax_tree(tree), trie, case_mode, edit_dist, inclusive_proximity, error_flag);
-        Match *right = eval_syntax_tree(right_syntax_tree(tree), trie, case_mode, edit_dist, inclusive_proximity, error_flag);
+        Match *left  = eval_syntax_tree( left_syntax_tree(tree), trie, case_mode, edit_dist, proximity_mode, error_flag);
+        Match *right = eval_syntax_tree(right_syntax_tree(tree), trie, case_mode, edit_dist, proximity_mode, error_flag);
         int n = number_syntax_tree(tree);
         if (*error_flag == false)
         {
@@ -911,18 +911,18 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned 
             else if (type == TK_AND_OP)       {matches = op_and(      left, right   );}
             else if (type == TK_NOT_OP)       {matches = op_not(      left, right   );}
             else if (type == TK_XOR_OP)       {matches = op_xor(      left, right   );}
-            else if (type == TK_ADJ_OP)       {matches = op_adj(      left, right, n, inclusive_proximity);}
-            else if (type == TK_NEAR_OP)      {matches = op_near(     left, right, n, inclusive_proximity);}
-            else if (type == TK_AMONG_OP)     {matches = op_among(    left, right, n, inclusive_proximity);}
-            else if (type == TK_ALONG_OP)     {matches = op_along(    left, right, n, inclusive_proximity);}
-            else if (type == TK_WITH_OP)      {matches = op_with(     left, right, n, inclusive_proximity);}
-            else if (type == TK_SAME_OP)      {matches = op_same(     left, right, n, inclusive_proximity);}
-            else if (type == TK_NOT_ADJ_OP)   {matches = op_not_adj(  left, right, n, inclusive_proximity);}
-            else if (type == TK_NOT_NEAR_OP)  {matches = op_not_near( left, right, n, inclusive_proximity);}
-            else if (type == TK_NOT_AMONG_OP) {matches = op_not_among(left, right, n, inclusive_proximity);}
-            else if (type == TK_NOT_ALONG_OP) {matches = op_not_along(left, right, n, inclusive_proximity);}
-            else if (type == TK_NOT_WITH_OP)  {matches = op_not_with( left, right, n, inclusive_proximity);}
-            else if (type == TK_NOT_SAME_OP)  {matches = op_not_same( left, right, n, inclusive_proximity);}
+            else if (type == TK_ADJ_OP)       {matches = op_adj(      left, right, n, proximity_mode);}
+            else if (type == TK_NEAR_OP)      {matches = op_near(     left, right, n, proximity_mode);}
+            else if (type == TK_AMONG_OP)     {matches = op_among(    left, right, n, proximity_mode);}
+            else if (type == TK_ALONG_OP)     {matches = op_along(    left, right, n, proximity_mode);}
+            else if (type == TK_WITH_OP)      {matches = op_with(     left, right, n, proximity_mode);}
+            else if (type == TK_SAME_OP)      {matches = op_same(     left, right, n, proximity_mode);}
+            else if (type == TK_NOT_ADJ_OP)   {matches = op_not_adj(  left, right, n, proximity_mode);}
+            else if (type == TK_NOT_NEAR_OP)  {matches = op_not_near( left, right, n, proximity_mode);}
+            else if (type == TK_NOT_AMONG_OP) {matches = op_not_among(left, right, n, proximity_mode);}
+            else if (type == TK_NOT_ALONG_OP) {matches = op_not_along(left, right, n, proximity_mode);}
+            else if (type == TK_NOT_WITH_OP)  {matches = op_not_with( left, right, n, proximity_mode);}
+            else if (type == TK_NOT_SAME_OP)  {matches = op_not_same( left, right, n, proximity_mode);}
             else
             {
                 *error_flag = true;
@@ -936,7 +936,7 @@ eval_syntax_tree(SyntaxTree *tree, TrieNode *trie, CaseMode case_mode, unsigned 
 }
 
 void
-interpret_query(char *query, TrieNode *trie, CaseMode case_mode, unsigned int edit_dist, bool inclusive_proximity, TokenType default_operator_type, OutputOptions options)
+interpret_query(char *query, TrieNode *trie, CaseMode case_mode, unsigned int edit_dist, ProximityMode proximity_mode, TokenType default_operator_type, OutputOptions options)
 {
     Token *tokens = lex_query(query, default_operator_type);
     unsigned int n_errors = count_errors_tokens(tokens, true);
@@ -949,7 +949,7 @@ interpret_query(char *query, TrieNode *trie, CaseMode case_mode, unsigned int ed
             print_syntax_tree(stdout, tree, true);
         }
         bool error_flag = false;
-        Match *matches = eval_syntax_tree(tree, trie, case_mode, edit_dist, inclusive_proximity, &error_flag);
+        Match *matches = eval_syntax_tree(tree, trie, case_mode, edit_dist, proximity_mode, &error_flag);
         if (error_flag == false)
         {
             if (type_output_options(options) == OT_DOCUMENTS)

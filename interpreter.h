@@ -110,7 +110,7 @@ SyntaxTree *parse_adj_op(Token **);
 SyntaxTree *parse_search_op(Token **);
 SyntaxTree *parse_atom(Token **);
 
-Match *eval_syntax_tree(SyntaxTree *, TrieNode *, CaseMode, unsigned int, bool, bool *);
-void interpret_query(char *, TrieNode *, CaseMode, unsigned int, bool, TokenType, OutputOptions);
+Match *eval_syntax_tree(SyntaxTree *, TrieNode *, CaseMode, unsigned int, ProximityMode, bool *);
+void interpret_query(char *, TrieNode *, CaseMode, unsigned int, ProximityMode, TokenType, OutputOptions);
 
 #endif /* INTERPRETER_H */

@@ -18,7 +18,7 @@ main(int argc, char *argv[])
     /* Search options */
     CaseMode case_mode = CM_INSENSITIVE;
     unsigned int edit_dist = 0;
-    bool inclusive_proximity = true;
+    ProximityMode proximity_mode = PM_INCLUSIVE;
 
     /* Output options */
     OutputOptions output_options = init_output_options();
@@ -27,7 +27,7 @@ main(int argc, char *argv[])
     TokenType default_operator_type = TK_OR_OP;
 
     size_t n_files = read_data(argc, argv, &trie, &filenames, &words);
-    interpret_query(argv[1], trie, case_mode, edit_dist, inclusive_proximity, default_operator_type, output_options);
+    interpret_query(argv[1], trie, case_mode, edit_dist, proximity_mode, default_operator_type, output_options);
     free_data(n_files, trie, filenames, words);
 
     return EXIT_SUCCESS;
