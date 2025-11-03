@@ -1,4 +1,4 @@
-# Wosp: full-text search on the command line
+# Wosp: advanced full-text search on the command line
 
 by Andrew Trettel
 
@@ -8,12 +8,12 @@ by Andrew Trettel
 ## Summary
 
 Wosp is a command-line program that performs full-text search on text
-documents.  Wosp stands for *word-oriented search* and *print*. I created Wosp
-to give me more control over how I search for information locally.  It works
-differently than line-oriented search tools like grep, so it can search for
-matches spanning multiple lines.  Wosp supports an expressive query language
-that contains both Boolean and proximity operators.  It also supports nested
-queries, trunctation, wildcard characters, and fuzzy searching.
+documents.  Wosp stands for *word-oriented search* and *print*.  It is designed
+for advanced searchers.  It works differently than line-oriented search tools
+like grep, so it can search for matches spanning multiple lines.  Wosp supports
+an expressive query language that contains both Boolean and proximity
+operators.  It also supports nested queries, trunctation, wildcard characters,
+and fuzzy searching.
 
 
 ## Installation
@@ -87,13 +87,14 @@ number to the end of the command:
     ...
 
 In this case, Wosp also returned the word "detectives" since it is one error
-way from "detectives".  A better way to return plurals is to use trunctuation
-like with `detective#1`, since it is much more explicit about where the extra
+from "detective".  A better way to return plurals is to use trunctuation like
+with `detective#1`, since it is much more explicit about where the extra
 character should go.
 
-Wosp support Boolean operations.  Boolean operations focus on the files and
-whether they contain different terms or not.  The four Boolean operations are
-`OR`, `AND`, `NOT`, and `XOR`.
+Wosp supports Boolean operations.  Boolean operations are often described using
+Venn diagrams.  They return all matches for certain files when certain
+conditions are met.  The four Boolean operators are `OR`, `AND`, `NOT`, and
+`XOR`.
 
 `OR` returns all matches for any term given.  Like all Boolean operations, it
 takes two arguments and searchers can chain together multiple `OR` statements
