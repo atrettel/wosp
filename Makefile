@@ -8,6 +8,9 @@ CP = cp
 CPFLAGS = -nv
 
 project = wosp
+version = 0.0.0
+
+DESTDIR = /opt/$(project)-$(version)/usr
 
 OBJ = input.o interpreter.o operations.o output.o search.o words.o
 
@@ -23,9 +26,18 @@ clean:
 	-$(RM) $(RMFLAGS) $(project)-*.tar.gz
 
 dist: clean
-	mkdir $(project)-`date +"%F"`
-	$(CP) $(CPFLAGS) Makefile README.md *.c *.h $(project)-`date +"%F"`
-	tar -cvzf $(project)-`date +"%F"`.tar.gz $(project)-`date +"%F"`
-	-$(RM) $(RMFLAGS) $(project)-`date +"%F"`
+	mkdir $(project)-$(version)
+	$(CP) $(CPFLAGS) Makefile README.md *.c *.h $(project).1 $(project)-$(version)
+	tar -cvzf $(project)-$(version).tar.gz $(project)-$(version)
+	-$(RM) $(RMFLAGS) $(project)-$(version)
 
-.PHONY: clean dist
+install: $(project)
+	mkdir -p $(DESTDIR)/bin
+	cp -fv $(project) $(DESTDIR)/bin
+	chmod 755 $(DESTDIR)/bin/$(project)
+	mkdir -p $(DESTDIR)/share/man/man1
+	cp -fv $(project).1 $(DESTDIR)/share/man/man1
+	sed -i "s/VERSION/$(version)/g" $(DESTDIR)/share/man/man1/$(project).1
+	chmod 644 $(DESTDIR)/share/man/man1/$(project).1
+
+.PHONY: clean dist install
