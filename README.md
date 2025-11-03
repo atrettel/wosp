@@ -12,7 +12,7 @@ documents.  Wosp stands for *word-oriented search* and *print*.  It is designed
 for advanced searchers.  It works differently than line-oriented search tools
 like grep, so it can search for matches spanning multiple lines.  Wosp supports
 an expressive query language that contains both Boolean and proximity
-operators.  It also supports nested queries, trunctation, wildcard characters,
+operators.  It also supports nested queries, truncation, wildcard characters,
 and fuzzy searching.
 
 
@@ -56,11 +56,15 @@ word:
     A_Study_in_Scarlet.txt:816:am the only one in the world. I'm a consulting detective, if you can understand
     ...
 
-The wildcard character is `?`.  That character will match any character in the
-text.  Wosp also supports trunctuation using either the dollar sign `$` or the
+All of my examples come from the first Sherlock Holmes book, [A Study in
+Scarlet](https://en.wikipedia.org/wiki/A_Study_in_Scarlet).
+
+The wildcard character is `?`.  That character matches any character in the
+text.  Wosp also supports truncation using either the dollar sign `$` or the
 number sign `#` followed optionally by a number for the maximum number of
-characters to include.  This allows for powerful queries that can match many
-different words with one wildcard given:
+characters to include.  Searchers should include the number or else performance
+may suffer, though.  Wildcards and truncation allow for powerful queries that
+can match many different words with one wildcard given:
 
     $ wosp "#2m?n" A_Study_in_Scarlet.txt
 
@@ -75,7 +79,7 @@ edit distance.  The edit distance is the number of errors that Wosp will
 correct.  It widens the search for keywords and can find typos, but too much
 edit distance may find too many results to be useful.
 
-The default is for case insensitive search with an edit distance of zero.
+The default is case insensitive search with an edit distance of zero.
 Searchers control the case sensitivity and edit distance using the search
 option commands `ICASE` (insensitive case), `SCASE` (sensitive case), `LCASE`
 (lowercase), `UCASE` (uppercase), and `TCASE` (title case or more specifically
@@ -97,19 +101,17 @@ number to the end of the command:
     A_Study_in_Scarlet.txt:878:months or so. It might be made a text-book for detectives to teach them what to
     ...
 
-In this case, Wosp also returned the word "detectives" since it is one error
-from "detective".  A better way to return plurals is to use trunctuation like
-with `detective#1`, since it is much more explicit about where the extra
-character should go.
+In this case, Wosp returned the word "detectives" since it is one error from
+"detective".  A better way to include plurals is to use truncation like with
+`detective#1`, since it is more explicit about where the extra character goes.
 
-Wosp supports Boolean operations.  Boolean operations are often described using
-Venn diagrams.  They return all matches for certain files when certain
-conditions are met.  The four Boolean operators are `OR`, `AND`, `NOT`, and
-`XOR`.
+Wosp supports Boolean operations.  Boolean operations return all matches for
+certain files when certain conditions are met.  The four Boolean operators are
+`OR`, `AND`, `NOT`, and `XOR`.
 
 `OR` returns all matches for any term given.  Like all Boolean operations, it
-takes two arguments and searchers can chain together multiple `OR` statements
-to produce long lists of terms to search all at once.
+takes two arguments.  Searchers can chain together multiple `OR` statements to
+produce long lists of terms to search all at once.
 
     $ wosp "detective#1 OR officer#1" A_Study_in_Scarlet.txt
 
@@ -127,9 +129,16 @@ Searchers can string together many `OR` operations in a row.
 
 `AND` returns results from files that contain both terms searched for.  It is
 good for limiting the number of files to be searched.  `NOT` returns results
-from files that contain the first term but not the second.  `XOR` words
+from files that contain the first term but not the second.  `XOR` works
 similarly to `OR` but only returns documents with one of the terms given in the
 sequence of `XOR` operations.
+
+Wosp supports `OR` as the default operator.  Default operators are a feature of
+some previous search systems, but I personally do not use it since I prefer
+explicit queries.  This means that Wosp treats queries like `(first second
+third)` as `(first OR second OR third)` by default and does not raise an error
+for a missing operator.  It is possible to change the default operator but that
+requires re-compiling Wosp at the moment.
 
 Wosp supports using parentheses to nest operations.  Parentheses are on the
 highest precedence level, so they are evaluated first, just like in arithmetic
@@ -161,8 +170,8 @@ for `police ADJ (constable#1 OR officer#1 OR detective#1 OR m?n)` to broaden
 their search without having to type `police` multiple times.
 
 The other proximity operators do not have a given order like `ADJ`.  Instead,
-they search in both directions within a given language element.  `NEAR`
-searches neighboring words, `AMONG` searches in the same clause, `WITH`
+they search in both directions within a given series of language elements.
+`NEAR` searches neighboring words, `AMONG` searches in the same clause, `WITH`
 searches in the same sentence, `ALONG` searches in the same line, and `SAME`
 searches in the same paragraph.
 
@@ -174,8 +183,8 @@ searches in the same paragraph.
 
 Like the search option operators, all proximity operators also support added
 numbers at the end, and those numbers specify how many neighboring language
-elements to search.  The default is one language element.  For example, the
-following example uses a proximity search to within 5 words of each other:
+elements to search.  The default is one language element.  The following
+example searches for several terms to within 5 words of each other:
 
     $ wosp "(private OR police OR government) NEAR5 (constable#1 OR officer#1 OR detective#1)" A_Study_in_Scarlet.txt
 
@@ -184,9 +193,9 @@ following example uses a proximity search to within 5 words of each other:
     A_Study_in_Scarlet.txt:2006:"It's the Baker Street division of the detective police force," said my
     ...
 
-Some systems allow for proximity search, but only between neighboring words.
-In these systems, it is impossible to nest proximity searches using
-parentheses.  Wosp allows nested proximity search without limitation.
+Some systems support proximity search, but only between neighboring words.  In
+these systems, it is impossible to nest proximity searches using parentheses.
+Wosp allows nested proximity search without limitation.
 
 For example, searchers can search for proximity matches in proximity to other
 terms or other proximity matches.
@@ -200,7 +209,7 @@ for advanced users who want power and the ability to express complicated
 searches with precision.
 
 Wosp also supports negated proximity operators (`NOT WITH`, etc.).  These are
-useful on occassion but in general are mostly useful for limiting overly broad
+useful on occasion but in general are mostly useful for limiting overly broad
 searches.
 
 -------------------------------------------------------------------------------
