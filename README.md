@@ -18,7 +18,18 @@ and fuzzy searching.
 
 ## Installation
 
-To install Wosp, simply run `make` and move the binary accordingly.
+To build Wosp, run
+
+    make
+
+in the source code directory.  To install Wosp, first modify the `DESTDIR`
+variable in the Makefile to point to your desired installation location, and
+then type
+
+    make install
+
+You may need to make other adjustments to the Makefile for it to work on your
+local system.
 
 
 ## Usage
