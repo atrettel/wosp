@@ -75,9 +75,9 @@ can match many different words with one wildcard given:
 term.
 
 Wosp supports different case sensitivity options and fuzzy search with a given
-edit distance.  The edit distance is the number of errors that Wosp will
+edit distance.  The edit distance is the number of errors that Wosp can
 correct.  It widens the search for keywords and can find typos, but too much
-edit distance may find too many results to be useful.
+edit distance may find too many results.
 
 The default is case insensitive search with an edit distance of zero.
 Searchers control the case sensitivity and edit distance using the search
@@ -106,12 +106,12 @@ In this case, Wosp returned the word "detectives" since it is one error from
 `detective#1`, since it is more explicit about where the extra character goes.
 
 Wosp supports Boolean operations.  Boolean operations return all matches for
-certain files when certain conditions are met.  The four Boolean operators are
-`OR`, `AND`, `NOT`, and `XOR`.
+documents that meet certain conditions.  The four Boolean operators are `OR`,
+`AND`, `NOT`, and `XOR`.
 
-`OR` returns all matches for any term given.  Like all Boolean operations, it
-takes two arguments.  Searchers can chain together multiple `OR` statements to
-produce long lists of terms to search all at once.
+`OR` returns all matches for any term given in all documents.  Like all Boolean
+operations, it takes two arguments.  Searchers can chain together multiple `OR`
+statements to produce long lists of terms to search all at once.
 
     $ wosp "detective#1 OR officer#1" A_Study_in_Scarlet.txt
 
@@ -134,26 +134,26 @@ similarly to `OR` but only returns documents with one of the terms given in the
 sequence of `XOR` operations.
 
 Wosp supports `OR` as the default operator.  Default operators are a feature of
-some previous search systems, but I personally do not use it since I prefer
-explicit queries.  This means that Wosp treats queries like `(first second
-third)` as `(first OR second OR third)` by default and does not raise an error
-for a missing operator.  It is possible to change the default operator but that
-requires re-compiling Wosp at the moment.
+some previous search systems, but I personally do not use them since I prefer
+explicit queries.  Due to its support for default operators, Wosp treats
+queries like `(first second third)` as `(first OR second OR third)`.  It does
+not raise an error for a missing operator.  It is possible to change the
+default operator but that requires re-compiling Wosp at the moment.
 
 Wosp supports using parentheses to nest operations.  Parentheses are on the
 highest precedence level, so they are evaluated first, just like in arithmetic
-operations.  Parentheses allow for searchers to create complicated queries that
-join many different ideas into a single query.  This feature saves searchers
-much time by preventing the needless repetition of queries with slightly
-different variations.
+operations.  Parentheses allow for searchers to create expressive and precise
+queries that join many different ideas into a single query.  This feature saves
+advanced searchers time by preventing the needless repetition of many nearly
+identical queries.
 
 Wosp supports many different proximity operations.  [Proximity
 search](https://en.wikipedia.org/wiki/Proximity_search_(text)) is a search
 technique that allows searchers to find terms that are close to each other in
-the text.  Closeness typically implies that the terms are related in some
-manner, so proximity search ensures that searchers find relevant terms in the
-same context rather than in different parts of a long document.  In that sense,
-proximity search works like a more limiting form of the Boolean `AND`.
+the text.  Closeness typically implies that the terms are related, so proximity
+search ensures that searchers find relevant terms in the same context rather
+than in different parts of a long document.  In that sense, proximity search
+works like a more limiting form of the Boolean `AND`.
 
 The most basic form of proximity search is phrase search in quotes, which is
 typically the only form of proximity search most search engines support today.
@@ -181,10 +181,10 @@ searches in the same paragraph.
     A_Study_in_Scarlet.txt:2217:"When Mrs. Charpentier paused," the detective continued, " I saw that the whole case hung upon one point. Fixing her with my eye in a way which I always found
     ...
 
-Like the search option operators, all proximity operators also support added
-numbers at the end, and those numbers specify how many neighboring language
-elements to search.  The default is one language element.  The following
-example searches for several terms to within 5 words of each other:
+Like the search option operators, all proximity operators support added numbers
+at the end, and those numbers specify how many neighboring language elements to
+search.  The default is one language element.  The following example searches
+for several terms to within 5 words of each other:
 
     $ wosp "(private OR police OR government) NEAR5 (constable#1 OR officer#1 OR detective#1)" A_Study_in_Scarlet.txt
 
@@ -205,12 +205,11 @@ terms or other proximity matches.
     A_Study_in_Scarlet.txt:2264:killed him without leaving any mark. The night was so wet that no one was about, so Charpentier dragged the body of his victim into the empty house. As
 
 Wosp's query language is designed to be expressive like this.  It is designed
-for advanced users who want power and the ability to express complicated
-searches with precision.
+for advanced users who want power and precision.
 
 Wosp also supports negated proximity operators (`NOT WITH`, etc.).  These are
-useful on occasion but in general are mostly useful for limiting overly broad
-searches.
+useful on occasion but I often avoid them unless I have a compelling reason to
+use them.
 
 -------------------------------------------------------------------------------
 
