@@ -211,6 +211,12 @@ Wosp also supports negated proximity operators (`NOT WITH`, etc.).  These are
 useful on occasion but I often avoid them unless I have a compelling reason to
 use them.
 
+
+## Bugs
+
+To report bugs or issues, please contact me at my website:
+<https://www.andrewtrettel.com/contact/>.
+
 -------------------------------------------------------------------------------
 
 Copyright (C) 2025 Andrew Trettel
