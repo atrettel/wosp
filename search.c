@@ -416,6 +416,10 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 /* Insertion */
                 len = strlen(original) + 2;
                 modified = (char *) malloc(len * sizeof(char));
+                if (modified == NULL)
+                {
+                    exit(EXIT_FAILURE);
+                }
                 for (size_t j = 0; j < i; j++)
                 {
                     modified[j] = original[j];
@@ -433,6 +437,10 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 {
                     len = strlen(original) + 2;
                     modified = (char *) malloc(len * sizeof(char));
+                    if (modified == NULL)
+                    {
+                        exit(EXIT_FAILURE);
+                    }
                     for (size_t j = 0; j < strlen(original); j++)
                     {
                         modified[j] = original[j];
@@ -447,6 +455,10 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 {
                     len = strlen(original);
                     modified = (char *) malloc(len * sizeof(char));
+                    if (modified == NULL)
+                    {
+                        exit(EXIT_FAILURE);
+                    }
                     for (size_t j = 0; j < i; j++)
                     {
                         modified[j] = original[j];
