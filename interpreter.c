@@ -45,7 +45,7 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
         else if (type == TK_SAME_OP)  { new_type = TK_NOT_SAME_OP;  }
         type = new_type;
         char *prev_string = string_token(*list);
-        char *tmp = malloc((strlen(prev_string)+strlen(string)+1) * sizeof(char));
+        char *tmp = (char *) malloc((strlen(prev_string)+strlen(string)+1) * sizeof(char));
         if (tmp == NULL)
         {
             exit(EXIT_FAILURE);

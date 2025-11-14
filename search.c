@@ -549,7 +549,7 @@ insert_document(DocumentNode **list, Word *document)
 {
     if (has_document(*list, document) == false)
     {
-        DocumentNode *current = malloc(sizeof(DocumentNode));
+        DocumentNode *current = (DocumentNode *) malloc(sizeof(DocumentNode));
         if (current == NULL)
         {
             exit(EXIT_FAILURE);
