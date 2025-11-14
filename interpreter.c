@@ -404,15 +404,8 @@ lex_query(char *query, TokenType default_operator_type)
         while ((isspace(query[i]) == false) && (query[i] != ')') && (query[i] != '"') && (query[i] != '\'') && (i < n))
         {
             len++;
-            char *tmp = (char *) realloc(data, len);
-            if (tmp == NULL)
-            {
-                exit(EXIT_FAILURE);
-            }
-            else
-            {
-                data = tmp;
-            }
+            char *tmp = (char *) reallocmem(data, len);
+            data = tmp;
             data[len - 2] = query[i];
             data[len - 1] = '\0';
             i++;

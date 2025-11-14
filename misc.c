@@ -18,3 +18,14 @@ allocmem(size_t len, size_t size)
     return tmp;
 }
 
+void *
+reallocmem(void *data, size_t len)
+{
+    void *tmp = realloc(data, len);
+    if (tmp == NULL)
+    {
+        fprintf(stderr, "%s: error reallocating memory\n", program_name);
+        exit(EXIT_FAILURE);
+    }
+    return tmp;
+}

@@ -42,15 +42,8 @@ read_source_words(Word **list, FILE *stream, char *filename)
             }
             else
             {
-                char *tmp = (char *) realloc(data, len);
-                if (tmp == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
-                else
-                {
-                    data = tmp;
-                }
+                char *tmp = (char *) reallocmem(data, len);
+                data = tmp;
             }
             data[len-1] = (char) c;
             p = c;
@@ -59,11 +52,8 @@ read_source_words(Word **list, FILE *stream, char *filename)
         if (len > 0)
         {
             len++;
-            data = (char *) realloc(data, len);
-            if (data == NULL)
-            {
-                exit(EXIT_FAILURE);
-            }
+            char *tmp = (char *) reallocmem(data, len);
+            data = tmp;
             data[len-1] = '\0';
             append_word(list, data, filename, line, column, position, 1);
             position++;

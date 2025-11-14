@@ -7,5 +7,6 @@ static const char program_name[]    = "wosp";
 static const char program_version[] = "0.0.0";
 
 void *allocmem(size_t, size_t);
+void *reallocmem(void *, size_t);
 
 #endif /* MISC_H */
