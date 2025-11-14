@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "misc.h"
 #include "words.h"
 
 bool
@@ -60,11 +61,7 @@ reduce_word(char *original, WordOrigin origin)
         }
     }
     len++;
-    char *reduced = (char *) malloc(len * sizeof(char));
-    if (reduced == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    char *reduced = (char *) allocmem(len, sizeof(char));
     for (size_t i = 0; i < strlen(original); i++)
     {
         if ((ispunct(original[i]) == false) || ((original[i] == wildcard_character) && (origin == WO_QUERY)))
@@ -81,11 +78,7 @@ void
 append_word(Word **list, char *data, char *filename, unsigned long line,
             unsigned long column, unsigned long position, unsigned long page)
 {
-    Word *current = (Word *) malloc(sizeof(Word));
-    if (current == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    Word *current = (Word *) allocmem(1, sizeof(Word));
     current->original = data;
     current->reduced = reduce_word(data, WO_SOURCE);
     current->filename = filename;

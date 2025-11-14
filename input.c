@@ -38,11 +38,7 @@ read_source_words(Word **list, FILE *stream, char *filename)
             column++;
             if (data == NULL)
             {
-                data = (char *) malloc(len * sizeof(char));
-                if (data == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
+                data = (char *) allocmem(len, sizeof(char));
             }
             else
             {
@@ -97,12 +93,8 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
     }
 
     size_t n_files = (argc == 2) ? 1 : argc - 2;
-    *filenames = (char **) malloc(n_files * sizeof(char *));
-    *words = (Word **) malloc(n_files * sizeof(Word *));
-    if (*filenames == NULL || *words == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    *filenames = (char **) allocmem(n_files, sizeof(char *));
+    *words = (Word **) allocmem(n_files, sizeof(Word *));
     for (size_t i = 0; i < n_files; i++)
     {
         (*filenames)[i] = NULL;
@@ -110,22 +102,14 @@ read_data(int argc, char *argv[], TrieNode **trie, char ***filenames, Word ***wo
     }
     if (argc == 2)
     {
-        (*filenames)[0] = (char *) malloc(6 * sizeof(char));
-        if ((*filenames)[0] == NULL)
-        {
-            exit(EXIT_FAILURE);
-        }
+        (*filenames)[0] = (char *) allocmem(6, sizeof(char));
         snprintf((*filenames)[0], 6, "stdin");
     }
     else
     {
         for (size_t i = 0; i < n_files; i++)
         {
-            (*filenames)[i] = (char *) malloc((strlen(argv[i+2])+1) * sizeof(char));
-            if ((*filenames)[i] == NULL)
-            {
-                exit(EXIT_FAILURE);
-            }
+            (*filenames)[i] = (char *) allocmem((strlen(argv[i+2])+1), sizeof(char));
             snprintf((*filenames)[i], strlen(argv[i+2])+1, "%s", argv[i+2]);
         }
     }

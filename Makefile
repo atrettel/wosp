@@ -12,7 +12,7 @@ version = 0.0.0
 
 DESTDIR = /opt/$(project)-$(version)/usr
 
-OBJ = input.o interpreter.o operations.o output.o search.o words.o
+OBJ = input.o interpreter.o misc.o operations.o output.o search.o words.o
 
 $(project): $(project).c $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "misc.h"
 #include "search.h"
 #include "words.h"
 
@@ -14,17 +15,9 @@ void
 insert_match(Match **list, size_t n)
 {
     assert(n > 0);
-    Match *current = (Match *) malloc(sizeof(Match));
-    if (current == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    Match *current = (Match *) allocmem(1, sizeof(Match));
     current->n = n;
-    current->words = (Word **) malloc(n * sizeof(Word *));
-    if (current->words == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    current->words = (Word **) allocmem(n, sizeof(Word *));
     for (size_t i = 0; i < n; i++)
     {
         current->words[i] = NULL;
@@ -212,11 +205,7 @@ free_matches(Match *list)
 void
 init_trie(TrieNode **trie)
 {
-    TrieNode *current = (TrieNode *) malloc(sizeof(TrieNode));
-    if (current == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    TrieNode *current = (TrieNode *) allocmem(1, sizeof(TrieNode));
     current->key = '\0';
     current->edges = NULL;
     current->match = NULL;
@@ -254,17 +243,9 @@ insert_trie(TrieNode *trie, Word *word, size_t i)
         if (edge == NULL)
         {
             /* The key is not in the current list of edges.  Add it. */
-            TrieEdge *current = (TrieEdge *) malloc(sizeof(TrieEdge));
-            if (current == NULL)
-            {
-                exit(EXIT_FAILURE);
-            }
+            TrieEdge *current = (TrieEdge *) allocmem(1, sizeof(TrieEdge));
             current->next = trie->edges;
-            current->node = (TrieNode *) malloc(sizeof(TrieNode));
-            if (current->node == NULL)
-            {
-                exit(EXIT_FAILURE);
-            }
+            current->node = (TrieNode *) allocmem(1, sizeof(TrieNode));
             current->node->key = key;
             current->node->edges = NULL;
             current->node->match = NULL;
@@ -343,11 +324,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
             else
             {
                 has_digits = true;
-                char *tmp = (char *) malloc((m - i) * sizeof(char));
-                if (tmp == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
+                char *tmp = (char *) allocmem((m - i), sizeof(char));
                 for (size_t k = 0; k < (m - i - 1); k++)
                 {
                     tmp[k] = original[i+k+1];
@@ -360,11 +337,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
             for (size_t j = 0; j <= n; j++)
             {
                 size_t len = j + strlen(original) - ((has_digits == true) ?  1 : 0);
-                char *modified = (char *) malloc(len * sizeof(char));
-                if (modified == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
+                char *modified = (char *) allocmem(len, sizeof(char));
                 for (size_t k = 0; k < i; k++)
                 {
                     modified[k] = original[k];
@@ -391,11 +364,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
             else
             {
                 size_t len = strlen(original) + 1;
-                char *modified = (char *) malloc(len * sizeof(char));
-                if (modified == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
+                char *modified = (char *) allocmem(len, sizeof(char));
                 snprintf(modified, len, "%s", original);
                 if ((case_mode == CM_INSENSITIVE) || (case_mode == CM_LOWERCASE) || ((case_mode == CM_TITLE_CASE) && (i > 0)))
                 {
@@ -415,11 +384,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 char *modified;
                 /* Insertion */
                 len = strlen(original) + 2;
-                modified = (char *) malloc(len * sizeof(char));
-                if (modified == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
+                modified = (char *) allocmem(len, sizeof(char));
                 for (size_t j = 0; j < i; j++)
                 {
                     modified[j] = original[j];
@@ -436,11 +401,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 if (i + 1 == strlen(original))
                 {
                     len = strlen(original) + 2;
-                    modified = (char *) malloc(len * sizeof(char));
-                    if (modified == NULL)
-                    {
-                        exit(EXIT_FAILURE);
-                    }
+                    modified = (char *) allocmem(len, sizeof(char));
                     for (size_t j = 0; j < strlen(original); j++)
                     {
                         modified[j] = original[j];
@@ -454,11 +415,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 if (strlen(original) > 1)
                 {
                     len = strlen(original);
-                    modified = (char *) malloc(len * sizeof(char));
-                    if (modified == NULL)
-                    {
-                        exit(EXIT_FAILURE);
-                    }
+                    modified = (char *) allocmem(len, sizeof(char));
                     for (size_t j = 0; j < i; j++)
                     {
                         modified[j] = original[j];
@@ -473,11 +430,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 }
                 /* Substitution */
                 len = strlen(original) + 1;
-                modified = (char *) malloc(len * sizeof(char));
-                if (modified == NULL)
-                {
-                    exit(EXIT_FAILURE);
-                }
+                modified = (char *) allocmem(len, sizeof(char));
                 snprintf(modified, len, "%s", original);
                 modified[i] = wildcard_character;
                 expand_word(trie, modified, i+1, match, case_mode, edit_dist-1);
@@ -486,11 +439,7 @@ expand_word(TrieNode *trie, char *original, size_t i, Match **match, CaseMode ca
                 if (i + 1 < strlen(original))
                 {
                     len = strlen(original) + 1;
-                    modified = (char *) malloc(len * sizeof(char));
-                    if (modified == NULL)
-                    {
-                        exit(EXIT_FAILURE);
-                    }
+                    modified = (char *) allocmem(len, sizeof(char));
                     snprintf(modified, len, "%s", original);
                     modified[i]   = original[i+1];
                     modified[i+1] = original[i];
@@ -549,11 +498,7 @@ insert_document(DocumentNode **list, Word *document)
 {
     if (has_document(*list, document) == false)
     {
-        DocumentNode *current = (DocumentNode *) malloc(sizeof(DocumentNode));
-        if (current == NULL)
-        {
-            exit(EXIT_FAILURE);
-        }
+        DocumentNode *current = (DocumentNode *) allocmem(1, sizeof(DocumentNode));
         current->document = document;
         current->next = *list;
         *list = current;

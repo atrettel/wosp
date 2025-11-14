@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "misc.h"
 #include "output.h"
 #include "search.h"
 #include "words.h"
@@ -161,11 +162,7 @@ print_excerpts(Match *match, OutputOptions options)
         Word *words = list_first_word(document_document(current_document));
         size_t n_words = (size_t) position_word(list_last_word(words));
 
-        ExcerptStatus *word_print = (ExcerptStatus *) malloc(n_words * sizeof(ExcerptStatus));
-        if (word_print == NULL)
-        {
-            exit(EXIT_FAILURE);
-        }
+        ExcerptStatus *word_print = (ExcerptStatus *) allocmem(n_words, sizeof(ExcerptStatus));
         for (size_t i = 0; i < n_words; i++)
         {
             word_print[i] = ES_EXCLUDE;

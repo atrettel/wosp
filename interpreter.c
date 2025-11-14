@@ -26,11 +26,7 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
         && (cumulative_quotes % 2 == 0))
     {
         const char *default_operator_string = find_operator_prefix(default_operator_type);
-        char *tmp = (char *) malloc((strlen(default_operator_string)+1) * sizeof(char));
-        if (tmp == NULL)
-        {
-            exit(EXIT_FAILURE);
-        }
+        char *tmp = (char *) allocmem((strlen(default_operator_string)+1), sizeof(char));
         snprintf(tmp, strlen(default_operator_string) + 1, "%s", default_operator_string);
         insert_token(list, default_operator_type, 0, tmp, default_operator_type);
     }
@@ -45,11 +41,7 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
         else if (type == TK_SAME_OP)  { new_type = TK_NOT_SAME_OP;  }
         type = new_type;
         char *prev_string = string_token(*list);
-        char *tmp = (char *) malloc((strlen(prev_string)+strlen(string)+1) * sizeof(char));
-        if (tmp == NULL)
-        {
-            exit(EXIT_FAILURE);
-        }
+        char *tmp = (char *) allocmem((strlen(prev_string)+strlen(string)+1), sizeof(char));
         for (size_t i = 0; i < strlen(prev_string); i++)
         {
             tmp[i] = prev_string[i];
@@ -70,11 +62,7 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
     {
         type = TK_WILDCARD;
     }
-    Token *current = (Token *) malloc(sizeof(Token));
-    if (current == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    Token *current = (Token *) allocmem(1, sizeof(Token));
     current->type = type;
     current->n = n;
     current->string = string;
@@ -309,11 +297,7 @@ identify_token_type(char *data, TokenType *type, int *n)
 {
     size_t len = strlen(data);
     size_t j = len; /* Where the numbers start, length of prefix */
-    char *lcase = (char *) malloc((len + 1) * sizeof(char));
-    if (lcase == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    char *lcase = (char *) allocmem((len + 1), sizeof(char));
     for (size_t i = 0; i < len; i++)
     {
         lcase[i] = tolower(data[i]);
@@ -324,12 +308,8 @@ identify_token_type(char *data, TokenType *type, int *n)
     }
     size_t k = len - j; /* Length of suffix */
     lcase[len] = '\0';
-    char *prefix = (char *) malloc((j + 1) * sizeof(char));
-    char *suffix = (char *) malloc((k + 1) * sizeof(char));
-    if ((prefix == NULL) || (suffix == NULL))
-    {
-        exit(EXIT_FAILURE);
-    }
+    char *prefix = (char *) allocmem((j + 1), sizeof(char));
+    char *suffix = (char *) allocmem((k + 1), sizeof(char));
     for (size_t i = 0; i < j; i++)
     {
         prefix[i] = lcase[i];
@@ -399,11 +379,7 @@ lex_query(char *query, TokenType default_operator_type)
     {
         while ((query[i] == '(') || (query[i] == ')') || (query[i] == '"') || (query[i] == '\''))
         {
-            char *tmp = (char *) malloc(2 * sizeof(char));
-            if (tmp == NULL)
-            {
-                exit(EXIT_FAILURE);
-            }
+            char *tmp = (char *) allocmem(2, sizeof(char));
             tmp[0] = query[i];
             tmp[1] = '\0';
             TokenType type = TK_ERROR;
@@ -423,11 +399,7 @@ lex_query(char *query, TokenType default_operator_type)
             i++;
         }
         size_t len = 1;
-        char *data = (char *) malloc(len * sizeof(char));
-        if (data == NULL)
-        {
-            exit(EXIT_FAILURE);
-        }
+        char *data = (char *) allocmem(len, sizeof(char));
         data[len - 1] = '\0';
         while ((isspace(query[i]) == false) && (query[i] != ')') && (query[i] != '"') && (query[i] != '\'') && (i < n))
         {
@@ -628,11 +600,7 @@ SyntaxTree *right_syntax_tree(SyntaxTree *tree)
 SyntaxTree *
 insert_parent(TokenType type, int n, char *string, SyntaxTree *left, SyntaxTree *right)
 {
-    SyntaxTree *current = (SyntaxTree *) malloc(sizeof(SyntaxTree));
-    if (current == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
+    SyntaxTree *current = (SyntaxTree *) allocmem(1, sizeof(SyntaxTree));
     current->type = type;
     current->n = n;
     current->string = string;
