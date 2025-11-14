@@ -3,6 +3,8 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <stdlib.h>
+
 static const char program_name[]    = "wosp";
 static const char program_version[] = "0.0.0";
 
