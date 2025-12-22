@@ -369,6 +369,27 @@ identify_token_type(char *data, TokenType *type, int *n)
     free(suffix);
 }
 
+TokenIterator
+init_token_iterator(Token *token)
+{
+    TokenIterator iterator = {token};
+    return iterator;
+}
+
+Token *
+iterator_next_token(TokenIterator *iterator)
+{
+    Token *next = iterator->next;
+    iterator->next = next_token(next);
+    return next;
+}
+
+bool
+iterator_has_next_token(TokenIterator iterator)
+{
+    return (iterator.next != NULL);
+}
+
 Token *
 lex_query(char *query, TokenType default_operator_type)
 {

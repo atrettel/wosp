@@ -51,6 +51,11 @@ typedef struct Token
     unsigned int cumulative_quotes;
 } Token;
 
+typedef struct TokenIterator
+{
+    Token *next;
+} TokenIterator;
+
 void insert_token(Token **, TokenType, int, char *, TokenType);
 TokenType type_token(Token *);
 int number_token(Token *);
@@ -67,6 +72,10 @@ void free_tokens(Token *);
 TokenType find_operator_type(char *);
 const char *find_operator_prefix(TokenType);
 void identify_token_type(char *, TokenType *, int *);
+
+TokenIterator init_token_iterator(Token *);
+Token *iterator_next_token(TokenIterator *);
+bool iterator_has_next_token(TokenIterator);
 
 Token *lex_query(char *, TokenType);
 bool operator_token_type(TokenType);
