@@ -184,20 +184,6 @@ is_token(Token *token)
 }
 
 bool
-has_next_token(Token *token)
-{
-    if ((is_token(           token)  == false) ||
-        (is_token(next_token(token)) == false))
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-bool
 has_prev_token(Token *token)
 {
     if ((is_token(           token)  == false) ||

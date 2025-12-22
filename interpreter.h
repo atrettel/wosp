@@ -64,7 +64,6 @@ Token *prev_token(Token *);
 Token *next_token(Token *);
 Token *first_token(Token *);
 bool is_token(Token *);
-bool has_next_token(Token *);
 bool has_prev_token(Token *);
 void free_tokens(Token *);
 
