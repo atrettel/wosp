@@ -170,24 +170,6 @@ first_token(Token *token)
     }
 }
 
-Token *
-last_token(Token *token)
-{
-    if (is_token(token) == true)
-    {
-        Token *current = token;
-        while (has_next_token(current) == true)
-        {
-            current = next_token(current);
-        }
-        return current;
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
 bool
 is_token(Token *token)
 {
