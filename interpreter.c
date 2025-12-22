@@ -518,9 +518,10 @@ count_errors_tokens(Token *list, bool print_errors)
     unsigned int n_l_parens = 0;
     unsigned int n_r_parens = 0;
     TokenType prev_type = TK_ERROR;
-    Token *current = list;
-    while (is_token(current) == true)
+    TokenIterator iterator = init_token_iterator(list);
+    while (iterator_has_next_token(iterator) == true)
     {
+        Token *current = iterator_next_token(&iterator);
         TokenType type = type_token(current);
         if (type == TK_ERROR)
         {
@@ -563,7 +564,6 @@ count_errors_tokens(Token *list, bool print_errors)
             }
         }
         prev_type = type;
-        current = next_token(current);
     }
 
     if (n_quotes % 2 != 0)
