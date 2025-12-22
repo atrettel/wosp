@@ -158,9 +158,10 @@ first_token(Token *token)
     if (is_token(token) == true)
     {
         Token *current = token;
-        while (has_prev_token(current) == true)
+        TokenIterator iterator = init_token_iterator(token, prev_token);
+        while (iterator_has_next_token(iterator) == true)
         {
-            current = prev_token(current);
+            current = iterator_next_token(&iterator);
         }
         return current;
     }
@@ -174,20 +175,6 @@ bool
 is_token(Token *token)
 {
     if (token == NULL)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-bool
-has_prev_token(Token *token)
-{
-    if ((is_token(           token)  == false) ||
-        (is_token(prev_token(token)) == false))
     {
         return false;
     }
@@ -338,9 +325,9 @@ identify_token_type(char *data, TokenType *type, int *n)
 }
 
 TokenIterator
-init_token_iterator(Token *token)
+init_token_iterator(Token *token, Token *next_function(Token *))
 {
-    TokenIterator iterator = {token};
+    TokenIterator iterator = {token, next_function};
     return iterator;
 }
 
@@ -348,7 +335,7 @@ Token *
 iterator_next_token(TokenIterator *iterator)
 {
     Token *next = iterator->next;
-    iterator->next = next_token(next);
+    iterator->next = iterator->next_function(next);
     return next;
 }
 
@@ -486,7 +473,7 @@ count_errors_tokens(Token *list, bool print_errors)
     unsigned int n_l_parens = 0;
     unsigned int n_r_parens = 0;
     TokenType prev_type = TK_ERROR;
-    TokenIterator iterator = init_token_iterator(list);
+    TokenIterator iterator = init_token_iterator(list, next_token);
     while (iterator_has_next_token(iterator) == true)
     {
         Token *current = iterator_next_token(&iterator);

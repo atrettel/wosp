@@ -54,6 +54,7 @@ typedef struct Token
 typedef struct TokenIterator
 {
     Token *next;
+    Token *(*next_function)(Token *);
 } TokenIterator;
 
 void insert_token(Token **, TokenType, int, char *, TokenType);
@@ -64,14 +65,13 @@ Token *prev_token(Token *);
 Token *next_token(Token *);
 Token *first_token(Token *);
 bool is_token(Token *);
-bool has_prev_token(Token *);
 void free_tokens(Token *);
 
 TokenType find_operator_type(char *);
 const char *find_operator_prefix(TokenType);
 void identify_token_type(char *, TokenType *, int *);
 
-TokenIterator init_token_iterator(Token *);
+TokenIterator init_token_iterator(Token *, Token *next_function(Token *));
 Token *iterator_next_token(TokenIterator *);
 bool iterator_has_next_token(TokenIterator);
 
