@@ -64,7 +64,6 @@ char *string_token(Token *);
 Token *prev_token(Token *);
 Token *next_token(Token *);
 Token *first_token(Token *);
-bool is_token(Token *);
 void free_tokens(Token *);
 
 TokenType find_operator_type(char *);

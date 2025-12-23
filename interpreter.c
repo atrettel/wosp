@@ -16,7 +16,7 @@ void
 insert_token(Token **list, TokenType type, int n, char *string, TokenType default_operator_type)
 {
     unsigned int cumulative_quotes = (type == TK_QUOTE) ? 1 : 0;
-    if (is_token(*list) == true)
+    if ((*list) != NULL)
     {
         cumulative_quotes = (*list)->cumulative_quotes;
     }
@@ -68,7 +68,7 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
     current->string = string;
     current->next = NULL;
     current->prev = *list;
-    if (is_token(current->prev) == false)
+    if (current->prev == NULL)
     {
         current->cumulative_quotes = (type == TK_QUOTE) ? 1 : 0;
     }
@@ -80,7 +80,7 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
     {
         current->cumulative_quotes = current->prev->cumulative_quotes;
     }
-    if (is_token(*list) == true)
+    if ((*list) != NULL)
     {
         (*list)->next = current;
     }
@@ -90,72 +90,76 @@ insert_token(Token **list, TokenType type, int n, char *string, TokenType defaul
 TokenType
 type_token(Token *token)
 {
-    if (is_token(token) == true)
+    if (token == NULL)
     {
-        return token->type;
+        return TK_ERROR;
     }
     else
     {
-        return TK_ERROR;
+        return token->type;
     }
 }
 
 int
 number_token(Token *token)
 {
-    if (is_token(token) == true)
+    if (token == NULL)
     {
-        return token->n;
+        return 0;
     }
     else
     {
-        return 0;
+        return token->n;
     }
 }
 
 char *
 string_token(Token *token)
 {
-    if (is_token(token) == true)
+    if (token == NULL)
     {
-        return token->string;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return token->string;
     }
 }
 
 Token *
 prev_token(Token *token)
 {
-    if (is_token(token) == true)
+    if (token == NULL)
     {
-        return token->prev;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return token->prev;
     }
 }
 
 Token *
 next_token(Token *token)
 {
-    if (is_token(token) == true)
+    if (token == NULL)
     {
-        return token->next;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return token->next;
     }
 }
 
 Token *
 first_token(Token *token)
 {
-    if (is_token(token) == true)
+    if (token == NULL)
+    {
+        return NULL;
+    }
+    else
     {
         Token *current = token;
         TokenIterator iterator = init_token_iterator(token, prev_token);
@@ -164,23 +168,6 @@ first_token(Token *token)
             current = iterator_next_token(&iterator);
         }
         return current;
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-bool
-is_token(Token *token)
-{
-    if (token == NULL)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
     }
 }
 
