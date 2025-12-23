@@ -187,13 +187,12 @@ is_token(Token *token)
 void
 free_tokens(Token *list)
 {
-    Token *current = list;
-    while (is_token(current) == true)
+    TokenIterator iterator = init_token_iterator(list, next_token);
+    while (iterator_has_next_token(iterator) == true)
     {
-        Token *next = next_token(current);
+        Token *current = iterator_next_token(&iterator);
         free(current->string);
         free(current);
-        current = next;
     }
 }
 
