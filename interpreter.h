@@ -54,7 +54,7 @@ typedef struct Token
 typedef struct TokenIterator
 {
     Token *next;
-    Token *(*next_function)(Token *);
+    Token *(*direction_token)(Token *);
 } TokenIterator;
 
 void insert_token(Token **, TokenType, int, char *, TokenType);
@@ -70,7 +70,7 @@ TokenType find_operator_type(char *);
 const char *find_operator_prefix(TokenType);
 void identify_token_type(char *, TokenType *, int *);
 
-TokenIterator init_token_iterator(Token *, Token *next_function(Token *));
+TokenIterator init_token_iterator(Token *, Token *direction_token(Token *));
 Token *iterator_next_token(TokenIterator *);
 bool iterator_has_next_token(TokenIterator);
 

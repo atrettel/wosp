@@ -311,9 +311,9 @@ identify_token_type(char *data, TokenType *type, int *n)
 }
 
 TokenIterator
-init_token_iterator(Token *token, Token *next_function(Token *))
+init_token_iterator(Token *token, Token *direction_token(Token *))
 {
-    TokenIterator iterator = {token, next_function};
+    TokenIterator iterator = {token, direction_token};
     return iterator;
 }
 
@@ -321,7 +321,7 @@ Token *
 iterator_next_token(TokenIterator *iterator)
 {
     Token *next = iterator->next;
-    iterator->next = iterator->next_function(next);
+    iterator->next = iterator->direction_token(next);
     return next;
 }
 
