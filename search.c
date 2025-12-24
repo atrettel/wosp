@@ -534,14 +534,14 @@ next_document(DocumentNode *list)
 bool
 has_document(DocumentNode *list, Word *document)
 {
-    DocumentNode *current = list;
-    while (is_document(current) == true)
+    DocumentIterator iterator = init_document_iterator(list);
+    while (iterator_has_next_document(iterator) == true)
     {
-        if (current->document == document)
+        DocumentNode *current = iterator_next_document(&iterator);
+        if (document_document(current) == document)
         {
             return true;
         }
-        current = next_document(current);
     }
     return false;
 }
