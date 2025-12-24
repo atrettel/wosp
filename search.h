@@ -38,7 +38,6 @@ void insert_document(DocumentNode **, Word *document);
 Word *document_document(DocumentNode *);
 DocumentNode *next_document(DocumentNode *);
 bool has_document(DocumentNode *, Word *);
-bool is_document(DocumentNode *);
 char *filename_document(DocumentNode *);
 void free_document_list(DocumentNode *);
 

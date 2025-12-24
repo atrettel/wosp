@@ -508,26 +508,26 @@ insert_document(DocumentNode **list, Word *document)
 Word *
 document_document(DocumentNode *list)
 {
-    if (is_document(list) == true)
+    if (list == NULL)
     {
-        return list->document;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return list->document;
     }
 }
 
 DocumentNode *
 next_document(DocumentNode *list)
 {
-    if (is_document(list) == true)
+    if (list == NULL)
     {
-        return list->next;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return list->next;
     }
 }
 
@@ -544,19 +544,6 @@ has_document(DocumentNode *list, Word *document)
         }
     }
     return false;
-}
-
-bool
-is_document(DocumentNode *list)
-{
-    if (list == NULL)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
 }
 
 char *
