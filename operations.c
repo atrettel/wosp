@@ -15,18 +15,18 @@ op_boolean(Match *first_match, Match *second_match, bool condition(DocumentNode 
     DocumentNode *first_documents = document_list_match_list(first_match);
     DocumentNode *second_documents = document_list_match_list(second_match);
     bool processed_first = false;
-    Match *current_match = first_match;
-    while (is_match(current_match) == true)
+    MatchIterator iterator = init_match_iterator(first_match);
+    while (iterator_has_next_match(iterator) == true)
     {
+        Match *current_match = iterator_next_match(&iterator);
         if (condition(first_documents, second_documents, document_match(current_match)) == true)
         {
             append_match(current_match, &match);
         }
-        current_match = next_match(current_match);
-        if ((is_match(current_match) == false) && (processed_first == false))
+        if ((iterator_has_next_match(iterator) == false) && (processed_first == false))
         {
             processed_first = true;
-            current_match = second_match;
+            iterator = init_match_iterator(second_match);
         }
     }
     free_document_list(first_documents);
