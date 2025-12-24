@@ -563,20 +563,23 @@ free_document_list(DocumentNode *list)
     }
 }
 
-DocumentIterator init_document_iterator(DocumentNode *list)
+DocumentIterator
+init_document_iterator(DocumentNode *list)
 {
     DocumentIterator iterator = {list};
     return iterator;
 }
 
-DocumentNode *iterator_next_document(DocumentIterator *iterator)
+DocumentNode *
+iterator_next_document(DocumentIterator *iterator)
 {
     DocumentNode *next = iterator->next;
     iterator->next = next_document(next);
     return next;
 }
 
-bool iterator_has_next_document(DocumentIterator iterator)
+bool
+iterator_has_next_document(DocumentIterator iterator)
 {
     return (iterator.next != NULL);
 }
