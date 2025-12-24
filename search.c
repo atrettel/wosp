@@ -568,12 +568,11 @@ filename_document(DocumentNode *document)
 void
 free_document_list(DocumentNode *list)
 {
-    DocumentNode *current = list;
-    while (is_document(current) == true)
+    DocumentIterator iterator = init_document_iterator(list);
+    while (iterator_has_next_document(iterator) == true)
     {
-        DocumentNode *next = next_document(current);
+        DocumentNode *current = iterator_next_document(&iterator);
         free(current);
-        current = next;
     }
 }
 
