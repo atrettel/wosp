@@ -56,6 +56,11 @@ typedef struct Match
     Word *document;
 } Match;
 
+typedef struct MatchIterator
+{
+    Match *next;
+} MatchIterator;
+
 void insert_match(Match **, size_t);
 void set_match(Match *, size_t, Word *);
 void append_match(Match *, Match **);
@@ -73,6 +78,10 @@ unsigned int end_position_match(Match *);
 unsigned int width_match(Match *);
 void concatenate_matches(Match *, Match **);
 void free_matches(Match *);
+
+MatchIterator init_match_iterator(Match *);
+Match *iterator_next_match(MatchIterator *);
+bool iterator_has_next_match(MatchIterator);
 
 struct TrieNode;
 struct TrieEdge;

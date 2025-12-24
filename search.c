@@ -202,6 +202,27 @@ free_matches(Match *list)
     }
 }
 
+MatchIterator
+init_match_iterator(Match *list)
+{
+    MatchIterator iterator = {list};
+    return iterator;
+}
+
+Match *
+iterator_next_match(MatchIterator *iterator)
+{
+    Match *next = iterator->next;
+    iterator->next = next_match(next);
+    return next;
+}
+
+bool
+iterator_has_next_match(MatchIterator iterator)
+{
+    return (iterator.next != NULL);
+}
+
 void
 init_trie(TrieNode **trie)
 {
