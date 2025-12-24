@@ -29,6 +29,11 @@ typedef struct DocumentNode
     struct DocumentNode *next;
 } DocumentNode;
 
+typedef struct DocumentIterator
+{
+    DocumentNode *next;
+} DocumentIterator;
+
 void insert_document(DocumentNode **, Word *document);
 Word *document_document(DocumentNode *);
 DocumentNode *next_document(DocumentNode *);
@@ -36,6 +41,10 @@ bool has_document(DocumentNode *, Word *);
 bool is_document(DocumentNode *);
 char *filename_document(DocumentNode *);
 void free_document_list(DocumentNode *);
+
+DocumentIterator init_document_iterator(DocumentNode *);
+DocumentNode *iterator_next_document(DocumentIterator *);
+bool iterator_has_next_document(DocumentIterator);
 
 /* A match is a continuous set of words matching a set of constraints.  Each
  * match is part of a linked list where subsequent matches are merely appended
