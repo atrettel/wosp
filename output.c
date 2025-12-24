@@ -126,9 +126,10 @@ print_documents_in_matches(Match *match, OutputOptions options)
 {
     unsigned int output_count = 0;
     DocumentNode *documents = document_list_match_list(match);
-    DocumentNode *current = documents;
-    while (is_document(current) == true && output_count < maximum_output_options(options))
+    DocumentIterator iterator = init_document_iterator(documents);
+    while (iterator_has_next_document(iterator) == true && output_count < maximum_output_options(options))
     {
+        DocumentNode *current = iterator_next_document(&iterator);
         printf("%s", filename_document(current));
         if (count_matches_output_options(options) == true)
         {
@@ -145,7 +146,6 @@ print_documents_in_matches(Match *match, OutputOptions options)
             printf(":%lu", count);
         }
         printf("\n");
-        current = next_document(current);
         output_count++;
     }
     free_document_list(documents);
