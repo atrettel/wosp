@@ -156,9 +156,10 @@ print_excerpts(Match *match, OutputOptions options)
 {
     unsigned int output_count = 0;
     DocumentNode *documents = document_list_match_list(match);
-    DocumentNode *current_document = documents;
-    while (is_document(current_document) == true && output_count < maximum_output_options(options))
+    DocumentIterator iterator = init_document_iterator(documents);
+    while (iterator_has_next_document(iterator) == true && output_count < maximum_output_options(options))
     {
+        DocumentNode *current_document = iterator_next_document(&iterator);
         Word *words = list_first_word(document_document(current_document));
         size_t n_words = (size_t) position_word(list_last_word(words));
 
@@ -268,7 +269,6 @@ print_excerpts(Match *match, OutputOptions options)
             printf("%s:%u\n", filename_document(current_document), excerpt_count);
         }
         free(word_print);
-        current_document = next_document(current_document);
     }
     free_document_list(documents);
 }
