@@ -90,11 +90,10 @@ DocumentNode *
 document_list_match_list(Match *match)
 {
     DocumentNode *list = NULL;
-    Match *current = match;
-    while (is_match(current) == true)
+    MatchIterator iterator = init_match_iterator(match);
+    while (iterator_has_next_match(iterator) == true)
     {
-        insert_document(&list, document_match(current));
-        current = next_match(current);
+        insert_document(&list, document_match(iterator_next_match(&iterator)));
     }
     return list;
 }
