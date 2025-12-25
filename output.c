@@ -156,10 +156,10 @@ print_excerpts(Match *match, OutputOptions options)
 {
     unsigned int output_count = 0;
     DocumentNode *documents = document_list_match_list(match);
-    DocumentIterator iterator = init_document_iterator(documents);
-    while (iterator_has_next_document(iterator) == true && output_count < maximum_output_options(options))
+    DocumentIterator document_iterator = init_document_iterator(documents);
+    while ((iterator_has_next_document(document_iterator) == true) && (output_count < maximum_output_options(options)))
     {
-        DocumentNode *current_document = iterator_next_document(&iterator);
+        DocumentNode *current_document = iterator_next_document(&document_iterator);
         Word *words = list_first_word(document_document(current_document));
         size_t n_words = (size_t) position_word(list_last_word(words));
 
@@ -168,9 +168,10 @@ print_excerpts(Match *match, OutputOptions options)
         {
             word_print[i] = ES_EXCLUDE;
         }
-        Match *current_match = match;
-        while (is_match(current_match) == true)
+        MatchIterator match_iterator = init_match_iterator(match);
+        while (iterator_has_next_match(match_iterator) == true)
         {
+            Match *current_match = iterator_next_match(&match_iterator);
             if (document_match(current_match) == document_document(current_document))
             {
                 size_t n_match = number_of_words_in_match(current_match);
@@ -180,7 +181,6 @@ print_excerpts(Match *match, OutputOptions options)
                     word_print[(size_t) position_word(current_word) - 1] = ES_MATCH;
                 }
             }
-            current_match = next_match(current_match);
         }
 
         Word *current_word = words;
