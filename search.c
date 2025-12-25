@@ -614,9 +614,10 @@ Match *
 proximity_search(Match *first_match, Match *second_match, LanguageElement element, int start, int end, ProximityMode proximity_mode)
 {
     Match *match = NULL;
-    Match *outer_match = first_match;
-    while (is_match(outer_match) == true)
+    MatchIterator outer_iterator = init_match_iterator(first_match);
+    while (iterator_has_next_match(outer_iterator) == true)
     {
+        Match *outer_match = iterator_next_match(&outer_iterator);
         Word *outer_start_word = advance_word(start_word_match(outer_match), element, start);
         Word   *outer_end_word = advance_word(  end_word_match(outer_match), element,   end);
         unsigned long outer_start = position_word(outer_start_word);
@@ -634,9 +635,10 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
             outer_end--;
         }
 
-        Match *inner_match = second_match;
-        while (is_match(inner_match) == true)
+        MatchIterator inner_iterator = init_match_iterator(second_match);
+        while (iterator_has_next_match(inner_iterator) == true)
         {
+            Match *inner_match = iterator_next_match(&inner_iterator);
             if (document_match(outer_match) == document_match(inner_match))
             {
                 unsigned long inner_start = position_word(start_word_match(inner_match));
@@ -658,9 +660,7 @@ proximity_search(Match *first_match, Match *second_match, LanguageElement elemen
                     }
                 }
             }
-            inner_match = next_match(inner_match);
         }
-        outer_match = next_match(outer_match);
     }
     return match;
 }
