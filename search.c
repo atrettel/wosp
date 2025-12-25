@@ -61,12 +61,12 @@ number_of_words_in_match(Match *match)
 unsigned int
 length_of_match_list(Match *match)
 {
-    Match *current = match;
     unsigned int n = 0;
-    while (is_match(current) == true)
+    MatchIterator iterator = init_match_iterator(match);
+    while (iterator_has_next_match(iterator) == true)
     {
+        iterator_next_match(&iterator);
         n++;
-        current = next_match(current);
     }
     return n;
 }
