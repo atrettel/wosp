@@ -126,22 +126,22 @@ print_documents_in_matches(Match *match, OutputOptions options)
 {
     unsigned int output_count = 0;
     DocumentNode *documents = document_list_match_list(match);
-    DocumentIterator iterator = init_document_iterator(documents);
-    while (iterator_has_next_document(iterator) == true && output_count < maximum_output_options(options))
+    DocumentIterator document_iterator = init_document_iterator(documents);
+    while ((iterator_has_next_document(document_iterator) == true) && (output_count < maximum_output_options(options)))
     {
-        DocumentNode *current = iterator_next_document(&iterator);
+        DocumentNode *current = iterator_next_document(&document_iterator);
         printf("%s", filename_document(current));
         if (count_matches_output_options(options) == true)
         {
             unsigned long count = 0;
-            Match *current_match = match;
-            while (is_match(current_match) == true)
+            MatchIterator match_iterator = init_match_iterator(match);
+            while (iterator_has_next_match(match_iterator) == true)
             {
+                Match *current_match = iterator_next_match(&match_iterator);
                 if (document_match(current_match) == document_document(current))
                 {
                     count++;
                 }
-                current_match = next_match(current_match);
             }
             printf(":%lu", count);
         }
