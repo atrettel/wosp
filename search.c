@@ -180,11 +180,10 @@ width_match(Match *match)
 void
 concatenate_matches(Match *src, Match **dest)
 {
-    Match *current = src;
-    while (is_match(current) == true)
+    MatchIterator iterator = init_match_iterator(src);
+    while (iterator_has_next_match(iterator) == true)
     {
-        append_match(current, dest);
-        current = next_match(current);
+        append_match(iterator_next_match(&iterator), dest);
     }
 }
 
