@@ -69,7 +69,6 @@ unsigned int length_of_match_list(Match *);
 Word *word_match(Match *, size_t);
 Word *document_match(Match *);
 DocumentNode *document_list_match_list(Match *);
-bool is_match(Match *);
 Match *next_match(Match *);
 Word *start_word_match(Match *);
 Word *end_word_match(Match *);

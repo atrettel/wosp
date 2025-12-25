@@ -98,29 +98,16 @@ document_list_match_list(Match *match)
     return list;
 }
 
-bool
-is_match(Match * match)
-{
-    if (match == NULL)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
 Match *
 next_match(Match *match)
 {
-    if (is_match(match) == true)
+    if (match == NULL)
     {
-        return match->next;
+        return NULL;
     }
     else
     {
-        return NULL;
+        return match->next;
     }
 }
 
@@ -279,7 +266,7 @@ has_word_trie(TrieNode *trie, char *reduced)
     Match *match = NULL;
     backtrack_trie(trie, reduced, 0, &match);
     bool result = false;
-    if (is_match(match) == false)
+    if (match == NULL)
     {
         result = false;
     }
