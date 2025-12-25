@@ -76,10 +76,11 @@ OutputType type_output_options(OutputOptions options)
 void
 print_matches(Match *match, OutputOptions options)
 {
-    Match *current_match = match;
     unsigned int output_count = 0;
-    while (is_match(current_match) == true && output_count < maximum_output_options(options))
+    MatchIterator iterator = init_match_iterator(match);
+    while ((iterator_has_next_match(iterator) == true) && (output_count < maximum_output_options(options)))
     {
+        Match *current_match = iterator_next_match(&iterator);
         LanguageElement print_element = element_output_options(options);
         int start_n = -before_output_options(options);
         int end_n   = +after_output_options(options);
@@ -116,7 +117,6 @@ print_matches(Match *match, OutputOptions options)
             current_word = next_word(current_word);
         }
         printf("\n");
-        current_match = next_match(current_match);
         output_count++;
     }
 }
