@@ -190,13 +190,12 @@ concatenate_matches(Match *src, Match **dest)
 void
 free_matches(Match *list)
 {
-    Match *current = list;
-    while (is_match(current) == true)
+    MatchIterator iterator = init_match_iterator(list);
+    while (iterator_has_next_match(iterator) == true)
     {
-        Match *next = next_match(current);
+        Match *current = iterator_next_match(&iterator);
         free(current->words);
         free(current);
-        current = next;
     }
 }
 
