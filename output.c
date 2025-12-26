@@ -203,12 +203,13 @@ print_excerpts(Match *match, OutputOptions options)
             current_word = next_word(current_word);
         }
 
-        current_word = words;
         Word *start_word = words;
         bool prev_print = false;
         unsigned int excerpt_count = 0;
-        while (is_end_field(current_word) == false)
+        WordIterator word_iterator = init_word_iterator(words, next_word, false);
+        while (iterator_has_next_word(word_iterator) == true)
         {
+            current_word = iterator_next_word(&word_iterator);
             size_t i = (size_t) position_word(current_word) - 1;
             if (word_print[i] == ES_EXCLUDE)
             {
@@ -261,7 +262,6 @@ print_excerpts(Match *match, OutputOptions options)
                     printf("%s", original_word(current_word));
                 }
             }
-            current_word = next_word(current_word);
         }
 
         if (count_matches_output_options(options) == true)
