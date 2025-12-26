@@ -167,17 +167,15 @@ is_end_field(Word *word)
 bool
 field_has_next_word(Word *word)
 {
-    if (is_end_field(word) == true)
+    WordIterator iterator = init_word_iterator(word, next_word, true);
+    if (iterator_has_next_word(iterator) == false)
     {
         return false;
-    }
-    else if (field_word(word) == field_word(next_word(word)))
-    {
-        return true;
     }
     else
     {
-        return false;
+        iterator_next_word(&iterator);
+        return iterator_has_next_word(iterator);
     }
 }
 
