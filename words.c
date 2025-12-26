@@ -691,16 +691,16 @@ advance_word(Word *word, LanguageElement element, int n)
 void
 print_words(Word *list)
 {
-    Word *current = list;
-    while (is_end_field(current) == false)
+    WordIterator iterator = init_word_iterator(list, next_word, false);
+    while (iterator_has_next_word(iterator) == true)
     {
+        Word *current = iterator_next_word(&iterator);
         printf("%10zu: '%s' ('%s')", position_word(current), original_word(current), reduced_word(current));
         if (sentence_ending_word(current) == true)
         {
             printf(" ...");
         }
         printf("\n");
-        current = next_word(current);
     }
 }
 
