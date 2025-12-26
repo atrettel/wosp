@@ -323,7 +323,11 @@ paragraph_ending_word(Word *word)
 Word *
 next_boolean_element(Word *word, bool element_ending_word(Word *))
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
     {
         Word *current = word;
         WordIterator iterator = init_word_iterator(word, next_word, true);
@@ -337,16 +341,16 @@ next_boolean_element(Word *word, bool element_ending_word(Word *))
         }
         return current;
     }
-    else
-    {
-        return NULL;
-    }
 }
 
 Word *
 prev_boolean_element(Word *word, bool element_ending_word(Word *))
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
     {
         Word *current = word;
         WordIterator iterator = init_word_iterator(word, prev_word, true);
@@ -364,16 +368,16 @@ prev_boolean_element(Word *word, bool element_ending_word(Word *))
         }
         return current;
     }
-    else
-    {
-        return NULL;
-    }
 }
 
 Word *
 next_numbered_element(Word *word, unsigned long element_word(Word *))
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
     {
         unsigned long element = element_word(word);
         Word *current = word;
@@ -388,16 +392,16 @@ next_numbered_element(Word *word, unsigned long element_word(Word *))
         }
         return current;
     }
-    else
-    {
-        return NULL;
-    }
 }
 
 Word *
 prev_numbered_element(Word *word, unsigned long element_word(Word *))
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return NULL;
+    }
+    else
     {
         unsigned long element = element_word(word);
         Word *current = word;
@@ -411,10 +415,6 @@ prev_numbered_element(Word *word, unsigned long element_word(Word *))
             }
         }
         return current;
-    }
-    else
-    {
-        return NULL;
     }
 }
 
