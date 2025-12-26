@@ -717,3 +717,33 @@ free_words(Word *list)
         current = next;
     }
 }
+
+WordIterator
+init_word_iterator(Word *word, Word *direction_word(Word *), bool limit_to_field)
+{
+    unsigned long prev_field = field_word(word); /* This ensures that it iterates at least once. */
+    WordIterator iterator = {word, direction_word, limit_to_field, prev_field};
+    return iterator;
+}
+
+Word *
+iterator_next_word(WordIterator *iterator)
+{
+    Word *next = iterator->next;
+    iterator->prev_field = field_word(next);
+    iterator->next = iterator->direction_word(next);
+    return next;
+}
+
+bool
+iterator_has_next_word(WordIterator iterator)
+{
+    if ((iterator.limit_to_field == true) && (iterator.prev_field != field_word(iterator.next)))
+    {
+        return false;
+    }
+    else
+    {
+        return (iterator.next != NULL);
+    }
+}

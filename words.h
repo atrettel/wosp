@@ -43,6 +43,14 @@ typedef enum WordOrigin
     WO_QUERY
 } WordOrigin;
 
+typedef struct WordIterator
+{
+    Word *next;
+    Word *(*direction_word)(Word *);
+    bool limit_to_field;
+    unsigned long prev_field;
+} WordIterator;
+
 char *reduce_word(char *, WordOrigin);
 void append_word(Word **, char *, char *, unsigned long, unsigned long, unsigned long, unsigned long);
 char *original_word(Word *);
@@ -85,5 +93,9 @@ Word *document_word(Word *);
 Word *advance_word(Word *, LanguageElement, int);
 void print_words(Word *);
 void free_words(Word *);
+
+WordIterator init_word_iterator(Word *, Word *direction_word(Word *), bool);
+Word *iterator_next_word(WordIterator *);
+bool iterator_has_next_word(WordIterator);
 
 #endif /* WORDS_H */
