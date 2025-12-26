@@ -77,10 +77,10 @@ void
 print_matches(Match *match, OutputOptions options)
 {
     unsigned int output_count = 0;
-    MatchIterator iterator = init_match_iterator(match);
-    while ((iterator_has_next_match(iterator) == true) && (output_count < maximum_output_options(options)))
+    MatchIterator match_iterator = init_match_iterator(match);
+    while ((iterator_has_next_match(match_iterator) == true) && (output_count < maximum_output_options(options)))
     {
-        Match *current_match = iterator_next_match(&iterator);
+        Match *current_match = iterator_next_match(&match_iterator);
         LanguageElement print_element = element_output_options(options);
         int start_n = -before_output_options(options);
         int end_n   = +after_output_options(options);
@@ -90,10 +90,6 @@ print_matches(Match *match, OutputOptions options)
         }
         Word *start_word = advance_word(start_word_match(current_match), print_element, start_n);
         Word   *end_word = advance_word(  end_word_match(current_match), print_element,   end_n);
-        if (field_has_next_word(end_word) == false)
-        {
-            end_word = NULL;
-        }
         if (filename_output_options(options) == true)
         {
             printf("%s:", filename_word(start_word));
@@ -107,14 +103,15 @@ print_matches(Match *match, OutputOptions options)
             printf("%lu:", line_word(start_word));
         }
         Word *current_word = start_word;
-        while (current_word != end_word)
+        WordIterator word_iterator = init_word_iterator(start_word, next_word, true);
+        while ((current_word != end_word) && (iterator_has_next_word(word_iterator) == true))
         {
+            current_word = iterator_next_word(&word_iterator);
             if (current_word != start_word)
             {
                 printf(" ");
             }
             printf("%s", original_word(current_word));
-            current_word = next_word(current_word);
         }
         printf("\n");
         output_count++;
