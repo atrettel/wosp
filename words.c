@@ -421,7 +421,7 @@ prev_numbered_element(Word *word, unsigned long element_word(Word *))
 Word *
 next_word(Word *word)
 {
-    if (is_end_field(word) == true)
+    if (word == NULL)
     {
         return NULL;
     }
@@ -434,7 +434,7 @@ next_word(Word *word)
 Word *
 prev_word(Word *word)
 {
-    if (is_end_field(word) == true)
+    if (word == NULL)
     {
         return NULL;
     }
