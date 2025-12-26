@@ -454,13 +454,14 @@ prev_numbered_element(Word *word, unsigned long element_word(Word *))
     {
         unsigned long element = element_word(word);
         Word *current = word;
-        while (field_has_prev_word(current) == true)
+        WordIterator iterator = init_word_iterator(word, prev_word, true);
+        while (iterator_has_next_word(iterator) == true)
         {
+            current = iterator_next_word(&iterator);
             if (element_word(current) != element)
             {
                 return next_word(current);
             }
-            current = prev_word(current);
         }
         return current;
     }
