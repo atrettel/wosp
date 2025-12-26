@@ -379,14 +379,14 @@ next_boolean_element(Word *word, bool element_ending_word(Word *))
     if (is_end_field(word) == false)
     {
         Word *current = word;
-        while (field_has_next_word(current) == true)
+        WordIterator iterator = init_word_iterator(word, next_word, true);
+        while (iterator_has_next_word(iterator) == true)
         {
-            Word *next = next_word(current);
-            if (element_ending_word(current) == true)
+            current = iterator_next_word(&iterator);
+            if ((element_ending_word(current) == true) && (iterator_has_next_word(iterator) == true))
             {
-                return next;
+                return iterator_next_word(&iterator);
             }
-            current = next;
         }
         return current;
     }
