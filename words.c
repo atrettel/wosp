@@ -707,14 +707,13 @@ print_words(Word *list)
 void
 free_words(Word *list)
 {
-    Word *current = list;
-    while (is_end_field(current) == false)
+    WordIterator iterator = init_word_iterator(list, next_word, false);
+    while (iterator_has_next_word(iterator) == true)
     {
-        Word *next = next_word(current);
+        Word *current = iterator_next_word(&iterator);
         free(current->original);
         free(current->reduced);
         free(current);
-        current = next;
     }
 }
 
