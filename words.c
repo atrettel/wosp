@@ -165,40 +165,6 @@ is_end_field(Word *word)
 }
 
 bool
-list_has_next_word(Word *word)
-{
-    if (is_end_field(word) == true)
-    {
-        return false;
-    }
-    else if (is_end_field(next_word(word)) == true)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-bool
-list_has_prev_word(Word *word)
-{
-    if (is_end_field(word) == true)
-    {
-        return false;
-    }
-    else if (is_end_field(prev_word(word)) == true)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-bool
 field_has_next_word(Word *word)
 {
     if (is_end_field(word) == true)
@@ -558,45 +524,46 @@ prev_page(Word *word)
 }
 
 static Word *
-extreme_word(Word *word, bool has_another_word(Word *), Word *direction_word(Word *))
+extreme_word(Word *word, Word *direction_word(Word *), bool limited_to_field)
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
     {
-        Word *current = word;
-        while (has_another_word(current) == true)
-        {
-            current = direction_word(current);
-        }
-        return current;
+        return NULL;
     }
     else
     {
-        return NULL;
+        Word *current = word;
+        WordIterator iterator = init_word_iterator(word, direction_word, limited_to_field);
+        while (iterator_has_next_word(iterator) == true)
+        {
+            current = iterator_next_word(&iterator);
+        }
+        return current;
     }
 }
 
 Word *
 list_first_word(Word *word)
 {
-    return extreme_word(word, list_has_prev_word, prev_word);
+    return extreme_word(word, prev_word, false);
 }
 
 Word *
 list_last_word(Word *word)
 {
-    return extreme_word(word, list_has_next_word, next_word);
+    return extreme_word(word, next_word, false);
 }
 
 Word *
 field_first_word(Word *word)
 {
-    return extreme_word(word, field_has_prev_word, prev_word);
+    return extreme_word(word, prev_word, true);
 }
 
 Word *
 field_last_word(Word *word)
 {
-    return extreme_word(word, field_has_next_word, next_word);
+    return extreme_word(word, next_word, true);
 }
 
 Word *
