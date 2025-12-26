@@ -182,7 +182,11 @@ field_has_next_word(Word *word)
 bool
 clause_ending_word(Word *word)
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return true;
+    }
+    else
     {
         if (sentence_ending_word(word) == true)
         {
@@ -214,16 +218,16 @@ clause_ending_word(Word *word)
             return curr_cond;
         }
     }
-    else
-    {
-        return true;
-    }
 }
 
 bool
 sentence_ending_word(Word *word)
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return true;
+    }
+    else
     {
         char *data = original_word(word);
         size_t len = strlen(data);
@@ -286,16 +290,16 @@ sentence_ending_word(Word *word)
             }
         }
     }
-    else
-    {
-        return true;
-    }
 }
 
 bool
 paragraph_ending_word(Word *word)
 {
-    if (is_end_field(word) == false)
+    if (word == NULL)
+    {
+        return true;
+    }
+    else
     {
         bool sentence_cond = sentence_ending_word(word);
         if (field_has_next_word(word) == false)
@@ -313,10 +317,6 @@ paragraph_ending_word(Word *word)
                 return false;
             }
         }
-    }
-    else
-    {
-        return true;
     }
 }
 
