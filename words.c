@@ -182,23 +182,6 @@ field_has_next_word(Word *word)
 }
 
 bool
-field_has_prev_word(Word *word)
-{
-    if (is_end_field(word) == true)
-    {
-        return false;
-    }
-    else if (field_word(word) == field_word(prev_word(word)))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool
 clause_ending_word(Word *word)
 {
     if (is_end_field(word) == false)

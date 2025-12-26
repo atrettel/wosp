@@ -63,7 +63,6 @@ unsigned long page_word(Word *);
 unsigned long field_word(Word *);
 bool is_end_field(Word *);
 bool field_has_next_word(Word *);
-bool field_has_prev_word(Word *);
 bool clause_ending_word(Word *);
 bool sentence_ending_word(Word *);
 bool paragraph_ending_word(Word *);
