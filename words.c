@@ -402,18 +402,18 @@ prev_boolean_element(Word *word, bool element_ending_word(Word *))
     if (is_end_field(word) == false)
     {
         Word *current = word;
-        if ((element_ending_word(current) == true) && (field_has_prev_word(current) == true))
+        WordIterator iterator = init_word_iterator(word, prev_word, true);
+        if ((element_ending_word(current) == true) && (iterator_has_next_word(iterator) == true))
         {
-            current = prev_word(current);
+            current = iterator_next_word(&iterator);
         }
-        while (field_has_prev_word(current) == true)
+        while (iterator_has_next_word(iterator) == true)
         {
-            Word *prev = prev_word(current);
+            current = iterator_next_word(&iterator);
             if (element_ending_word(current) == true)
             {
                 return next_word(current);
             }
-            current = prev;
         }
         return current;
     }
