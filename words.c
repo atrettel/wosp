@@ -152,19 +152,6 @@ field_word(Word *word)
 }
 
 bool
-is_end_field(Word *word)
-{
-    if (field_word(word) == end_field)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool
 field_has_next_word(Word *word)
 {
     WordIterator iterator = init_word_iterator(word, next_word, true);
