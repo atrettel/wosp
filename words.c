@@ -614,24 +614,12 @@ advance_word(Word *word, LanguageElement element, int n)
         assert(advance != NULL);
 
         size_t m = abs(n);
-        for (size_t i = 0; i < m; i++)
+        WordIterator iterator = init_word_iterator(current, advance, true);
+        size_t i = 0;
+        while ((i <= m) && (iterator_has_next_word(iterator) == true))
         {
-            Word *next = advance(current);
-            if (is_end_field(next) == false)
-            {
-                current = next;
-            }
-            else
-            {
-                if (n > 0)
-                {
-                    current = field_last_word(current);
-                }
-                else
-                {
-                    current = field_first_word(current);
-                }
-            }
+            current = iterator_next_word(&iterator);
+            i++;
         }
     }
     return current;
