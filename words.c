@@ -563,56 +563,19 @@ advance_word(Word *word, LanguageElement element, int n)
     if (n != 0)
     {
         Word *(*advance)(Word *) = NULL;
-        if (element == LE_WORD && n > 0)
-        {
-            advance = next_word;
-        }
-        else if (element == LE_WORD && n < 0)
-        {
-            advance = prev_word;
-        }
-        else if (element == LE_CLAUSE && n > 0)
-        {
-            advance = next_clause;
-        }
-        else if (element == LE_CLAUSE && n < 0)
-        {
-            advance = prev_clause;
-        }
-        else if (element == LE_LINE && n > 0)
-        {
-            advance = next_line;
-        }
-        else if (element == LE_LINE && n < 0)
-        {
-            advance = prev_line;
-        }
-        else if (element == LE_SENTENCE && n > 0)
-        {
-            advance = next_sentence;
-        }
-        else if (element == LE_SENTENCE && n < 0)
-        {
-            advance = prev_sentence;
-        }
-        else if (element == LE_PARAGRAPH && n > 0)
-        {
-            advance = next_paragraph;
-        }
-        else if (element == LE_PARAGRAPH && n < 0)
-        {
-            advance = prev_paragraph;
-        }
-        else if (element == LE_PAGE && n > 0)
-        {
-            advance = next_page;
-        }
-        else if (element == LE_PAGE && n < 0)
-        {
-            advance = prev_page;
-        }
+        if      (element == LE_WORD      && n > 0) {advance = next_word;}
+        else if (element == LE_WORD      && n < 0) {advance = prev_word;}
+        else if (element == LE_CLAUSE    && n > 0) {advance = next_clause;}
+        else if (element == LE_CLAUSE    && n < 0) {advance = prev_clause;}
+        else if (element == LE_LINE      && n > 0) {advance = next_line;}
+        else if (element == LE_LINE      && n < 0) {advance = prev_line;}
+        else if (element == LE_SENTENCE  && n > 0) {advance = next_sentence;}
+        else if (element == LE_SENTENCE  && n < 0) {advance = prev_sentence;}
+        else if (element == LE_PARAGRAPH && n > 0) {advance = next_paragraph;}
+        else if (element == LE_PARAGRAPH && n < 0) {advance = prev_paragraph;}
+        else if (element == LE_PAGE      && n > 0) {advance = next_page;}
+        else if (element == LE_PAGE      && n < 0) {advance = prev_page;}
         assert(advance != NULL);
-
         size_t m = abs(n);
         WordIterator iterator = init_word_iterator(current, advance, true);
         size_t i = 0;
