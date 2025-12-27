@@ -578,7 +578,7 @@ advance_word(Word *word, LanguageElement element, int n)
         assert(advance != NULL);
         size_t m = abs(n);
         WordIterator iterator = init_word_iterator(current, advance, true);
-        size_t i = 0;
+        size_t i = 0; /* Akin to an array index.  0 is word. */
         while ((i <= m) && (iterator_has_next_word(iterator) == true))
         {
             current = iterator_next_word(&iterator);
